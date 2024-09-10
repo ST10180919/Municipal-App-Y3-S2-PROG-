@@ -6,9 +6,7 @@
     <Color x:Key="Jet">#3A3535</Color>
     <SolidColorBrush x:Key="JetBrush" Color="{StaticResource Jet}" />
 
-    <LinearGradientBrush x:Key="GradientBrush" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Offset="0" Color="{StaticResource Jet}" />
-        <GradientStop Offset="1" Color="{StaticResource RaisinBlack}" />
-    </LinearGradientBrush>
+    <Color x:Key="TextWhite">#F6F1ED</Color>
+    <SolidColorBrush x:Key="TextWhiteBrush" Color="{StaticResource TextWhite}" />
 
 </ResourceDictionary>
