@@ -143,9 +143,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\" />
-    <Folder Include="Images\" />
     <Folder Include="Models\" />
     <Folder Include="Services\DatabaseServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\calendar.png" />
+    <Resource Include="Images\exit-white.png" />
+    <Resource Include="Images\megaphone.png" />
+    <Resource Include="Images\minimise-white.png" />
+    <Resource Include="Images\restore-down-white.png" />
+    <Resource Include="Images\south-africa-photo.png" />
+    <Resource Include="Images\south-africa.png" />
+    <Resource Include="Images\status.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
