@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.ViewModels
 {
-    internal class RequestStatusViewModel
+    internal class RequestStatusViewModel : ViewModelBase
     {
     }
 }

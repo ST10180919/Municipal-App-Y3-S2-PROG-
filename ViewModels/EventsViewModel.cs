@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.ViewModels
 {
-    internal class EventsViewModel
+    internal class EventsViewModel : ViewModelBase
     {
     }
 }

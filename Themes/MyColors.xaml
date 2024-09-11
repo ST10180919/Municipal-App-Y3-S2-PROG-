@@ -9,4 +9,9 @@
     <Color x:Key="TextWhite">#F6F1ED</Color>
     <SolidColorBrush x:Key="TextWhiteBrush" Color="{StaticResource TextWhite}" />
 
+    <Color x:Key="Platinum">#E1DFDE</Color>
+    <SolidColorBrush x:Key="PlatinumBrush" Color="{StaticResource Platinum}" />
+
+    <SolidColorBrush x:Key="TransparentBrush" Color="Transparent" />
+
 </ResourceDictionary>
