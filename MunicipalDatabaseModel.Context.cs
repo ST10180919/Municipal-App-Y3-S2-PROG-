@@ -25,6 +25,7 @@ namespace Municipal_App
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ISSUE_REPORTS> ISSUE_REPORTS { get; set; }
+        public virtual DbSet<ATTACHMENT> ATTACHMENTs { get; set; }
+        public virtual DbSet<ISSUE_REPORT> ISSUE_REPORT { get; set; }
     }
 }

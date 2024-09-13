@@ -12,13 +12,21 @@ namespace Municipal_App
     using System;
     using System.Collections.Generic;
     
-    public partial class ISSUE_REPORTS
+    public partial class ISSUE_REPORT
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ISSUE_REPORT()
+        {
+            this.ATTACHMENTs = new HashSet<ATTACHMENT>();
+        }
+    
         public int ID { get; set; }
         public string LOCATION { get; set; }
         public string DESCRIPTION { get; set; }
         public string CATEGORY { get; set; }
         public string SOLUTION { get; set; }
-        public byte[] ATTACHMENTS { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTACHMENT> ATTACHMENTs { get; set; }
     }
 }

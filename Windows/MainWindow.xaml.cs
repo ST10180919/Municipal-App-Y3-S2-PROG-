@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,6 +24,21 @@ namespace Municipal_App
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            InputsGrid.Visibility = Visibility.Visible;
+
+            var storyboard = (Storyboard)this.FindResource("ExpandInputsGrid");
+            storyboard.Begin(); // Begin the expand animation
+        }
+
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var storyboard = (Storyboard)this.FindResource("CollapseInputsGrid");
+            storyboard.Completed += (s, ev) => InputsGrid.Visibility = Visibility.Collapsed; // Hide after collapse
+            storyboard.Begin(); // Begin the collapse animation
         }
 
         //-----------------------------------------------------------------------------

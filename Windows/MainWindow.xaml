@@ -4,15 +4,37 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Municipal_App"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Municipal_App.ViewModels"
     xmlns:views="clr-namespace:Municipal_App.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="1280"
     Height="720"
     BorderThickness="0"
     WindowStyle="None"
     mc:Ignorable="d">
+
+    <Window.Resources>
+        <!--  Storyboard for expanding  -->
+        <Storyboard x:Key="ExpandInputsGrid">
+            <DoubleAnimation
+                Storyboard.TargetName="InputsGrid"
+                Storyboard.TargetProperty="Height"
+                From="0"
+                To="250"
+                Duration="0:0:0.5" />
+        </Storyboard>
+
+        <!--  Storyboard for collapsing  -->
+        <Storyboard x:Key="CollapseInputsGrid">
+            <DoubleAnimation
+                Storyboard.TargetName="InputsGrid"
+                Storyboard.TargetProperty="Height"
+                From="150"
+                To="0"
+                Duration="0:0:0.5" />
+        </Storyboard>
+    </Window.Resources>
 
     <Grid Margin="0">
 
@@ -23,14 +45,17 @@
             <DataTemplate DataType="{x:Type viewModels:EventsViewModel}">
                 <views:EventsView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:IssuesViewModel}">
+            <DataTemplate DataType="{x:Type viewModels:ReportIssuesViewModel}">
                 <views:ReportIssuesView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:RequestStatusViewModel}">
                 <views:RequestStatusView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:BannerMessageViewModel}">
+                <views:BannerMessageView />
+            </DataTemplate>
         </Grid.Resources>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
@@ -192,7 +217,81 @@
             </StackPanel>
         </Grid>
 
+        <!--  Banner Message  -->
+        <ContentControl
+            Grid.Row="2"
+            Height="40"
+            VerticalAlignment="Top"
+            Panel.ZIndex="1"
+            Content="{Binding CurrentBannerMessageVM}" />
+
         <!--  Content  -->
         <ContentControl Grid.Row="2" Content="{Binding CurrentViewModel}" />
+
+        <!--  Feedback Code  -->
+        <Border
+            Grid.Row="2"
+            Width="250"
+            Height="auto"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Background="{StaticResource GreenBrush}"
+            CornerRadius="20 0 0 0"
+            MouseEnter="Border_MouseEnter"
+            MouseLeave="Border_MouseLeave">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="20"
+                    FontWeight="Medium"
+                    Foreground="{StaticResource TextWhiteBrush}"
+                    Text="Give Feedback" />
+
+                <Grid
+                    x:Name="InputsGrid"
+                    Grid.Row="1"
+                    Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        FontWeight="Medium"
+                        Foreground="{StaticResource RaisinBlackBrush}"
+                        Text="{Binding CurrentViewModel.FeedbackLabel}"
+                        TextWrapping="Wrap" />
+
+                    <TextBox
+                        Grid.Row="1"
+                        Height="150"
+                        Margin="10,5,10,0"
+                        Style="{StaticResource CustomTextArea}"
+                        Text="{Binding FeedbackMessage}" />
+
+                    <Button
+                        Grid.Row="2"
+                        Width="100"
+                        Height="30"
+                        Margin="0,10"
+                        Command="{Binding SubmitFeedbackCommand}"
+                        Content="Submit"
+                        Style="{StaticResource GenericButton}" />
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

@@ -40,8 +40,7 @@
                             Background="Transparent"
                             BorderBrush="{StaticResource RaisinBlackBrush}"
                             BorderThickness="2"
-                            CornerRadius="5">
-                        </Border>
+                            CornerRadius="5" />
 
                         <TextBox
                             x:Name="MyTextBox"
@@ -106,5 +105,251 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="CustomTextArea" TargetType="TextBox">
+        <Style.Resources>
+            <Style x:Key="ValidationToolTipStyle" TargetType="{x:Type ToolTip}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToolTip">
+                            <Border
+                                Background="{StaticResource TextWhiteBrush}"
+                                BorderBrush="{StaticResource RaisinBlackBrush}"
+                                BorderThickness="1"
+                                CornerRadius="5">
+                                <TextBlock
+                                    Margin="5"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Foreground="{StaticResource RaisinBlackBrush}"
+                                    Text="{TemplateBinding Content}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <Border
+                            Height="{TemplateBinding Height}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="Transparent"
+                            BorderBrush="{StaticResource RaisinBlackBrush}"
+                            BorderThickness="2"
+                            CornerRadius="5" />
+
+                        <TextBox
+                            x:Name="MyTextBox"
+                            Padding="10,7,0,0"
+                            VerticalContentAlignment="Top"
+                            AcceptsReturn="True"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontWeight="Medium"
+                            Foreground="{StaticResource RaisinBlackBrush}"
+                            Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextWrapping="Wrap" />
+
+                        <!--  Placeholder  -->
+                        <TextBlock
+                            x:Name="PlaceHolderTextBox"
+                            Margin="2,0,0,0"
+                            Padding="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{TemplateBinding FontSize}"
+                            FontWeight="Medium"
+                            Foreground="DarkGray"
+                            IsHitTestVisible="False"
+                            Text="{TemplateBinding Property=Tag}">
+
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=MyTextBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!--  Validation stuff  -->
+                        <Image
+                            Width="20"
+                            Height="20"
+                            Margin="0,0,5,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Source="/Images/exclamation.png"
+                            ToolTipService.InitialShowDelay="0">
+                            <Image.ToolTip>
+                                <ToolTip Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)[0].ErrorContent}" Style="{StaticResource ValidationToolTipStyle}" />
+                            </Image.ToolTip>
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError)}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CustomComboBox" TargetType="{x:Type ComboBox}">
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <!--  Removing the default red border for validation errors  -->
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Actual Combobox  -->
+                        <Border
+                            x:Name="MyComboBoxBorder"
+                            Grid.Column="0"
+                            Background="Transparent"
+                            BorderBrush="{StaticResource RaisinBlackBrush}"
+                            BorderThickness="2,2,0,2"
+                            CornerRadius="5,0,0,5">
+                            <TextBlock
+                                x:Name="ModuleNameTextBlock"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontWeight="Medium"
+                                Foreground="{TemplateBinding Foreground}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="{Binding SelectedItem.ModuleCode, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedItem.ModuleCode, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                                                <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                        <!--  Drop down section  -->
+                        <Border
+                            x:Name="MyToggleButtonBorder"
+                            Grid.Column="1"
+                            Width="25"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            BorderBrush="{StaticResource RaisinBlackBrush}"
+                            BorderThickness="1,2,2,2"
+                            CornerRadius="0,5,5,0">
+                            <ToggleButton
+                                x:Name="DropDownToggle"
+                                Grid.Column="1"
+                                Margin="0"
+                                Padding="0"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                ClickMode="Press"
+                                Foreground="{StaticResource RaisinBlackBrush}"
+                                IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Border
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                                <Path
+                                    x:Name="Arrow"
+                                    Data="M 0 0 L 4 4 L 8 0 Z"
+                                    Fill="{StaticResource RaisinBlackBrush}" />
+                            </ToggleButton>
+                        </Border>
+
+                        <!--  Validation Image  -->
+                        <Image
+                            Grid.Column="2"
+                            Width="20"
+                            Height="20"
+                            Margin="10,0,0,0"
+                            Source="/Images/exclamation.png"
+                            ToolTipService.InitialShowDelay="0">
+                            <Image.ToolTip>
+                                <ToolTip Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.Errors)[0].ErrorContent}" />
+                            </Image.ToolTip>
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <!--  Show the image when there is a validation error  -->
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Validation.HasError)}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+
+                        <!--  Popup  -->
+                        <Popup
+                            x:Name="MyPopup"
+                            Width="{Binding ActualWidth, ElementName=MyComboBoxBorder}"
+                            AllowsTransparency="True"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            Placement="Bottom"
+                            StaysOpen="False">
+                            <Border
+                                Background="{StaticResource TextWhiteBrush}"
+                                BorderBrush="{StaticResource RaisinBlackBrush}"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <ScrollViewer>
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
 </ResourceDictionary>

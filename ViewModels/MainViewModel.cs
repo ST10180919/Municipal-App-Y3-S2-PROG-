@@ -15,10 +15,33 @@ namespace Municipal_App.ViewModels
     {
         private NavigationStore NavigationStore => AppStore.Instance.NavigationStore;
         public ViewModelBase CurrentViewModel => NavigationStore.CurrentViewModel;
+        public BannerMessageViewModel CurrentBannerMessageVM { get; }
+
+        public SubmitFeedbackCommand SubmitFeedbackCommand { get; }
+
+        private string _feedbackMessage;
+        public string FeedbackMessage
+        {
+            get
+            {
+                return _feedbackMessage;
+            }
+            set
+            {
+                _feedbackMessage = value;
+                OnPropertyChanged(nameof(FeedbackMessage));
+            }
+        }
+
         public MainViewModel()
         {
             // Setting the initial view shown
             this.NavigationStore.CurrentViewModel = new LandingViewModel();
+
+            // Setting up Banner System
+            var bannerStore = AppStore.Instance.BannerMessageStore;
+            this.CurrentBannerMessageVM = new BannerMessageViewModel();
+            this.SubmitFeedbackCommand = new SubmitFeedbackCommand(this.ClearFeedbackMessage);
 
             // Subscribing to the CurrentViewModelChanged event (ensures that the UI updates when view model changes)
             this.NavigationStore.CurrentViewModelChanged += this.OnCurrentViewModelChanged;
@@ -27,6 +50,11 @@ namespace Municipal_App.ViewModels
         private void OnCurrentViewModelChanged()
         {
             OnPropertyChanged(nameof(CurrentViewModel));
+        }
+
+        private void ClearFeedbackMessage()
+        {
+            this.FeedbackMessage = string.Empty;
         }
     }
 }

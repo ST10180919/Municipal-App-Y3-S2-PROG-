@@ -14,4 +14,7 @@
 
     <SolidColorBrush x:Key="TransparentBrush" Color="Transparent" />
 
+    <Color x:Key="ShamrockGreen">#329B67</Color>
+    <SolidColorBrush x:Key="GreenBrush" Color="{StaticResource ShamrockGreen}" />
+
 </ResourceDictionary>

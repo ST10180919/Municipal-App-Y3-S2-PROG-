@@ -24,13 +24,19 @@ namespace Municipal_App.Stores
         /// </summary>
         public NavigationStore NavigationStore { get; private set; }
 
+        public BannerMessageStore BannerMessageStore { get; private set; }
+
+        public IssueReportStore IssueReportStore { get; private set; }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Constructor
         /// </summary>
         private AppStore() 
         { 
-            NavigationStore = new NavigationStore();
+            this.NavigationStore = new NavigationStore();
+            this.BannerMessageStore = new BannerMessageStore();
+            this.IssueReportStore = new IssueReportStore();
         }
 
         //-----------------------------------------------------------------------------

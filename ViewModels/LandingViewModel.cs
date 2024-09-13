@@ -11,22 +11,35 @@ namespace Municipal_App.ViewModels
 {
     internal class LandingViewModel : ViewModelBase
     {
+        private string _feedbackLabel;
+        public string FeedbackLabel
+        {
+            get
+            {
+                return _feedbackLabel;
+            }
+            set
+            {
+                _feedbackLabel = value;
+                OnPropertyChanged(nameof(FeedbackLabel));
+            }
+        }
         private NavigationStore NavigationStore => AppStore.Instance.NavigationStore;
-        public ViewModelBase CurrentViewModel => NavigationStore.CurrentViewModel;
         public ICommand ReportIssuesNavCommand { get; }
         public ICommand EventsAndAnnouncementsNavCommand { get; }
         public ICommand RequestStatusNavCommand { get; }
         public LandingViewModel()
         {
+            this.FeedbackLabel = "Suggest services to be added:";
             // Initialising the navigation commands
             this.ReportIssuesNavCommand = new NavCommand(new Services.NavigationService(this.NavigationStore, this.CreateIssuesViewModel));
             this.EventsAndAnnouncementsNavCommand = new NavCommand(new Services.NavigationService(this.NavigationStore, this.CreateEventsViewModel));
             this.RequestStatusNavCommand = new NavCommand(new Services.NavigationService(this.NavigationStore, this.CreateRequestStatusViewModel));
         }
 
-        private IssuesViewModel CreateIssuesViewModel()
+        private ReportIssuesViewModel CreateIssuesViewModel()
         {
-            return new IssuesViewModel();
+            return new ReportIssuesViewModel();
         }
         private EventsViewModel CreateEventsViewModel()
         {
