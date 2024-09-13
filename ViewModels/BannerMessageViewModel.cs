@@ -9,7 +9,7 @@ using System.Windows.Media.Animation;
 
 namespace Municipal_App.ViewModels
 {
-    /* Credits : Most of this code here
+    /* Credits : Code inspired by this youtube video
      * https://www.youtube.com/watch?v=Kh4NFd5y3k0
      */
     //---------------------------------------------------------------------------------

@@ -223,7 +223,7 @@
             Height="40"
             VerticalAlignment="Top"
             Panel.ZIndex="1"
-            Content="{Binding CurrentBannerMessageVM}" />
+            Content="{Binding BannerMessageViewModel}" />
 
         <!--  Content  -->
         <ContentControl Grid.Row="2" Content="{Binding CurrentViewModel}" />

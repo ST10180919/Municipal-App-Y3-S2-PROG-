@@ -9,16 +9,41 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.Commands
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// Command used to add Issue Reports from the user
+    /// </summary>
     internal class AddIssueReportCommand : CommandBase
     {
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Allows a confirmation banner to be set for user feedback
+        /// </summary>
         private BannerMessageStore _bannerMessageStore => AppStore.Instance.BannerMessageStore;
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// ViewModel of the report being added 
+        /// </summary>
         private readonly ReportViewModel _reportToBeAdded;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Creates a new AddIssueReportCommand
+        /// </summary>
+        /// <param name="report"> 
+        /// The ViewModel containing the report to be added
+        /// </param>
         public AddIssueReportCommand(ReportViewModel report) 
         { 
             this._reportToBeAdded = report;
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Code run when the command is executed
+        /// </summary>
+        /// <param name="parameter"></param>
         public override void Execute(object parameter)
         {
             this.ValidateReport();
@@ -37,6 +62,11 @@ namespace Municipal_App.Commands
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Input validation for the report. Adds the errors to fields in the 
+        /// ReportViewModel (which uses INotifyDataErrorInfo to notify UI)
+        /// </summary>
         private void ValidateReport()
         {
             // Clearing previous errors
@@ -63,13 +93,6 @@ namespace Municipal_App.Commands
                 }
             }
 
-            // Checking Solution
-            var Solution = this._reportToBeAdded.Solution;
-            if (Solution == string.Empty)
-            {
-                this._reportToBeAdded.AddError(nameof(Solution), "This Field cannot be empty");
-            }
-
             // Checking Description
             var Description = this._reportToBeAdded.Description;
             if (Description == string.Empty)
@@ -79,3 +102,4 @@ namespace Municipal_App.Commands
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

@@ -8,6 +8,13 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.Services.DatabaseServices
 {
+    /*
+     * NOTE: None of this code is implemented in the app as database functionality
+     * wasn't necessary for this part. The database and ADO.NET entity data model 
+     * included in this project are used for the classes they create and nothing
+     * more (yet).
+     */
+
     internal class ReportIssuesDataService
     {
         private MunicipalDatabaseEntities Entity;

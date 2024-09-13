@@ -24,13 +24,22 @@ namespace Municipal_App.Stores
         /// </summary>
         public NavigationStore NavigationStore { get; private set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Stores the current state of the banner shown to the user. Allows for the
+        /// changing of the banner, which shows it to the user.
+        /// </summary>
         public BannerMessageStore BannerMessageStore { get; private set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Stores the reports submitted by users
+        /// </summary>
         public IssueReportStore IssueReportStore { get; private set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Constructor
+        /// Creates the AppStore
         /// </summary>
         private AppStore() 
         { 
