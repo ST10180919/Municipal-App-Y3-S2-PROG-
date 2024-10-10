@@ -8,15 +8,40 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.Models
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// Disclosure of AI: This Class was generated almost entirely by ChatGPT Model 4o
+    /// 
+    /// Basically just a Queue that can notify the UI when an item is enqueued or when 
+    /// a property changes by implementing the INotifyCollectionChanged and 
+    /// INotifyPropertyChanged interfaces
+    /// </summary>
+    /// <typeparam name="T"> Type </typeparam>
     internal class ObservableQueue<T> : Queue<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {
-        // Event that will notify the UI when the collection changes
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Event that is triggered whenever the collection changes 
+        /// (items are added, removed, or reset).
+        /// Notifies the UI to update its view of the collection.
+        /// </summary>
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        // Event that will notify the UI when a property changes (e.g., Count)
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Event that is triggered whenever a property of the queue changes, 
+        /// such as the Count property.
+        /// Notifies the UI to update the bound property.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Override the Enqueue method to add notification behavior
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds an item to the queue and triggers the necessary notifications for the UI.
+        /// Raises the CollectionChanged event to indicate an item was added and raises 
+        /// PropertyChanged for the Count property.
+        /// </summary>
+        /// <param name="item">The item to enqueue.</param>
         public new void Enqueue(T item)
         {
             base.Enqueue(item);
@@ -28,7 +53,14 @@ namespace Municipal_App.Models
             OnPropertyChanged(nameof(Count));
         }
 
-        // Override the Dequeue method to add notification behavior
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Removes and returns the item at the beginning of the queue and triggers 
+        /// the necessary notifications for the UI.
+        /// Raises the CollectionChanged event to indicate an item was removed and raises 
+        /// PropertyChanged for the Count property.
+        /// </summary>
+        /// <returns>The item that was dequeued from the front of the queue.</returns>
         public new T Dequeue()
         {
             var item = base.Dequeue();
@@ -42,19 +74,34 @@ namespace Municipal_App.Models
             return item;
         }
 
-        // Notify when properties (like Count) change
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Triggers the PropertyChanged event to notify the UI that a property value has changed.
+        /// This is typically used for properties such as Count.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that has changed.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        // Notify when the collection changes (items added or removed)
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Triggers the CollectionChanged event to notify the UI that the collection 
+        /// has changed (items were added, removed, or reset).
+        /// </summary>
+        /// <param name="e">The arguments that describe the collection change event.</param>
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             CollectionChanged?.Invoke(this, e);
         }
 
-        // Clear the queue and raise notification events
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Clears all items from the queue and triggers the necessary notifications for the UI.
+        /// Raises the CollectionChanged event to indicate the collection has been reset and 
+        /// raises PropertyChanged for the Count property.
+        /// </summary>
         public new void Clear()
         {
             base.Clear();
@@ -67,3 +114,4 @@ namespace Municipal_App.Models
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

@@ -9,10 +9,23 @@ using System.Windows.Media.Imaging;
 
 namespace Municipal_App.ViewModels
 {
+	//---------------------------------------------------------------------------------
+	/// <summary>
+	/// Class representing a municipal event to be viewed by the user on the EventsView.
+	/// 
+	/// This class is a viewmodel and contains backing and exposed fields because
+	/// it's intended for UI to bind directly to it, and for the UI to be updated
+	/// whenever a field is set using OnPropertyChanged() from the ViewModelBase's 
+	/// INotifyPropertyChanged.
+	/// </summary>
     internal class MunicipalEventViewModel : ViewModelBase
     {
 		private string _title;
-		public string Title
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// The title of the event
+        /// </summary>
+        public string Title
 		{
 			get { return _title; }
 			set
@@ -21,8 +34,13 @@ namespace Municipal_App.ViewModels
 				OnPropertyChanged(nameof(Title));
 			}
 		}
+
 		private BitmapImage _image;
-		public BitmapImage Image
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// The image corresponding to the event
+        /// </summary>
+        public BitmapImage Image
 		{
             get { return _image; }
             set
@@ -30,9 +48,14 @@ namespace Municipal_App.ViewModels
 				_image = value;
 				OnPropertyChanged(nameof(Image));
 			}
+
 		}
 		private string _category;
-		public string Category
+        //-----------------------------------------------------------------------------
+		/// <summary>
+		/// The category of the event
+		/// </summary>
+        public string Category
 		{
 			get { return _category; }
             set
@@ -41,8 +64,13 @@ namespace Municipal_App.ViewModels
 				OnPropertyChanged(nameof(Category));
 			}
 		}
+
 		private string _date;
-		public string Date
+        //-----------------------------------------------------------------------------
+		/// <summary>
+		/// A string containing the date (or dates) for which the event takes place
+		/// </summary>
+        public string Date
 		{
 			get { return _date; }
             set
@@ -51,8 +79,13 @@ namespace Municipal_App.ViewModels
 				OnPropertyChanged(nameof(Date));
 			}
 		}
+
 		private string _time;
-		public string Time
+        //-----------------------------------------------------------------------------
+		/// <summary>
+		/// A string containing the time the event takes place
+		/// </summary>
+        public string Time
 		{
 			get { return _time; }
             set
@@ -61,8 +94,13 @@ namespace Municipal_App.ViewModels
 				OnPropertyChanged(nameof(Time));
 			}
 		}
+
 		private string _venue;
-		public string Venue
+        //-----------------------------------------------------------------------------
+		/// <summary>
+		/// The name of the location hosting the event
+		/// </summary>
+        public string Venue
 		{
 			get { return _venue; }
             set
@@ -71,8 +109,13 @@ namespace Municipal_App.ViewModels
 				OnPropertyChanged(nameof(Venue));
 			}
 		}
+
 		private string _link;
-		public string Link
+        //-----------------------------------------------------------------------------
+		/// <summary>
+		/// A sring containing the URL to the event's official website
+		/// </summary>
+        public string Link
 		{
 			get { return _link; }
             set
@@ -83,3 +126,4 @@ namespace Municipal_App.ViewModels
 		}
 	}
 }
+//---------------------------------------EOF-------------------------------------------
