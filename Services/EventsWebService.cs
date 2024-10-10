@@ -130,7 +130,11 @@ namespace Municipal_App.Services
                 municipalEvent.Date = dateNode != null ? this.SanitizeWebField(dateNode.InnerText) : "Unspecified";
 
                 // Extracting Event Time
-                var timeNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Event Time:')]]");
+                var timeNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[" +
+                    "contains(text(), 'Event Time:')] or " +
+                    "strong[contains(text(), 'Event Times:')] or " +
+                    "strong[contains(text(), 'Time:')] or " +
+                    "strong[contains(text(), 'Times:')]]");
                 municipalEvent.Time = timeNode != null ? this.SanitizeWebField(timeNode.InnerText) : "--:--";
 
                 // Extracting Event Venue
@@ -200,6 +204,9 @@ namespace Municipal_App.Services
                 fieldValue
                 .Replace("Event Date:", "")
                 .Replace("Event Time:", "")
+                .Replace("Event Times:", "")
+                .Replace("Time:", "")
+                .Replace("Times:", "")
                 .Replace("Venue:", "")
                 .Replace("Website:", ""))
                 .Trim();
