@@ -30,15 +30,56 @@
                 PanningMode="VerticalFirst"
                 VerticalScrollBarVisibility="Auto">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Image
-                        Grid.Row="0"
-                        MaxHeight="500"
-                        Source="{Binding EventImage}" />
-                    <TextBlock Grid.Row="1" Text="{Binding TestText}" />
+                    <ListView ItemsSource="{Binding EventsQueue}">
+                        <ListView.View>
+                            <GridView>
+                                <!--  Display event title  -->
+                                <GridViewColumn
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding Title}"
+                                    Header="Title" />
+
+                                <!--  Display event category  -->
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Category}"
+                                    Header="Category" />
+
+                                <!--  Display event image  -->
+                                <GridViewColumn Header="Image">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image
+                                                Width="50"
+                                                Height="50"
+                                                Source="{Binding Image}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Date}"
+                                    Header="Date" />
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Time}"
+                                    Header="Time" />
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Venue}"
+                                    Header="Venue" />
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Link}"
+                                    Header="Website" />
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </Grid>
             </ScrollViewer>
         </Grid>

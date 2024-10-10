@@ -143,6 +143,8 @@
     <Compile Include="ISSUE_REPORT.cs">
       <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ObservableQueue.cs" />
+    <Compile Include="ViewModels\MunicipalEventViewModel.cs" />
     <Compile Include="MunicipalDatabaseModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -243,7 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\calendar.png" />

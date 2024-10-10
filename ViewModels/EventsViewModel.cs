@@ -1,4 +1,5 @@
 ﻿using Municipal_App.Commands;
+using Municipal_App.Models;
 using Municipal_App.Services;
 using Municipal_App.Stores;
 using System;
@@ -40,28 +41,17 @@ namespace Municipal_App.ViewModels
             }
         }
 
-        private string _testText;
-        public string TestText
+        private ObservableQueue<MunicipalEventViewModel> _events;
+        public ObservableQueue<MunicipalEventViewModel> EventsQueue
         {
             get
             {
-                return _testText;
+                return _events;
             }
             set
             {
-                _testText = value;
-                OnPropertyChanged(nameof(TestText));
-            }
-        }
-
-        private BitmapImage _eventImage;
-        public BitmapImage EventImage
-        {
-            get { return _eventImage; }
-            set
-            {
-                _eventImage = value;
-                OnPropertyChanged(nameof(EventImage)); 
+                _events = value;
+                OnPropertyChanged(nameof(EventsQueue));
             }
         }
 
@@ -80,6 +70,7 @@ namespace Municipal_App.ViewModels
             this.MainViewNavCommand = new NavCommand(new Services.NavigationService(navigationStore, CreateLandingViewModel));
 
             // Testing web service
+            this.EventsQueue = new ObservableQueue<MunicipalEventViewModel>();
             Initialize();
         }
 
@@ -88,15 +79,8 @@ namespace Municipal_App.ViewModels
         {
             // Initializing events
             var webservice = new EventsWebService();
-            await webservice.InitializeEvents();
 
-            // Start both tasks in parallel, after initialization is done
-            var loadTextTask = webservice.GetEventsTestString();
-            var loadImageTask = webservice.GetImageTest();
-
-            // Wait for the text and image to load independently
-            this.EventImage = await loadImageTask;
-            this.TestText = await loadTextTask;
+            await webservice.LoadEventsAsync(this.EventsQueue);
         }
 
         //-----------------------------------------------------------------------------
