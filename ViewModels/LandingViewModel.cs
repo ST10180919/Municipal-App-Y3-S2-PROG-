@@ -67,9 +67,9 @@ namespace Municipal_App.ViewModels
             // Initialising the navigation commands
             var navigationStore = AppStore.Instance.NavigationStore;
             this.ReportIssuesNavCommand = new NavCommand(new Services.NavigationService(navigationStore, this.CreateIssuesViewModel));
+            this.EventsAndAnnouncementsNavCommand = new NavCommand(new Services.NavigationService(navigationStore, this.CreateEventsViewModel));
 
             // To be implemented in future POE parts
-            //this.EventsAndAnnouncementsNavCommand = new NavCommand(new Services.NavigationService(navigationStore, this.CreateEventsViewModel));
             //this.RequestStatusNavCommand = new NavCommand(new Services.NavigationService(navigationStore, this.CreateRequestStatusViewModel));
         }
 
@@ -83,11 +83,15 @@ namespace Municipal_App.ViewModels
             return new ReportIssuesViewModel();
         }
 
-        // To be implemented in future POE parts
-        //private EventsViewModel CreateEventsViewModel()
-        //{
-        //    return new EventsViewModel();
-        //}
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Creates a new CreateEventsViewModel
+        /// </summary>
+        /// <returns></returns>
+        private EventsViewModel CreateEventsViewModel()
+        {
+            return new EventsViewModel();
+        }
 
         //private RequestStatusViewModel CreateRequestStatusViewModel()
         //{
