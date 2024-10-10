@@ -158,8 +158,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Services\AnnouncementsWebService.cs" />
     <Compile Include="Services\DatabaseServices\ReportIssuesDataService.cs" />
-    <Compile Include="Services\EventsAndAnnoucementsWebService.cs" />
+    <Compile Include="Services\EventsWebService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Stores\AppStore.cs" />
     <Compile Include="Stores\BannerMessageStore.cs" />

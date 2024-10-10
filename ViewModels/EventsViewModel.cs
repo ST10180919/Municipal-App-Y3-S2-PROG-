@@ -74,8 +74,11 @@ namespace Municipal_App.ViewModels
         // Asynchronous initialization method
         private async void Initialize()
         {
-            var webservice = new EventsAndAnnoucementsWebService();
-            this.TestText = await webservice.GetEvents(); // Await the result asynchronously
+            var webservice = new EventsWebService();
+            await webservice.InitializeEvents();
+
+            // Setting Text
+            this.TestText = await webservice.GetEventsTestString();
         }
 
         //-----------------------------------------------------------------------------
