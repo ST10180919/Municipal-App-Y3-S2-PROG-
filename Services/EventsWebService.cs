@@ -1,10 +1,12 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Municipal_App.Services
 {
@@ -23,6 +25,44 @@ namespace Municipal_App.Services
             string html = await httpClient.GetStringAsync(this._eventsURL);
             this._htmlDocument = new HtmlDocument();
             this._htmlDocument.LoadHtml(html);
+        }
+
+        public async Task<BitmapImage> GetImageTest()
+        {
+            // Selecting an image 
+            var imageNode = this._htmlDocument.DocumentNode.SelectSingleNode("//div[@class='mec-event-image']//img");
+
+            if (imageNode != null)
+            {
+                // Get the image URL from the src attribute
+                string imageUrl = imageNode.GetAttributeValue("data-lazy-src", string.Empty);
+
+                if (!string.IsNullOrEmpty(imageUrl))
+                {
+                    // Download the image data
+                    HttpClient httpClient = new HttpClient();
+                    byte[] imageData = await httpClient.GetByteArrayAsync(imageUrl);
+
+                    // Convert the byte array to a BitmapImage
+                    BitmapImage bitmap = new BitmapImage();
+                    using (MemoryStream stream = new MemoryStream(imageData))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = stream;
+                        bitmap.EndInit();
+                        bitmap.Freeze(); // Optional: Freeze the BitmapImage for better performance
+                    }
+
+                    // Return the BitmapImage to be used in the view
+                    return bitmap;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Failed to get image");
+            }
+            return null;
         }
 
         public async Task<string> GetEventsTestString()

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Municipal_App.ViewModels
 {
@@ -53,6 +54,17 @@ namespace Municipal_App.ViewModels
             }
         }
 
+        private BitmapImage _eventImage;
+        public BitmapImage EventImage
+        {
+            get { return _eventImage; }
+            set
+            {
+                _eventImage = value;
+                OnPropertyChanged(nameof(EventImage)); 
+            }
+        }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Command used to navigate back to the MainViewModel
@@ -74,11 +86,17 @@ namespace Municipal_App.ViewModels
         // Asynchronous initialization method
         private async void Initialize()
         {
+            // Initializing events
             var webservice = new EventsWebService();
             await webservice.InitializeEvents();
 
-            // Setting Text
-            this.TestText = await webservice.GetEventsTestString();
+            // Start both tasks in parallel, after initialization is done
+            var loadTextTask = webservice.GetEventsTestString();
+            var loadImageTask = webservice.GetImageTest();
+
+            // Wait for the text and image to load independently
+            this.EventImage = await loadImageTask;
+            this.TestText = await loadTextTask;
         }
 
         //-----------------------------------------------------------------------------

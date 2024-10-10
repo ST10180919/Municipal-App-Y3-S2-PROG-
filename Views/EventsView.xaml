@@ -29,7 +29,17 @@
                 HorizontalScrollBarVisibility="Disabled"
                 PanningMode="VerticalFirst"
                 VerticalScrollBarVisibility="Auto">
-                <TextBlock Text="{Binding TestText}" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Image
+                        Grid.Row="0"
+                        MaxHeight="500"
+                        Source="{Binding EventImage}" />
+                    <TextBlock Grid.Row="1" Text="{Binding TestText}" />
+                </Grid>
             </ScrollViewer>
         </Grid>
     </Border>
