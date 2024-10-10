@@ -1,4 +1,5 @@
 ﻿using Municipal_App.Commands;
+using Municipal_App.Services;
 using Municipal_App.Stores;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,20 @@ namespace Municipal_App.ViewModels
             }
         }
 
+        private string _testText;
+        public string TestText
+        {
+            get
+            {
+                return _testText;
+            }
+            set
+            {
+                _testText = value;
+                OnPropertyChanged(nameof(TestText));
+            }
+        }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Command used to navigate back to the MainViewModel
@@ -51,6 +66,16 @@ namespace Municipal_App.ViewModels
             // Setting up back naviagtion
             var navigationStore = AppStore.Instance.NavigationStore;
             this.MainViewNavCommand = new NavCommand(new Services.NavigationService(navigationStore, CreateLandingViewModel));
+
+            // Testing web service
+            Initialize();
+        }
+
+        // Asynchronous initialization method
+        private async void Initialize()
+        {
+            var webservice = new EventsAndAnnoucementsWebService();
+            this.TestText = await webservice.GetEvents(); // Await the result asynchronously
         }
 
         //-----------------------------------------------------------------------------

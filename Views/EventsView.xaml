@@ -10,10 +10,23 @@
     mc:Ignorable="d">
 
     <Border Padding="60,20,60,60" Background="{StaticResource TextWhiteBrush}">
-        <Button
-            VerticalAlignment="Top"
-            Command="{Binding MainViewNavCommand}"
-            Content="Back to services"
-            Style="{StaticResource BackButtonStyle}" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button
+                VerticalAlignment="Top"
+                Command="{Binding MainViewNavCommand}"
+                Content="Back to services"
+                Style="{StaticResource BackButtonStyle}" />
+
+            <!--  Giant Text box for testing  -->
+            <TextBlock
+                Grid.Row="1"
+                Margin="0,10,0,0"
+                Text="{Binding TestText}" />
+        </Grid>
     </Border>
 </UserControl>
