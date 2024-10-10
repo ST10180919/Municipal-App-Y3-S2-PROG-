@@ -10,10 +10,78 @@
     mc:Ignorable="d">
 
     <Border Padding="60,20,60,60" Background="{StaticResource TextWhiteBrush}">
-        <Button
-            VerticalAlignment="Top"
-            Command="{Binding MainViewNavCommand}"
-            Content="Back to services"
-            Style="{StaticResource BackButtonStyle}" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button
+                VerticalAlignment="Top"
+                Command="{Binding MainViewNavCommand}"
+                Content="Back to services"
+                Style="{StaticResource BackButtonStyle}" />
+
+            <!--  Giant Text box for testing  -->
+            <ScrollViewer
+                Grid.Row="1"
+                Margin="0,10,0,0"
+                HorizontalScrollBarVisibility="Disabled"
+                PanningMode="VerticalFirst"
+                VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <ListView ItemsSource="{Binding EventsQueue}">
+                        <ListView.View>
+                            <GridView>
+                                <!--  Display event title  -->
+                                <GridViewColumn
+                                    Width="150"
+                                    DisplayMemberBinding="{Binding Title}"
+                                    Header="Title" />
+
+                                <!--  Display event category  -->
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Category}"
+                                    Header="Category" />
+
+                                <!--  Display event image  -->
+                                <GridViewColumn Header="Image">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image
+                                                Width="50"
+                                                Height="50"
+                                                Source="{Binding Image}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Date}"
+                                    Header="Date" />
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Time}"
+                                    Header="Time" />
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Venue}"
+                                    Header="Venue" />
+
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding Link}"
+                                    Header="Website" />
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
     </Border>
 </UserControl>

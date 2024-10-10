@@ -37,6 +37,8 @@ namespace Municipal_App.Stores
         /// </summary>
         public IssueReportStore IssueReportStore { get; private set; }
 
+        public EventsStore EventsStore { get; private set; }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Creates the AppStore
@@ -46,6 +48,7 @@ namespace Municipal_App.Stores
             this.NavigationStore = new NavigationStore();
             this.BannerMessageStore = new BannerMessageStore();
             this.IssueReportStore = new IssueReportStore();
+            this.EventsStore = new EventsStore();
         }
 
         //-----------------------------------------------------------------------------
