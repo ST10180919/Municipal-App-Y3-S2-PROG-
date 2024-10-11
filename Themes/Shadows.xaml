@@ -9,6 +9,14 @@
         Color="#40000000" />
 
     <DropShadowEffect
+        x:Key="EventsItemDropShadow"
+        BlurRadius="10"
+        Direction="270"
+        Opacity="0.3"
+        ShadowDepth="2"
+        Color="#40000000" />
+
+    <DropShadowEffect
         x:Key="NoDropShadow"
         BlurRadius="0"
         Direction="0"

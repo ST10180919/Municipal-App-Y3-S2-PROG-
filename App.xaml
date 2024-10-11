@@ -6,6 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="Roboto">/Fonts/#Roboto</FontFamily>
+            <FontFamily x:Key="Lato">/Fonts/#Lato</FontFamily>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/MyColors.xaml" />
                 <ResourceDictionary Source="Themes/DefaultThemes.xaml" />

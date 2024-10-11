@@ -98,52 +98,23 @@
         <!--  ItemsControl inside a ScrollViewer for Horizontal Scrolling  -->
         <ScrollViewer
             Name="scrollViewer"
-            Margin="80,0"
+            Margin="80,0,80,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             HorizontalScrollBarVisibility="Hidden"
             VerticalScrollBarVisibility="Disabled">
-            <ItemsControl Name="carouselItems" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl
+                Name="carouselItems"
+                Padding="5"
+                ItemTemplate="{Binding SelectedItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
+                ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
-
-                <!--  Hardcoded items  -->
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Viewbox>
-                            <Border
-                                Width="263"
-                                Height="439"
-                                Margin="0,0,50,0"
-                                Background="LightGray">
-                                <StackPanel>
-                                    <Image
-                                        Width="100"
-                                        Height="100"
-                                        Source="https://via.placeholder.com/100" />
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding}" />
-                                </StackPanel>
-                            </Border>
-                        </Viewbox>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-
-                <local:Event Title="Item 1" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 2" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 3" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 4" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 4" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 1" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 1" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 2" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 3" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 4" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 4" ImageSource="https://via.placeholder.com/100" />
-                <local:Event Title="Item 1" ImageSource="https://via.placeholder.com/100" />
-
             </ItemsControl>
         </ScrollViewer>
 
@@ -226,4 +197,89 @@
             </Button.Style>
         </Button>
     </Grid>
+
+    <!--  Item templates  -->
+    <UserControl.Resources>
+        <DataTemplate x:Key="EventItemTemplate">
+            <Viewbox>
+                <Grid
+                    Width="263"
+                    Height="445"
+                    Margin="0,0,50,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Background="{StaticResource TextWhiteBrush}" Effect="{StaticResource EventsItemDropShadow}" />
+
+                    <StackPanel>
+                        <Image
+                            x:Name="EventImage"
+                            Width="263"
+                            Height="165"
+                            Source="{Binding Image}"
+                            Stretch="UniformToFill" />
+
+                        <Border Height="3" Background="{StaticResource FlaxBrush}" />
+
+                        <TextBlock
+                            x:Name="EventCategory"
+                            Margin="0,17,0,0"
+                            HorizontalAlignment="Center"
+                            FontFamily="{StaticResource Lato}"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="{StaticResource EventTextLiteBrush}"
+                            Loaded="LatoText_Loaded"
+                            Text="{Binding Category}" />
+
+                        <TextBlock
+                            x:Name="EventTitle"
+                            Margin="22,13,22,0"
+                            HorizontalAlignment="Center"
+                            FontSize="24"
+                            Text="{Binding Title}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            x:Name="EventDate"
+                            Margin="22,20,22,0"
+                            HorizontalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="{Binding Date}" />
+
+                        <TextBlock
+                            x:Name="EventTime"
+                            Margin="22,3,22,0"
+                            HorizontalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Text="{Binding Time}" />
+
+                        <TextBlock
+                            Margin="0,18,0,0"
+                            HorizontalAlignment="Center"
+                            FontFamily="{StaticResource Lato}"
+                            FontSize="16"
+                            FontWeight="Medium"
+                            Loaded="LatoText_Loaded"
+                            Text="- VENUE -" />
+
+                        <TextBlock
+                            x:Name="EventVenue"
+                            Margin="22,5,22,0"
+                            HorizontalAlignment="Center"
+                            FontSize="16"
+                            FontWeight="Light"
+                            LineHeight="25"
+                            Text="{Binding Venue}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+    </UserControl.Resources>
 </UserControl>

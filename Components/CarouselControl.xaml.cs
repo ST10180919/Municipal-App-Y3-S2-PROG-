@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,51 @@ namespace Municipal_App.Components
     {
         private int CarouselContentWidth => CarouselGrid != null ? Convert.ToInt32(CarouselGrid.ActualWidth - 80) : 0;
 
+        // DependencyProperty for ItemsSource
+        public static readonly DependencyProperty ItemsSourceProperty =
+            DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(CarouselControl), new PropertyMetadata(null));
+
+        public IEnumerable ItemsSource
+        {
+            get { return (IEnumerable)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
+
+        // DependencyProperty to accept the template key from the ViewModel or View
+        public static readonly DependencyProperty SelectedItemTemplateKeyProperty =
+            DependencyProperty.Register("SelectedItemTemplateKey", typeof(string), typeof(CarouselControl), new PropertyMetadata(null, OnSelectedItemTemplateKeyChanged));
+
+        // Property to get the selected DataTemplate based on the key
+        public DataTemplate SelectedItemTemplate
+        {
+            get
+            {
+                return (DataTemplate)this.Resources[SelectedItemTemplateKey];
+            }
+        }
+
+        // This callback gets triggered when the SelectedItemTemplateKey changes
+        private static void OnSelectedItemTemplateKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as CarouselControl;
+            if (control != null)
+            {
+                // Refresh or update the ItemTemplate for the ItemsControl
+                control.OnSelectedItemTemplateChanged();
+            }
+        }
+
+        private void OnSelectedItemTemplateChanged()
+        {
+            // This method can be used to force UI updates if necessary
+        }
+
+        public string SelectedItemTemplateKey
+        {
+            get { return (string)GetValue(SelectedItemTemplateKeyProperty); }
+            set { SetValue(SelectedItemTemplateKeyProperty, value); }
+        }
+
         public CarouselControl()
         {
             InitializeComponent();
@@ -46,6 +92,36 @@ namespace Municipal_App.Components
                 Duration = new Duration(TimeSpan.FromMilliseconds(600))
             };
             scrollViewer.BeginAnimation(ScrollViewerBehavior.HorizontalOffsetProperty, horizontalAnimation);
+        }
+
+        private void AdjustLatoLetterSpacing(string text, double spacing, TextBlock textBlock)
+        {
+            textBlock.Inlines.Clear();  // Clear any existing text in the TextBlock
+
+            // Loop through each character in the string
+            for (int i = 0; i < text.Length; i++)
+            {
+                // Create a new Run for each character
+                Run run = new Run(text[i].ToString());
+
+                // Add the character to the TextBlock
+                textBlock.Inlines.Add(run);
+
+                // If it's not the last character, add a space Run to simulate spacing
+                if (i < text.Length - 1)
+                {
+                    // Add spacing by adding a space character with adjusted FontSize or Width
+                    Run space = new Run(" ");
+                    space.FontSize = textBlock.FontSize + spacing;  // Increase space size
+                    textBlock.Inlines.Add(space);
+                }
+            }
+        }
+
+        private void LatoText_Loaded(object sender, RoutedEventArgs e)
+        {
+            var textBlock = sender as TextBlock;
+            AdjustLatoLetterSpacing(textBlock.Text, 7, textBlock);
         }
     }
 
@@ -75,9 +151,4 @@ namespace Municipal_App.Components
         }
     }
 
-    public class Event
-    {
-        public string Title { get; set; }
-        public string ImageSource { get; set; }
-    }
 }

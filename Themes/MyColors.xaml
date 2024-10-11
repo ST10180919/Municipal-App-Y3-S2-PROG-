@@ -20,6 +20,12 @@
     <Color x:Key="PapayaWhip">#FFEBCB</Color>
     <SolidColorBrush x:Key="PapayaBrush" Color="{StaticResource PapayaWhip}" />
 
+    <Color x:Key="Flax">#EBD27C</Color>
+    <SolidColorBrush x:Key="FlaxBrush" Color="{StaticResource Flax}" />
+
+    <Color x:Key="EventTextLite">#848484</Color>
+    <SolidColorBrush x:Key="EventTextLiteBrush" Color="{StaticResource EventTextLite}" />
+
     <Color x:Key="EerieBlack">#1E1E1E</Color>
     <SolidColorBrush x:Key="EerieBlackBrush" Color="{StaticResource EerieBlack}" />
 
