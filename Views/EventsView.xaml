@@ -2,86 +2,171 @@
     x:Class="Municipal_App.Views.EventsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="clr-namespace:Municipal_App.Components"
+    xmlns:converters="clr-namespace:Municipal_App.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Municipal_App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Municipal_App.ViewModels"
+    x:Name="MyUserControl"
     d:DesignHeight="670"
     d:DesignWidth="1280"
     mc:Ignorable="d">
 
-    <Border Padding="60,20,60,60" Background="{StaticResource TextWhiteBrush}">
+    <UserControl.Resources>
+        <converters:HeightToFractionConverter x:Key="HeightToFractionConverter" />
+        <converters:HeightToMarginConverter x:Key="HeightToMarginConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,35'}" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
+            <!--  Header  -->
+            <Border
+                Grid.Row="0"
+                Background="{StaticResource PapayaBrush}"
+                BorderThickness="0">
+
+                <Viewbox Margin="0,45,0,0">
+                    <StackPanel
+                        Margin="0,0,0,200"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Image Margin="0,0,60,0" Source="/Images/calendar.png" />
+                        <StackPanel Margin="0,30,0,0" VerticalAlignment="Center">
+                            <TextBlock
+                                FontSize="100"
+                                FontWeight="Medium"
+                                Text="Local events" />
+                            <TextBlock
+                                Margin="0,40"
+                                FontSize="100"
+                                FontWeight="Medium"
+                                Text="and" />
+                            <TextBlock
+                                FontSize="100"
+                                FontWeight="Medium"
+                                Text="announcements" />
+                        </StackPanel>
+                    </StackPanel>
+                </Viewbox>
+            </Border>
+
+            <!--  Back button  -->
             <Button
+                Grid.Row="0"
+                Margin="60,20,0,0"
                 VerticalAlignment="Top"
                 Command="{Binding MainViewNavCommand}"
                 Content="Back to services"
                 Style="{StaticResource BackButtonStyle}" />
 
-            <!--  Giant Text box for testing  -->
-            <ScrollViewer
+            <!--  Content  -->
+            <Border
                 Grid.Row="1"
-                Margin="0,10,0,0"
-                HorizontalScrollBarVisibility="Disabled"
-                PanningMode="VerticalFirst"
-                VerticalScrollBarVisibility="Auto">
-                <Grid>
-                    <ListView ItemsSource="{Binding EventsQueue}">
-                        <ListView.View>
-                            <GridView>
-                                <!--  Display event title  -->
-                                <GridViewColumn
-                                    Width="150"
-                                    DisplayMemberBinding="{Binding Title}"
-                                    Header="Title" />
+                Padding="60,40,60,0"
+                Background="{StaticResource TextWhiteBrush}"
+                BorderThickness="0">
 
-                                <!--  Display event category  -->
-                                <GridViewColumn
-                                    Width="100"
-                                    DisplayMemberBinding="{Binding Category}"
-                                    Header="Category" />
+                <StackPanel>
+                    <Viewbox
+                        Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,06'}"
+                        Margin="80,0,0,0"
+                        HorizontalAlignment="Left">
+                        <TextBlock FontSize="28" Text="Events" Margin="0 0 0 15"/>
+                    </Viewbox>
 
-                                <!--  Display event image  -->
-                                <GridViewColumn Header="Image">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Image
-                                                Width="50"
-                                                Height="50"
-                                                Source="{Binding Image}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
+                    <!--  Custom Carousel Control for events  -->
+                    <components:CarouselControl Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,4'}" />
+                </StackPanel>
+            </Border>
 
-                                <GridViewColumn
-                                    Width="100"
-                                    DisplayMemberBinding="{Binding Date}"
-                                    Header="Date" />
+            <!--  Controls  -->
+            <Viewbox
+                x:Name="ControlsViewBox"
+                Grid.Row="0"
+                Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,08'}"
+                MaxHeight="80"
+                Margin="{Binding ElementName=ControlsViewBox, Path=ActualHeight, Converter={StaticResource HeightToMarginConverter}}"
+                VerticalAlignment="Bottom"
+                SnapsToDevicePixels="True"
+                UseLayoutRounding="True">
+                <Border
+                    Width="930"
+                    Height="80"
+                    Padding="15"
+                    Background="{StaticResource TextWhiteBrush}"
+                    CornerRadius="40"
+                    Effect="{StaticResource EventsDropShadow}"
+                    SnapsToDevicePixels="True"
+                    UseLayoutRounding="True">
 
-                                <GridViewColumn
-                                    Width="100"
-                                    DisplayMemberBinding="{Binding Time}"
-                                    Header="Time" />
+                    <StackPanel Orientation="Horizontal">
+                        <!--  PlaceHolder for Search Component  -->
+                        <Border
+                            Width="414"
+                            Background="{StaticResource EerieBlackBrush}"
+                            CornerRadius="25"
+                            Effect="{StaticResource EventsDropShadow}"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
 
-                                <GridViewColumn
-                                    Width="100"
-                                    DisplayMemberBinding="{Binding Venue}"
-                                    Header="Venue" />
+                            <TextBlock
+                                Margin="27,-2,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                Foreground="{StaticResource TextWhiteBrush}"
+                                SnapsToDevicePixels="True"
+                                Text="Search"
+                                UseLayoutRounding="True" />
 
-                                <GridViewColumn
-                                    Width="100"
-                                    DisplayMemberBinding="{Binding Link}"
-                                    Header="Website" />
+                        </Border>
 
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </ScrollViewer>
+                        <!--  PlaceHolder for Search Button  -->
+                        <Border
+                            Width="60"
+                            Margin="13,0,0,0"
+                            Padding="19,14"
+                            Background="{StaticResource EerieBlackBrush}"
+                            CornerRadius="25"
+                            Effect="{StaticResource EventsDropShadow}"
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
+
+                            <Image
+                                Effect="{StaticResource NoDropShadow}"
+                                Source="/Images/search.png"
+                                UseLayoutRounding="True" />
+
+                        </Border>
+
+                        <!--  PlaceHolder for Events and announcements chooser  -->
+                        <Border
+                            Width="362"
+                            Margin="50,0,0,0"
+                            Background="Transparent"
+                            BorderBrush="{StaticResource EerieBlackBrush}"
+                            BorderThickness="2"
+                            CornerRadius="25">
+
+                            <Grid Margin="23,0" VerticalAlignment="Center">
+                                <TextBlock FontSize="20" Text="Events and Announcements" />
+
+                                <Image
+                                    Width="20"
+                                    HorizontalAlignment="Right"
+                                    Source="/Images/down-arrow.png"
+                                    UseLayoutRounding="True" />
+                            </Grid>
+
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Viewbox>
         </Grid>
-    </Border>
+    </ScrollViewer>
 </UserControl>

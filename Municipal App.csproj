@@ -87,6 +87,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Components\CarouselControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -100,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\MyColors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Shadows.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -140,6 +148,11 @@
     <Compile Include="Commands\NavCommand.cs" />
     <Compile Include="Commands\RemoveAttachmentCommand.cs" />
     <Compile Include="Commands\SubmitFeedbackCommand.cs" />
+    <Compile Include="Components\CarouselControl.xaml.cs">
+      <DependentUpon>CarouselControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\EventControlsMarginConverter.cs" />
+    <Compile Include="Converters\HeightToFractionConverter.cs" />
     <Compile Include="ISSUE_REPORT.cs">
       <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
     </Compile>
@@ -244,9 +257,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\calendar.png" />
     <Resource Include="Images\exit-white.png" />
@@ -283,6 +294,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\close.png" />
+    <Resource Include="Images\search.png" />
+    <Resource Include="Images\carousel-arrow-right.png" />
+    <Resource Include="Images\carousel-arrow-left.png" />
     <Content Include="MunicipalDatabase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

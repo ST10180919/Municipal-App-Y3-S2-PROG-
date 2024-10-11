@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Themes/DefaultThemes.xaml" />
                 <ResourceDictionary Source="Themes/Inputs.xaml" />
                 <ResourceDictionary Source="Themes/Buttons.xaml" />
+                <ResourceDictionary Source="Themes/Shadows.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -6,7 +6,7 @@
     <Color x:Key="Jet">#3A3535</Color>
     <SolidColorBrush x:Key="JetBrush" Color="{StaticResource Jet}" />
 
-    <Color x:Key="TextWhite">#F6F1ED</Color>
+    <Color x:Key="TextWhite">#FBF7F4</Color>
     <SolidColorBrush x:Key="TextWhiteBrush" Color="{StaticResource TextWhite}" />
 
     <Color x:Key="Platinum">#E1DFDE</Color>
@@ -16,5 +16,11 @@
 
     <Color x:Key="ShamrockGreen">#329B67</Color>
     <SolidColorBrush x:Key="GreenBrush" Color="{StaticResource ShamrockGreen}" />
+
+    <Color x:Key="PapayaWhip">#FFEBCB</Color>
+    <SolidColorBrush x:Key="PapayaBrush" Color="{StaticResource PapayaWhip}" />
+
+    <Color x:Key="EerieBlack">#1E1E1E</Color>
+    <SolidColorBrush x:Key="EerieBlackBrush" Color="{StaticResource EerieBlack}" />
 
 </ResourceDictionary>
