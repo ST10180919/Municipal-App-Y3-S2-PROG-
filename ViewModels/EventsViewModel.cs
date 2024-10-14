@@ -36,23 +36,13 @@ namespace Municipal_App.ViewModels
             }
         }
 
-        private ObservableQueue<MunicipalEventViewModel> _events;
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Queue containing web scraped events for the UI to bind to
         /// </summary>
-        public ObservableQueue<MunicipalEventViewModel> EventsQueue
-        {
-            get
-            {
-                return _events;
-            }
-            set
-            {
-                _events = value;
-                OnPropertyChanged(nameof(EventsQueue));
-            }
-        }
+        public ObservableQueue<MunicipalEventViewModel> EventsQueue { get; set; }
+
+        public ObservableQueue<AnnouncementViewModel> AnnouncementsQueue { get; set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
@@ -72,13 +62,22 @@ namespace Municipal_App.ViewModels
             var navigationStore = AppStore.Instance.NavigationStore;
             this.MainViewNavCommand = new NavCommand(new Services.NavigationService(navigationStore, CreateLandingViewModel));
 
-            // Testing web service
+            // Setting up events
             var eventsStore = AppStore.Instance.EventsStore;
             this.EventsQueue = eventsStore.EventsQueue;
 
             if (!eventsStore.IsQueueInitialized)
             {
-                Initialize();
+                InitializeEvents();
+            }
+
+            // Setting up Announcements
+            var annoucementsStore = AppStore.Instance.AnnouncementsStore;
+            this.AnnouncementsQueue = annoucementsStore.AnnouncementsQueue;
+
+            if (!annoucementsStore.IsQueueInitialized)
+            {
+                InitializeAnnouncements();
             }
         }
 
@@ -87,11 +86,17 @@ namespace Municipal_App.ViewModels
         /// Calles the corresponding services to populate Events and or Announcements
         /// shown on the view Bound to this ViewModel
         /// </summary>
-        private async void Initialize()
+        private async void InitializeEvents()
         {
             // Initializing events
             var webservice = new EventsWebService();
             await webservice.LoadEventsAsync(this.EventsQueue);
+        }
+
+        private async void InitializeAnnouncements()
+        {
+            var webservice = new AnnouncementsWebService();
+            await webservice.LoadAnnouncementsAsync(this.AnnouncementsQueue);
         }
 
         //-----------------------------------------------------------------------------

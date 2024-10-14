@@ -123,6 +123,57 @@ namespace Municipal_App.Components
             var textBlock = sender as TextBlock;
             AdjustLatoLetterSpacing(textBlock.Text, 7, textBlock);
         }
+
+        private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var scrollViewer = sender as ScrollViewer;
+
+            // Check if we are scrolling horizontally
+            if (scrollViewer != null && scrollViewer.ComputedHorizontalScrollBarVisibility == Visibility.Visible)
+            {
+                if (e.Delta < 0)
+                {
+                    scrollViewer.LineRight();
+                }
+                else
+                {
+                    scrollViewer.LineLeft();
+                }
+
+                // If you want to scroll horizontally within the carousel and NOT scroll the page, set e.Handled to true.
+                // But in this case, we're allowing vertical scrolling, so we don't handle the event here.
+                e.Handled = false;
+            }
+
+            // Allow vertical scrolling to propagate to parent ScrollViewer
+            if (e.Delta != 0 && !e.Handled)
+            {
+                // Get the parent scroll viewer and pass the scroll event to it
+                var parentScrollViewer = FindParentScrollViewer(scrollViewer);
+                if (parentScrollViewer != null)
+                {
+                    parentScrollViewer.ScrollToVerticalOffset(parentScrollViewer.VerticalOffset - e.Delta);
+                    e.Handled = true;  // Ensure the event is handled so it doesn't bubble further
+                }
+            }
+        }
+
+        // Helper method to find the parent ScrollViewer
+        private ScrollViewer FindParentScrollViewer(DependencyObject child)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+
+            while (parent != null)
+            {
+                if (parent is ScrollViewer parentScrollViewer)
+                {
+                    return parentScrollViewer;
+                }
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            return null;
+        }
     }
 
     // Behavior to enable animated scrolling

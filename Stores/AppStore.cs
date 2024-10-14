@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Municipal_App.Stores.Municipal_App.Stores;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,8 @@ namespace Municipal_App.Stores
 
         public EventsStore EventsStore { get; private set; }
 
+        public AnnouncementsStore AnnouncementsStore { get; private set; }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Creates the AppStore
@@ -49,6 +52,7 @@ namespace Municipal_App.Stores
             this.BannerMessageStore = new BannerMessageStore();
             this.IssueReportStore = new IssueReportStore();
             this.EventsStore = new EventsStore();
+            this.AnnouncementsStore = new AnnouncementsStore();
         }
 
         //-----------------------------------------------------------------------------

@@ -9,20 +9,18 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Municipal_App.Views
+namespace Municipal_App.Components
 {
     /// <summary>
-    /// Interaction logic for EventsView.xaml
+    /// Interaction logic for AnnouncementCard.xaml
     /// </summary>
-    public partial class EventsView : UserControl
+    public partial class AnnouncementCard : UserControl
     {
-        public EventsView()
+        public AnnouncementCard()
         {
             InitializeComponent();
         }

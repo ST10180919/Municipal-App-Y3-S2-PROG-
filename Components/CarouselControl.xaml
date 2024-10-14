@@ -101,14 +101,18 @@
             Margin="80,0,80,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
+            CanContentScroll="True"
             HorizontalScrollBarVisibility="Hidden"
+            PanningMode="HorizontalOnly"
+            PreviewMouseWheel="OnPreviewMouseWheel"
             VerticalScrollBarVisibility="Disabled">
             <ItemsControl
                 Name="carouselItems"
                 Padding="5"
                 ItemTemplate="{Binding SelectedItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
                 ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled">
 
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -277,6 +281,67 @@
                             Text="{Binding Venue}"
                             TextAlignment="Center"
                             TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </Viewbox>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AnnouncementItemTemplate">
+            <Viewbox>
+                <Grid
+                    Width="500"
+                    Height="248"
+                    Margin="0,0,50,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Background="{StaticResource TextWhiteBrush}" Effect="{StaticResource EventsItemDropShadow}" />
+
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="196" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="111" />
+                            </Grid.RowDefinitions>
+
+                            <Image
+                                Grid.Column="0"
+                                Source="{Binding Image}"
+                                Stretch="UniformToFill" />
+
+                            <Border
+                                Grid.Column="1"
+                                Width="3"
+                                HorizontalAlignment="Left"
+                                Background="{StaticResource FlaxBrush}" />
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="16,5,16,0"
+                                FontSize="24"
+                                Text="{Binding Title}"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="16,0,16,5"
+                                VerticalAlignment="Bottom"
+                                FontFamily="{StaticResource Lato}"
+                                FontSize="16"
+                                Text="{Binding Date}" />
+                        </Grid>
+
+                        <TextBlock
+                            Margin="16"
+                            FontSize="16"
+                            LineHeight="25"
+                            Text="{Binding Description}"
+                            TextWrapping="wrap" />
                     </StackPanel>
                 </Grid>
             </Viewbox>

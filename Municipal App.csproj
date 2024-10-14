@@ -87,6 +87,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Components\AnnouncementCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\CarouselControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,6 +152,9 @@
     <Compile Include="Commands\NavCommand.cs" />
     <Compile Include="Commands\RemoveAttachmentCommand.cs" />
     <Compile Include="Commands\SubmitFeedbackCommand.cs" />
+    <Compile Include="Components\AnnouncementCard.xaml.cs">
+      <DependentUpon>AnnouncementCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\CarouselControl.xaml.cs">
       <DependentUpon>CarouselControl.xaml</DependentUpon>
     </Compile>
@@ -157,7 +164,9 @@
       <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ObservableQueue.cs" />
+    <Compile Include="Stores\AnnouncementsStore.cs" />
     <Compile Include="Stores\EventsStore.cs" />
+    <Compile Include="ViewModels\AnnouncementViewModel.cs" />
     <Compile Include="ViewModels\MunicipalEventViewModel.cs" />
     <Compile Include="MunicipalDatabaseModel.Context.cs">
       <AutoGen>True</AutoGen>
