@@ -91,6 +91,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\FilterAnnouncementsComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\FilterComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\SearchComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,6 +164,12 @@
     <Compile Include="Components\CarouselControl.xaml.cs">
       <DependentUpon>CarouselControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\FilterAnnouncementsComponent.xaml.cs">
+      <DependentUpon>FilterAnnouncementsComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\FilterComponent.xaml.cs">
+      <DependentUpon>FilterComponent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\SearchComponent.xaml.cs">
       <DependentUpon>SearchComponent.xaml</DependentUpon>
     </Compile>
@@ -165,8 +179,9 @@
       <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ObservableQueue.cs" />
+    <Compile Include="Stores\AnnouncementsFilter.cs" />
     <Compile Include="Stores\AnnouncementsStore.cs" />
-    <Compile Include="Stores\FilterStore.cs" />
+    <Compile Include="Stores\EventsFilter.cs" />
     <Compile Include="Stores\EventsStore.cs" />
     <Compile Include="ViewModels\AnnouncementViewModel.cs" />
     <Compile Include="ViewModels\MunicipalEventViewModel.cs" />
@@ -319,6 +334,8 @@
     <Resource Include="Images\carousel-arrow-right.png" />
     <Resource Include="Images\carousel-arrow-left.png" />
     <Resource Include="Images\Placeholder.png" />
+    <Resource Include="Images\filter2.png" />
+    <Resource Include="Images\play.png" />
     <Content Include="MunicipalDatabase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

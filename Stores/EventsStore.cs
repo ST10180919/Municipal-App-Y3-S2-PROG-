@@ -10,6 +10,14 @@ using System.Windows.Data;
 
 namespace Municipal_App.Stores
 {
+    public enum DateType
+    {
+        AnyTime,
+        Today,
+        ThisWeek,
+        ThisMonth
+    }
+
     //---------------------------------------------------------------------------------
     /// <summary>
     /// Stores the the event information scraped from the internet.
@@ -34,7 +42,7 @@ namespace Municipal_App.Stores
         /// A sorted Dictionary of Events keyed by date. Used to allow the user to 
         /// filter the events by date 
         /// </summary>
-        public SortedDictionary<DateTime, ObservableCollection<MunicipalEventViewModel>> SortedEvents { get; private set; }
+        public SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>> SortedEvents { get; private set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
@@ -42,13 +50,9 @@ namespace Municipal_App.Stores
         /// </summary>
         public HashSet<string> EventCategories { get; private set; }
 
-        //-----------------------------------------------------------------------------
-        /// <summary>
-        /// A set containing all of the Locations assigned to currently stored events.
-        /// </summary>
-        public HashSet<string> EventLocations { get; private set; }
+        public Action<string> OnEventCategoryAdded { get; set; }
 
-        public FilterStore FilterStore { get; private set; }
+        public EventsFilter FilterStore { get; private set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
@@ -56,16 +60,14 @@ namespace Municipal_App.Stores
         /// </summary>
         public EventsStore()
         {
-            this.SortedEvents = new SortedDictionary<DateTime, ObservableCollection<MunicipalEventViewModel>>();
+            this.SortedEvents = new SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>>();
             this.EventCategories = new HashSet<string>();
-            this.EventLocations = new HashSet<string>();
-            this.FilterStore = new FilterStore();
+            this.FilterStore = new EventsFilter(this.SortedEvents);
         }
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Updates the SortedEvents, EventCategories, and EventLocations fields by
-        /// adding the new municipalEvent.
+        /// Updates the SortedEvents, EventCategories
         /// </summary>
         /// <param name="municipalEvent"> 
         /// MunicipalEventViewModel to be added to the fields 
@@ -74,26 +76,41 @@ namespace Municipal_App.Stores
         {
             if (DateTime.TryParse(municipalEvent.Date, out DateTime eventDate))
             {
-                // Adding the event to the SortedDictionary, keyed by date
-                if (!SortedEvents.ContainsKey(eventDate))
+                DateTime now = DateTime.Now;
+                DateType dateType;
+
+                // Determine which DateType the event falls into
+                if (eventDate.Date == now.Date)
                 {
-                    SortedEvents[eventDate] = new ObservableCollection<MunicipalEventViewModel>();
+                    dateType = DateType.Today;
+                }
+                else if (eventDate >= now && eventDate <= now.AddDays(7))
+                {
+                    dateType = DateType.ThisWeek;
+                }
+                else if (eventDate.Year == now.Year && eventDate.Month == now.Month)
+                {
+                    dateType = DateType.ThisMonth;
+                }
+                else
+                {
+                    dateType = DateType.AnyTime;
                 }
 
-                // Add the event to the list of events for that date
-                SortedEvents[eventDate].Add(municipalEvent);
+                // Add the event to the SortedEvents dictionary based on the determined date type
+                if (!SortedEvents.ContainsKey(dateType))
+                {
+                    SortedEvents[dateType] = new ObservableCollection<MunicipalEventViewModel>();
+                }
+
+                SortedEvents[dateType].Add(municipalEvent);
             }
 
             // Add the event category to the EventCategories set
             if (!string.IsNullOrEmpty(municipalEvent.Category))
             {
                 EventCategories.Add(municipalEvent.Category);
-            }
-
-            // Add the venue to the EventLocations set
-            if (!string.IsNullOrEmpty(municipalEvent.Venue))
-            {
-                EventLocations.Add(municipalEvent.Venue);
+                this.OnEventCategoryAdded?.Invoke(municipalEvent.Category);
             }
         }
     }

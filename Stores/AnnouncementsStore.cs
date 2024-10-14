@@ -41,9 +41,9 @@ namespace Municipal_App.Stores
             /// A sorted Dictionary of Announcements keyed by date. Used to allow the user to 
             /// filter the announcements by date 
             /// </summary>
-            public SortedDictionary<DateTime, ObservableCollection<AnnouncementViewModel>> SortedAnnouncements { get; private set; }
+            public SortedDictionary<DateType, ObservableCollection<AnnouncementViewModel>> SortedAnnouncements { get; private set; }
 
-            public FilterStore FilterStore { get; private set; }
+            public AnnouncementsFilter FilterStore { get; private set; }
 
             //-----------------------------------------------------------------------------
             /// <summary>
@@ -51,8 +51,8 @@ namespace Municipal_App.Stores
             /// </summary>
             public AnnouncementsStore()
             {
-                this.SortedAnnouncements = new SortedDictionary<DateTime, ObservableCollection<AnnouncementViewModel>>();
-                this.FilterStore = new FilterStore();
+                this.SortedAnnouncements = new SortedDictionary<DateType, ObservableCollection<AnnouncementViewModel>>();
+                this.FilterStore = new AnnouncementsFilter(this.SortedAnnouncements);
             }
 
             //-----------------------------------------------------------------------------
@@ -66,14 +66,34 @@ namespace Municipal_App.Stores
             {
                 if (DateTime.TryParse(announcement.Date, out DateTime announcementDate))
                 {
-                    // Adding the announcement to the SortedAnnouncements, keyed by date
-                    if (!SortedAnnouncements.ContainsKey(announcementDate))
+                    DateTime now = DateTime.Now;
+                    DateType dateType;
+
+                    // Determine which DateType the event falls into
+                    if (announcementDate.Date == now.Date)
                     {
-                        SortedAnnouncements[announcementDate] = new ObservableCollection<AnnouncementViewModel>();
+                        dateType = DateType.Today;
+                    }
+                    else if (announcementDate >= now && announcementDate <= now.AddDays(7))
+                    {
+                        dateType = DateType.ThisWeek;
+                    }
+                    else if (announcementDate.Year == now.Year && announcementDate.Month == now.Month)
+                    {
+                        dateType = DateType.ThisMonth;
+                    }
+                    else
+                    {
+                        dateType = DateType.AnyTime;
                     }
 
-                    // Add the event to the list of events for that date
-                    SortedAnnouncements[announcementDate].Add(announcement);
+                    // Add the announcement to the SortedAnnouncements dictionary based on the determined date type
+                    if (!SortedAnnouncements.ContainsKey(dateType))
+                    {
+                        SortedAnnouncements[dateType] = new ObservableCollection<AnnouncementViewModel>();
+                    }
+
+                    SortedAnnouncements[dateType].Add(announcement);
                 }
             }
         }

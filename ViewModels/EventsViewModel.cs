@@ -108,7 +108,7 @@ namespace Municipal_App.ViewModels
         private void ApplyFilters()
         {
             AppStore.Instance.EventsStore.FilterStore.OnFilterEvents?.Invoke();
-            AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterEvents?.Invoke();
+            AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterAnnouncements?.Invoke();
         }
 
         //-----------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Municipal_App.Models;
+using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,7 @@ namespace Municipal_App.Services
                     announcement.Description = announcementDescriptionNode != null ? this.SanitizeWebField(announcementDescriptionNode.InnerText) : "No Description";
 
                     announcementQueue.Enqueue(announcement);
+                    AppStore.Instance.AnnouncementsStore.UpdateSortedDictionary(announcement);
 
                     // Load additional pages
                     //ScrapeMultiplePages();

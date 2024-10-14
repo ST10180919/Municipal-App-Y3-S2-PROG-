@@ -74,39 +74,19 @@ namespace Municipal_App.Components
         public CarouselControl()
         {
             InitializeComponent();
-            AppStore.Instance.EventsStore.FilterStore.OnFilterEvents += this.ApplyFilter;
+            AppStore.Instance.EventsStore.FilterStore.OnFilterEvents += this.ApplySearchFilter;
+            AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterAnnouncements += this.ApplySearchFilter;
         }
 
         public void OnFilterEvents(object sender, FilterEventArgs e)
         {
             if (e.Item != null && e.Item is MunicipalEventViewModel)
             {
-                var eventItem = e.Item as MunicipalEventViewModel;
-                var searchText = AppStore.Instance.EventsStore.FilterStore.SearchText;
+                e.Accepted = AppStore.Instance.EventsStore.FilterStore.IsAccepted(e.Item as MunicipalEventViewModel);
 
-                if (!string.IsNullOrEmpty(searchText))
-                {
-                    // Only include items that contain the search text in their title
-                    e.Accepted = eventItem.Title.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                }
-                else
-                {
-                    e.Accepted = true; // Include all items if there's no search text
-                }
             } else if (e.Item != null && e.Item is AnnouncementViewModel)
             {
-                var eventItem = e.Item as AnnouncementViewModel;
-                var searchText = AppStore.Instance.AnnouncementsStore.FilterStore.SearchText;
-
-                if (!string.IsNullOrEmpty(searchText))
-                {
-                    // Only include items that contain the search text in their title
-                    e.Accepted = eventItem.Title.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
-                }
-                else
-                {
-                    e.Accepted = true; // Include all items if there's no search text
-                }
+                e.Accepted = AppStore.Instance.AnnouncementsStore.FilterStore.IsAccepted(e.Item as AnnouncementViewModel);
             }
         }
 
@@ -221,7 +201,7 @@ namespace Municipal_App.Components
             return null;
         }
 
-        public void ApplyFilter()
+        public void ApplySearchFilter()
         {
             var collectionViewSource = (CollectionViewSource)this.FindResource("SortedItems");
             if (collectionViewSource != null)
