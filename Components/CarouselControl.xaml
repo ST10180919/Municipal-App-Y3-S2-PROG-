@@ -5,202 +5,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Municipal_App.Components"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     d:DesignHeight="450"
     d:DesignWidth="1280"
     mc:Ignorable="d">
-
-    <!--  Testing Carousel Control  -->
-    <Grid x:Name="CarouselGrid">
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <!--  Left Arrow Button  -->
-        <Button
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Click="LeftArrow_Click">
-
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border
-                                    Width="50"
-                                    Height="50"
-                                    Background="{StaticResource TextWhiteBrush}"
-                                    CornerRadius="35"
-                                    Cursor="Hand">
-
-                                    <Border.Effect>
-                                        <DropShadowEffect
-                                            x:Name="shadowEffect"
-                                            BlurRadius="4"
-                                            Direction="270"
-                                            Opacity="0"
-                                            ShadowDepth="3"
-                                            Color="#40000000" />
-                                    </Border.Effect>
-
-                                    <Image Width="25" Source="/Images/carousel-arrow-left.png" />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <!--  Animate Opacity  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="Opacity"
-                                                        To="0.3"
-                                                        Duration="0:0:0.2" />
-
-                                                    <!--  Animate BlurRadius  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="BlurRadius"
-                                                        To="8"
-                                                        Duration="0:0:0.2" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <!--  Animate Opacity back to 0  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="Opacity"
-                                                        To="0"
-                                                        Duration="0:0:0.2" />
-
-                                                    <!--  Animate BlurRadius back to 4  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="BlurRadius"
-                                                        To="4"
-                                                        Duration="0:0:0.2" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-
-        </Button>
-
-        <!--  ItemsControl inside a ScrollViewer for Horizontal Scrolling  -->
-        <ScrollViewer
-            Name="scrollViewer"
-            Margin="80,0,80,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            CanContentScroll="True"
-            HorizontalScrollBarVisibility="Hidden"
-            PanningMode="HorizontalOnly"
-            PreviewMouseWheel="OnPreviewMouseWheel"
-            VerticalScrollBarVisibility="Disabled">
-            <ItemsControl
-                Name="carouselItems"
-                Padding="5"
-                ItemTemplate="{Binding SelectedItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
-                ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled">
-
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
-
-        <!--  Right Arrow Button  -->
-        <Button
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Click="RightArrow_Click">
-
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border
-                                    Width="50"
-                                    Height="50"
-                                    Background="{StaticResource TextWhiteBrush}"
-                                    CornerRadius="25"
-                                    Cursor="Hand">
-
-                                    <Border.Effect>
-                                        <DropShadowEffect
-                                            x:Name="shadowEffect"
-                                            BlurRadius="4"
-                                            Direction="270"
-                                            Opacity="0"
-                                            ShadowDepth="3"
-                                            Color="#40000000" />
-                                    </Border.Effect>
-
-                                    <Image Width="25" Source="/Images/carousel-arrow-right.png" />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <!--  Animate Opacity  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="Opacity"
-                                                        To="0.3"
-                                                        Duration="0:0:0.2" />
-
-                                                    <!--  Animate BlurRadius  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="BlurRadius"
-                                                        To="8"
-                                                        Duration="0:0:0.2" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <!--  Animate Opacity back to 0  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="Opacity"
-                                                        To="0"
-                                                        Duration="0:0:0.2" />
-
-                                                    <!--  Animate BlurRadius back to 4  -->
-                                                    <DoubleAnimation
-                                                        Storyboard.TargetName="shadowEffect"
-                                                        Storyboard.TargetProperty="BlurRadius"
-                                                        To="4"
-                                                        Duration="0:0:0.2" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>
-    </Grid>
 
     <!--  Item templates  -->
     <UserControl.Resources>
@@ -346,5 +154,208 @@
                 </Grid>
             </Viewbox>
         </DataTemplate>
+
+        <!--  Define the CollectionViewSource with sorting by Date  -->
+        <CollectionViewSource
+            x:Key="SortedItems"
+            Filter="OnFilterEvents"
+            Source="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}">
+            <!--<CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Ascending" PropertyName="Title" />
+            </CollectionViewSource.SortDescriptions>-->
+        </CollectionViewSource>
     </UserControl.Resources>
+
+    <!--  Testing Carousel Control  -->
+    <Grid x:Name="CarouselGrid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!--  Left Arrow Button  -->
+        <Button
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Click="LeftArrow_Click">
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border
+                                    Width="50"
+                                    Height="50"
+                                    Background="{StaticResource TextWhiteBrush}"
+                                    CornerRadius="35"
+                                    Cursor="Hand">
+
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            x:Name="shadowEffect"
+                                            BlurRadius="4"
+                                            Direction="270"
+                                            Opacity="0"
+                                            ShadowDepth="3"
+                                            Color="#40000000" />
+                                    </Border.Effect>
+
+                                    <Image Width="25" Source="/Images/carousel-arrow-left.png" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <!--  Animate Opacity  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="0.3"
+                                                        Duration="0:0:0.2" />
+
+                                                    <!--  Animate BlurRadius  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="BlurRadius"
+                                                        To="8"
+                                                        Duration="0:0:0.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <!--  Animate Opacity back to 0  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="0"
+                                                        Duration="0:0:0.2" />
+
+                                                    <!--  Animate BlurRadius back to 4  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="BlurRadius"
+                                                        To="4"
+                                                        Duration="0:0:0.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+
+        </Button>
+
+        <!--  ItemsControl inside a ScrollViewer for Horizontal Scrolling  -->
+        <ScrollViewer
+            Name="scrollViewer"
+            Margin="80,0,80,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            CanContentScroll="True"
+            HorizontalScrollBarVisibility="Hidden"
+            PanningMode="HorizontalOnly"
+            PreviewMouseWheel="OnPreviewMouseWheel"
+            VerticalScrollBarVisibility="Disabled">
+            <ItemsControl
+                Name="carouselItems"
+                Padding="5"
+                ItemTemplate="{Binding SelectedItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
+                ItemsSource="{Binding Source={StaticResource SortedItems}}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!--  Right Arrow Button  -->
+        <Button
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Click="RightArrow_Click">
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border
+                                    Width="50"
+                                    Height="50"
+                                    Background="{StaticResource TextWhiteBrush}"
+                                    CornerRadius="25"
+                                    Cursor="Hand">
+
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            x:Name="shadowEffect"
+                                            BlurRadius="4"
+                                            Direction="270"
+                                            Opacity="0"
+                                            ShadowDepth="3"
+                                            Color="#40000000" />
+                                    </Border.Effect>
+
+                                    <Image Width="25" Source="/Images/carousel-arrow-right.png" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <!--  Animate Opacity  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="0.3"
+                                                        Duration="0:0:0.2" />
+
+                                                    <!--  Animate BlurRadius  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="BlurRadius"
+                                                        To="8"
+                                                        Duration="0:0:0.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <!--  Animate Opacity back to 0  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="Opacity"
+                                                        To="0"
+                                                        Duration="0:0:0.2" />
+
+                                                    <!--  Animate BlurRadius back to 4  -->
+                                                    <DoubleAnimation
+                                                        Storyboard.TargetName="shadowEffect"
+                                                        Storyboard.TargetProperty="BlurRadius"
+                                                        To="4"
+                                                        Duration="0:0:0.2" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
 </UserControl>

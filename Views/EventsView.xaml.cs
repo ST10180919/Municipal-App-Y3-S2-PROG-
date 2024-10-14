@@ -26,5 +26,35 @@ namespace Municipal_App.Views
         {
             InitializeComponent();
         }
+
+        private void ContentSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            if (comboBox != null && comboBox.SelectedItem != null && comboBox.SelectedItem is ComboBoxItem)
+            {
+                var selectedItem = comboBox.SelectedItem as ComboBoxItem;
+
+                switch (selectedItem.Content)
+                {
+                    case "Events Only":
+                        AnnouncementsSection.Visibility = Visibility.Collapsed;
+                        EventsSection.Visibility = Visibility.Visible;
+                        break;
+
+                    case "Announcements Only":
+                        EventsSection.Visibility = Visibility.Collapsed;
+                        AnnouncementsSection.Visibility = Visibility.Visible;
+                        break;
+
+                    case "Events and Announcements":
+                        EventsSection.Visibility = Visibility.Visible;
+                        AnnouncementsSection.Visibility = Visibility.Visible;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }

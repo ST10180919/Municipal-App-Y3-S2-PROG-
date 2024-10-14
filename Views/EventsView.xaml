@@ -73,38 +73,42 @@
                 BorderThickness="0">
 
                 <StackPanel>
-                    <Viewbox
-                        Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,06'}"
-                        Margin="85,0,0,0"
-                        HorizontalAlignment="Left">
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            FontSize="24"
-                            Text="Events" />
-                    </Viewbox>
+                    <StackPanel Name="EventsSection">
+                        <Viewbox
+                            Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,06'}"
+                            Margin="85,0,0,0"
+                            HorizontalAlignment="Left">
+                            <TextBlock
+                                Margin="0,0,0,10"
+                                FontSize="24"
+                                Text="Events" />
+                        </Viewbox>
 
-                    <!--  Custom Carousel Control for events  -->
-                    <components:CarouselControl
-                        Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,4'}"
-                        ItemsSource="{Binding EventsQueue}"
-                        SelectedItemTemplateKey="EventItemTemplate" />
+                        <!--  Custom Carousel Control for events  -->
+                        <components:CarouselControl
+                            Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,4'}"
+                            ItemsSource="{Binding EventsQueue}"
+                            SelectedItemTemplateKey="EventItemTemplate" />
+                    </StackPanel>
 
-                    <Viewbox
-                        Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,06'}"
-                        Margin="85,0,0,0"
-                        HorizontalAlignment="Left">
-                        <TextBlock
-                            Margin="0,5,0,10"
-                            FontSize="24"
-                            Text="Announcements" />
-                    </Viewbox>
+                    <StackPanel Name="AnnouncementsSection">
+                        <Viewbox
+                            Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,06'}"
+                            Margin="85,0,0,0"
+                            HorizontalAlignment="Left">
+                            <TextBlock
+                                Margin="0,5,0,10"
+                                FontSize="24"
+                                Text="Announcements" />
+                        </Viewbox>
 
-                    <!--  Custom Carousel Control for announcements  -->
-                    <components:CarouselControl
-                        Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,3'}"
-                        Margin="0,0,0,50"
-                        ItemsSource="{Binding AnnouncementsQueue}"
-                        SelectedItemTemplateKey="AnnouncementItemTemplate" />
+                        <!--  Custom Carousel Control for announcements  -->
+                        <components:CarouselControl
+                            Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,3'}"
+                            Margin="0,0,0,50"
+                            ItemsSource="{Binding AnnouncementsQueue}"
+                            SelectedItemTemplateKey="AnnouncementItemTemplate" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
@@ -118,77 +122,152 @@
                 VerticalAlignment="Bottom"
                 SnapsToDevicePixels="True"
                 UseLayoutRounding="True">
-                <Border
-                    Width="930"
-                    Height="80"
-                    Padding="15"
-                    Background="{StaticResource TextWhiteBrush}"
-                    CornerRadius="40"
-                    Effect="{StaticResource EventsDropShadow}"
-                    SnapsToDevicePixels="True"
-                    UseLayoutRounding="True">
 
-                    <StackPanel Orientation="Horizontal">
-                        <!--  PlaceHolder for Search Component  -->
-                        <Border
-                            Width="414"
-                            Background="{StaticResource EerieBlackBrush}"
-                            CornerRadius="25"
-                            Effect="{StaticResource EventsDropShadow}"
-                            SnapsToDevicePixels="True"
-                            UseLayoutRounding="True">
+                <Grid>
+                    <Border
+                        Width="930"
+                        Height="80"
+                        Background="{StaticResource TextWhiteBrush}"
+                        CornerRadius="40"
+                        Effect="{StaticResource EventsDropShadow}"
+                        SnapsToDevicePixels="True"
+                        UseLayoutRounding="True" />
 
-                            <TextBlock
-                                Margin="27,-2,0,0"
-                                VerticalAlignment="Center"
-                                FontSize="20"
-                                Foreground="{StaticResource TextWhiteBrush}"
-                                SnapsToDevicePixels="True"
-                                Text="Search"
-                                UseLayoutRounding="True" />
+                    <StackPanel Margin="15,0" Orientation="Horizontal">
+                        <!--  Search  -->
+                        <Grid Width="487" Height="80">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="414" />
+                                <ColumnDefinition Width="13" />
+                                <ColumnDefinition Width="60" />
+                            </Grid.ColumnDefinitions>
 
-                        </Border>
+                            <!--  Search input  -->
+                            <Grid Grid.Column="0" Height="50">
+                                <Border
+                                    Background="{StaticResource EerieBlackBrush}"
+                                    CornerRadius="25"
+                                    Effect="{StaticResource EventsDropShadow}"
+                                    IsHitTestVisible="False" />
 
-                        <!--  PlaceHolder for Search Button  -->
-                        <Border
-                            Width="60"
-                            Margin="13,0,0,0"
-                            Padding="19,14"
-                            Background="{StaticResource EerieBlackBrush}"
-                            CornerRadius="25"
-                            Effect="{StaticResource EventsDropShadow}"
-                            SnapsToDevicePixels="True"
-                            UseLayoutRounding="True">
-
-                            <Image
-                                Effect="{StaticResource NoDropShadow}"
-                                Source="/Images/search.png"
-                                UseLayoutRounding="True" />
-
-                        </Border>
-
-                        <!--  PlaceHolder for Events and announcements chooser  -->
-                        <Border
-                            Width="362"
-                            Margin="50,0,0,0"
-                            Background="Transparent"
-                            BorderBrush="{StaticResource EerieBlackBrush}"
-                            BorderThickness="2"
-                            CornerRadius="25">
-
-                            <Grid Margin="23,0" VerticalAlignment="Center">
-                                <TextBlock FontSize="20" Text="Events and Announcements" />
-
-                                <Image
-                                    Width="20"
-                                    HorizontalAlignment="Right"
-                                    Source="/Images/down-arrow.png"
-                                    UseLayoutRounding="True" />
+                                <TextBox
+                                    Margin="27,0"
+                                    Panel.ZIndex="100"
+                                    Background="Transparent"
+                                    FontSize="20"
+                                    Foreground="{StaticResource TextWhiteBrush}"
+                                    Style="{StaticResource SearchInput}"
+                                    Tag="Search"
+                                    Text="{Binding SearchText, Mode=TwoWay}" />
                             </Grid>
 
-                        </Border>
+
+                            <!--  Search button  -->
+                            <Button
+                                Grid.Column="2"
+                                Height="50"
+                                Command="{Binding ApplySearchFilterCommand}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid Grid.Column="2" Height="50">
+                                                        <Border
+                                                            x:Name="ButtonBackground"
+                                                            Background="{StaticResource EerieBlackBrush}"
+                                                            CornerRadius="25"
+                                                            Effect="{StaticResource EventsDropShadow}" />
+
+                                                        <Image
+                                                            Width="22"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Effect="{StaticResource NoDropShadow}"
+                                                            Source="/Images/search.png"
+                                                            UseLayoutRounding="True" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Trigger.EnterActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <ColorAnimation
+                                                                            Storyboard.TargetName="ButtonBackground"
+                                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                            To="{StaticResource Jet}"
+                                                                            Duration="0:0:0.15" />
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </Trigger.EnterActions>
+                                                            <Trigger.ExitActions>
+                                                                <BeginStoryboard>
+                                                                    <Storyboard>
+                                                                        <ColorAnimation
+                                                                            Storyboard.TargetName="ButtonBackground"
+                                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                            To="{StaticResource EerieBlack}"
+                                                                            Duration="0:0:0.15" />
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </Trigger.ExitActions>
+                                                            <Setter Property="Cursor" Value="Hand" />
+                                                        </Trigger>
+                                                        <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+                                                            <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource JetBrush}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="True">
+                                                            <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource EerieBlackBrush}" />
+                                                        </DataTrigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+
+                        <!--  Events and Announcements Combobox  -->
+
+                        <Grid Height="50">
+                            <!--<Border
+                                Width="362"
+                                Margin="50,0,0,0"
+                                Background="Transparent"
+                                BorderBrush="{StaticResource EerieBlackBrush}"
+                                BorderThickness="2"
+                                CornerRadius="25">
+
+                                <Grid Margin="23,0" VerticalAlignment="Center">
+
+                            <TextBlock FontSize="20" Text="Events and Announcements" />
+
+                                    <Image
+                                        Width="20"
+                                        HorizontalAlignment="Right"
+                                        Source="/Images/down-arrow.png"
+                                        UseLayoutRounding="True" />
+
+                                </Grid>
+                            </Border>-->
+                            <ComboBox
+                                Name="ContentSelectionComboBox"
+                                Width="362"
+                                Margin="50,0,0,0"
+                                ItemContainerStyle="{StaticResource EventsAndAnnouncementsComboBoxItem}"
+                                SelectedIndex="0"
+                                SelectionChanged="ContentSelectionComboBox_SelectionChanged"
+                                Style="{StaticResource EventsAndAnnouncementsComboBox}">
+
+                                <ComboBoxItem>Events and Announcements</ComboBoxItem>
+                                <ComboBoxItem>Events Only</ComboBoxItem>
+                                <ComboBoxItem>Announcements Only</ComboBoxItem>
+                            </ComboBox>
+
+                        </Grid>
                     </StackPanel>
-                </Border>
+                </Grid>
             </Viewbox>
         </Grid>
     </ScrollViewer>

@@ -2,11 +2,14 @@
 using Municipal_App.Models;
 using Municipal_App.Services;
 using Municipal_App.Stores;
+using Municipal_App.Stores.Municipal_App.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -36,6 +39,22 @@ namespace Municipal_App.ViewModels
             }
         }
 
+        private string _searchText = string.Empty;
+        public string SearchText
+        {
+            get
+            {
+                return _searchText;
+            }
+            set
+            {
+                _searchText = value;
+                AppStore.Instance.EventsStore.FilterStore.SearchText = value;
+                AppStore.Instance.AnnouncementsStore.FilterStore.SearchText = value;
+                OnPropertyChanged(nameof(SearchText));
+            }
+        }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Queue containing web scraped events for the UI to bind to
@@ -49,6 +68,8 @@ namespace Municipal_App.ViewModels
         /// Command used to navigate back to the MainViewModel
         /// </summary>
         public ICommand MainViewNavCommand { get; }
+
+        public RelayCommand ApplySearchFilterCommand { get; set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
@@ -72,13 +93,22 @@ namespace Municipal_App.ViewModels
             }
 
             // Setting up Announcements
-            var annoucementsStore = AppStore.Instance.AnnouncementsStore;
-            this.AnnouncementsQueue = annoucementsStore.AnnouncementsQueue;
+            var announcementsStore = AppStore.Instance.AnnouncementsStore;
+            this.AnnouncementsQueue = announcementsStore.AnnouncementsQueue;
 
-            if (!annoucementsStore.IsQueueInitialized)
+            if (!announcementsStore.IsQueueInitialized)
             {
                 InitializeAnnouncements();
             }
+
+            // Initializing relaycommands
+            ApplySearchFilterCommand = new RelayCommand(o => this.ApplyFilters());
+        }
+
+        private void ApplyFilters()
+        {
+            AppStore.Instance.EventsStore.FilterStore.OnFilterEvents?.Invoke();
+            AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterEvents?.Invoke();
         }
 
         //-----------------------------------------------------------------------------

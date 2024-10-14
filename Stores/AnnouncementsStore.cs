@@ -43,6 +43,8 @@ namespace Municipal_App.Stores
             /// </summary>
             public SortedDictionary<DateTime, ObservableCollection<AnnouncementViewModel>> SortedAnnouncements { get; private set; }
 
+            public FilterStore FilterStore { get; private set; }
+
             //-----------------------------------------------------------------------------
             /// <summary>
             /// Creates a new instance of the AnnouncementsStore
@@ -50,6 +52,7 @@ namespace Municipal_App.Stores
             public AnnouncementsStore()
             {
                 this.SortedAnnouncements = new SortedDictionary<DateTime, ObservableCollection<AnnouncementViewModel>>();
+                this.FilterStore = new FilterStore();
             }
 
             //-----------------------------------------------------------------------------

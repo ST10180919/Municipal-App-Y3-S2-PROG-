@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Municipal_App.Stores;
+using Municipal_App.ViewModels;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,7 +74,51 @@ namespace Municipal_App.Components
         public CarouselControl()
         {
             InitializeComponent();
+            AppStore.Instance.EventsStore.FilterStore.OnFilterEvents += this.ApplyFilter;
         }
+
+        public void OnFilterEvents(object sender, FilterEventArgs e)
+        {
+            if (e.Item != null && e.Item is MunicipalEventViewModel)
+            {
+                var eventItem = e.Item as MunicipalEventViewModel;
+                var searchText = AppStore.Instance.EventsStore.FilterStore.SearchText;
+
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    // Only include items that contain the search text in their title
+                    e.Accepted = eventItem.Title.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+                else
+                {
+                    e.Accepted = true; // Include all items if there's no search text
+                }
+            } else if (e.Item != null && e.Item is AnnouncementViewModel)
+            {
+                var eventItem = e.Item as AnnouncementViewModel;
+                var searchText = AppStore.Instance.AnnouncementsStore.FilterStore.SearchText;
+
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    // Only include items that contain the search text in their title
+                    e.Accepted = eventItem.Title.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+                else
+                {
+                    e.Accepted = true; // Include all items if there's no search text
+                }
+            }
+        }
+
+        // Method to update the search string and refresh the view
+        //public void UpdateFilter(string searchText)
+        //{
+        //    _searchText = searchText;  // Update the search string
+
+        //    // Refresh the filter to apply the new search string
+        //    var collectionViewSource = (CollectionViewSource)FindResource("FilteredEvents");
+        //    collectionViewSource.View.Refresh();
+        //}
 
         private void LeftArrow_Click(object sender, RoutedEventArgs e)
         {
@@ -173,6 +219,22 @@ namespace Municipal_App.Components
             }
 
             return null;
+        }
+
+        public void ApplyFilter()
+        {
+            var collectionViewSource = (CollectionViewSource)this.FindResource("SortedItems");
+            if (collectionViewSource != null)
+            {
+                // Refresh the view to reapply the filter
+                collectionViewSource.View.Refresh();
+
+                // Set the filtered view as the ItemsSource for the ItemsControl
+                carouselItems.ItemsSource = collectionViewSource.View;
+
+                // Force a layout update to ensure UI refresh
+                carouselItems.UpdateLayout();
+            }
         }
     }
 

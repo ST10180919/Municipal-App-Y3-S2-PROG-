@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace Municipal_App.Stores
 {
@@ -47,6 +48,8 @@ namespace Municipal_App.Stores
         /// </summary>
         public HashSet<string> EventLocations { get; private set; }
 
+        public FilterStore FilterStore { get; private set; }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Creates a new instance of the EventsStore
@@ -56,6 +59,7 @@ namespace Municipal_App.Stores
             this.SortedEvents = new SortedDictionary<DateTime, ObservableCollection<MunicipalEventViewModel>>();
             this.EventCategories = new HashSet<string>();
             this.EventLocations = new HashSet<string>();
+            this.FilterStore = new FilterStore();
         }
 
         //-----------------------------------------------------------------------------

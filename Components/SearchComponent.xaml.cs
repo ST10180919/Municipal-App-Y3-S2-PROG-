@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Municipal_App.Components
 {
     /// <summary>
-    /// Interaction logic for AnnouncementCard.xaml
+    /// Interaction logic for SearchComponent.xaml
     /// </summary>
-    public partial class AnnouncementCard : UserControl
+    public partial class SearchComponent : UserControl
     {
-        public AnnouncementCard()
+        public SearchComponent()
         {
             InitializeComponent();
         }
