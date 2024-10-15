@@ -56,5 +56,11 @@ namespace Municipal_App.Views
                 }
             }
         }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            textBox.CaretBrush = (Brush)FindResource("TextWhiteBrush");
+        }
     }
 }

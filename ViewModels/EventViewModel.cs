@@ -4,14 +4,14 @@ namespace Municipal_App.ViewModels
 {
 	//---------------------------------------------------------------------------------
 	/// <summary>
-	/// Class representing a municipal event to be viewed by the user on the EventsView.
+	/// Class representing a municipal event to be viewed by the user on the EventsAnnouncementsView.
 	/// 
 	/// This class is a viewmodel and contains backing and exposed fields because
 	/// it's intended for UI to bind directly to it, and for the UI to be updated
 	/// whenever a field is set using OnPropertyChanged() from the ViewModelBase's 
 	/// INotifyPropertyChanged.
 	/// </summary>
-    internal class MunicipalEventViewModel : ViewModelBase
+    internal class EventViewModel : ViewModelBase
     {
 		private string _title;
         //-----------------------------------------------------------------------------

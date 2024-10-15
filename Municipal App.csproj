@@ -193,7 +193,7 @@
     <Compile Include="Stores\EventsFilter.cs" />
     <Compile Include="Stores\EventsStore.cs" />
     <Compile Include="ViewModels\AnnouncementViewModel.cs" />
-    <Compile Include="ViewModels\MunicipalEventViewModel.cs" />
+    <Compile Include="ViewModels\EventViewModel.cs" />
     <Compile Include="MunicipalDatabaseModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

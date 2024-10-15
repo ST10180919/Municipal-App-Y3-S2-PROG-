@@ -55,7 +55,7 @@ namespace Municipal_App.ViewModels
         /// <summary>
         /// Queue containing web scraped events for the UI to bind to
         /// </summary>
-        public ObservableQueue<MunicipalEventViewModel> EventsQueue { get; set; }
+        public ObservableQueue<EventViewModel> EventsQueue { get; set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>

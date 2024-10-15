@@ -92,12 +92,12 @@
                                     Width="20"
                                     Margin="30,0,5,0"
                                     VerticalAlignment="Bottom"
-                                    Source="/Images/star.png"/>
+                                    Source="/Images/star.png" />
                                 <TextBlock
                                     Margin="0,0,0,3"
                                     VerticalAlignment="Bottom"
                                     FontSize="14"
-                                    Text="Recommended"/>
+                                    Text="Recommended" />
                             </StackPanel>
                         </Viewbox>
 
@@ -125,12 +125,12 @@
                                     Width="20"
                                     Margin="30,0,5,0"
                                     VerticalAlignment="Bottom"
-                                    Source="/Images/star.png"/>
+                                    Source="/Images/star.png" />
                                 <TextBlock
                                     Margin="0,0,0,3"
                                     VerticalAlignment="Bottom"
                                     FontSize="14"
-                                    Text="Recommended"/>
+                                    Text="Recommended" />
                             </StackPanel>
                         </Viewbox>
 
@@ -186,8 +186,10 @@
                                     Margin="27,0"
                                     Panel.ZIndex="100"
                                     Background="Transparent"
+                                    CaretBrush="{StaticResource TextWhiteBrush}"
                                     FontSize="20"
                                     Foreground="{StaticResource TextWhiteBrush}"
+                                    GotFocus="TextBox_GotFocus"
                                     Style="{StaticResource SearchInput}"
                                     Tag="Search"
                                     Text="{Binding SearchText, Mode=TwoWay}" />
@@ -261,28 +263,7 @@
                         </Grid>
 
                         <!--  Events and Announcements Combobox  -->
-
                         <Grid Height="50">
-                            <!--<Border
-                                Width="362"
-                                Margin="50,0,0,0"
-                                Background="Transparent"
-                                BorderBrush="{StaticResource EerieBlackBrush}"
-                                BorderThickness="2"
-                                CornerRadius="25">
-
-                                <Grid Margin="23,0" VerticalAlignment="Center">
-
-                            <TextBlock FontSize="20" Text="Events and Announcements" />
-
-                                    <Image
-                                        Width="20"
-                                        HorizontalAlignment="Right"
-                                        Source="/Images/down-arrow.png"
-                                        UseLayoutRounding="True" />
-
-                                </Grid>
-                            </Border>-->
                             <ComboBox
                                 Name="ContentSelectionComboBox"
                                 Width="362"
