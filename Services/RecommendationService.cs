@@ -11,6 +11,11 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.Services
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// Defines the types of recommendation terms that the system can track and evaluate.
+    /// These include Search terms, Category terms, and Date terms, used to provide event recommendations.
+    /// </summary>
     public enum RecommendationTermType 
     {
         Search,
@@ -18,17 +23,44 @@ namespace Municipal_App.Services
         Date
     }
 
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// This class provides functionality for tracking and recommending events based on 
+    /// certain criteria, such as search terms, categories, and dates. It keeps a record of 
+    /// occurrences of these terms and uses them to calculate recommendations.
+    /// </summary>
     internal class RecommendationService
     {
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// A dictionary that tracks the occurrences of terms for each RecommendationTermType.
+        /// The keys represent the term type, and the values are dictionaries that map term values to their occurrence counts.
+        /// </summary>
         public Dictionary<RecommendationTermType, Dictionary<string, int>> RecommendationTerms { get; private set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Stores the highest number of occurrences for any term.
+        /// </summary>
         private int TopOccurence = 0;
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes a new instance of the RecommendationService class.
+        /// The constructor creates the dictionary used to store recommendation terms.
+        /// </summary>
         public RecommendationService()
         {
             this.RecommendationTerms = new Dictionary<RecommendationTermType, Dictionary<string, int>>();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds a term to the recommendation system. If the term type and value already exist, the occurrence count is incremented.
+        /// Otherwise, a new entry is created for the term type and value.
+        /// </summary>
+        /// <param name="termType">The type of the term (Search, Category, Date).</param>
+        /// <param name="termValue">The value of the term (e.g., the search query, category name, or date).</param>
         public void AddTerm(RecommendationTermType termType, string termValue)
         {
             // If the term type has already been added
@@ -55,6 +87,16 @@ namespace Municipal_App.Services
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Evaluates whether an event should be recommended based on its title, category, and date.
+        /// The method checks for term matches in the stored recommendation terms and calculates the total occurrences.
+        /// An event is recommended if its occurrence count is above 2 and is greater than or equal to the current top occurrence.
+        /// </summary>
+        /// <param name="title">The title of the event.</param>
+        /// <param name="category">The category of the event.</param>
+        /// <param name="date">The date of the event.</param>
+        /// <returns>Returns true if the event should be recommended, false otherwise.</returns>
         public bool GetRecommendation(string title, string category, string date)
         {
             var occurrences = 0;
@@ -119,10 +161,9 @@ namespace Municipal_App.Services
                 TopOccurence = occurrences;
             }
 
-            var isRecommended = occurrences >= 2 && occurrences >= TopOccurence;
-
             // Return true if the occurences is greater than 2 and is the TopOccurence
-            return isRecommended;
+            return occurrences >= 2 && occurrences >= TopOccurence;
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

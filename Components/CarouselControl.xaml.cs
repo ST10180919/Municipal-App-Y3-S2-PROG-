@@ -19,28 +19,47 @@ using System.Windows.Shapes;
 
 namespace Municipal_App.Components
 {
+    //---------------------------------------------------------------------------------
     /// <summary>
-    /// Interaction logic for CarouselControl.xaml
+    /// A user control representing a carousel for displaying items with horizontal scrolling.
+    /// It provides functionality for filtering and recommending items.
     /// </summary>
     public partial class CarouselControl : UserControl
     {
-        private int CarouselContentWidth => CarouselGrid != null ? Convert.ToInt32(CarouselGrid.ActualWidth - 80) : 0;
-
-        // DependencyProperty for ItemsSource
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Dependency property for binding the items source of the carousel.
+        /// This allows data binding events or announcements to the carousel's ItemsControl.
+        /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(CarouselControl), new PropertyMetadata(null));
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the items source for the carousel.
+        /// </summary>
         public IEnumerable ItemsSource
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-        // DependencyProperty to accept the template key from the ViewModel or View
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Dependency property for specifying a template key to be used for rendering 
+        /// the items.
+        /// 
+        /// NOTE: I pass the template key  here because passing the template itself 
+        /// created crazy slowdowns with loading events and announcements, not sure why.
+        /// </summary>
         public static readonly DependencyProperty SelectedItemTemplateKeyProperty =
-            DependencyProperty.Register("SelectedItemTemplateKey", typeof(string), typeof(CarouselControl), new PropertyMetadata(null, OnSelectedItemTemplateKeyChanged));
+            DependencyProperty.Register("SelectedItemTemplateKey", typeof(string), typeof(CarouselControl), new PropertyMetadata(null));
 
-        // Property to get the selected DataTemplate based on the key
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the selected data template based on the provided template key.
+        /// The template is used to render each item in the carousel.
+        /// </summary>
         public DataTemplate SelectedItemTemplate
         {
             get
@@ -49,28 +68,30 @@ namespace Municipal_App.Components
             }
         }
 
-        // This callback gets triggered when the SelectedItemTemplateKey changes
-        private static void OnSelectedItemTemplateKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = d as CarouselControl;
-            if (control != null)
-            {
-                // Refresh or update the ItemTemplate for the ItemsControl
-                control.OnSelectedItemTemplateChanged();
-            }
-        }
-
-        private void OnSelectedItemTemplateChanged()
-        {
-            // This method can be used to force UI updates if necessary
-        }
-
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the key for the selected item template, allowing different 
+        /// templates to be applied.
+        /// </summary>
         public string SelectedItemTemplateKey
         {
             get { return (string)GetValue(SelectedItemTemplateKeyProperty); }
             set { SetValue(SelectedItemTemplateKeyProperty, value); }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Calculates the width of the carousel content minus padding (80px).
+        /// This value is used for adjusting how far the carousel scrolls based on
+        /// the the width of the items shown
+        /// </summary>
+        private int CarouselContentWidth => CarouselGrid != null ? Convert.ToInt32(CarouselGrid.ActualWidth - 80) : 0;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes the carousel control and registers event handlers for filtering 
+        /// and recommendations.
+        /// </summary>
         public CarouselControl()
         {
             InitializeComponent();
@@ -78,38 +99,69 @@ namespace Municipal_App.Components
             AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterAnnouncements += this.ApplySearchFilter;
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Filters the items in the carousel based on events or announcements.
+        /// Sets recommendations and determines whether the item should be accepted.
+        /// </summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">The filter event arguments containing the item to filter.
+        /// </param>
         public void OnFilterEvents(object sender, FilterEventArgs e)
         {
-            if (e.Item != null && e.Item is MunicipalEventViewModel)
+            try
             {
-                var viewModel = e.Item as MunicipalEventViewModel;
-                // Setting recommendation
-                var isRecommended = AppStore.Instance.EventsStore.RecommendationService.GetRecommendation(viewModel.Title, viewModel.Category, viewModel.Date);
-                viewModel.IsRecommended = isRecommended;
-                // Accepting or denying item
-                e.Accepted = AppStore.Instance.EventsStore.FilterStore.IsAccepted(viewModel);
+                if (e.Item != null && e.Item is MunicipalEventViewModel)
+                {
+                    var viewModel = e.Item as MunicipalEventViewModel;
+                    // Setting recommendation
+                    var isRecommended = AppStore.Instance.EventsStore.RecommendationService.GetRecommendation(viewModel.Title, viewModel.Category, viewModel.Date);
+                    viewModel.IsRecommended = isRecommended;
+                    // Accepting or denying item
+                    e.Accepted = AppStore.Instance.EventsStore.FilterStore.IsAccepted(viewModel);
 
-            } else if (e.Item != null && e.Item is AnnouncementViewModel)
+                }
+                else if (e.Item != null && e.Item is AnnouncementViewModel)
+                {
+                    var viewModel = e.Item as AnnouncementViewModel;
+                    // Setting recommendation
+                    var isRecommended = AppStore.Instance.AnnouncementsStore.RecommendationService.GetRecommendation(viewModel.Title, "", viewModel.Date);
+                    viewModel.IsRecommended = isRecommended;
+                    // Accepting or denying item
+                    e.Accepted = AppStore.Instance.AnnouncementsStore.FilterStore.IsAccepted(viewModel);
+                }
+            }
+            catch (Exception ex)
             {
-                var viewModel = e.Item as AnnouncementViewModel;
-                // Setting recommendation
-                var isRecommended = AppStore.Instance.AnnouncementsStore.RecommendationService.GetRecommendation(viewModel.Title, "", viewModel.Date);
-                viewModel.IsRecommended = isRecommended;
-                // Accepting or denying item
-                e.Accepted = AppStore.Instance.AnnouncementsStore.FilterStore.IsAccepted(viewModel);
+                Console.WriteLine(ex.ToString());
             }
         }
 
-        // Method to update the search string and refresh the view
-        //public void UpdateFilter(string searchText)
-        //{
-        //    _searchText = searchText;  // Update the search string
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Applies the search filter and refreshes the view by updating the filtered 
+        /// items source.This method is invoked whenever the filter criteria change.
+        /// </summary>
+        public void ApplySearchFilter()
+        {
+            var collectionViewSource = (CollectionViewSource)this.FindResource("SortedItems");
+            if (collectionViewSource != null)
+            {
+                // Refresh the view to reapply the filter
+                collectionViewSource.View.Refresh();
 
-        //    // Refresh the filter to apply the new search string
-        //    var collectionViewSource = (CollectionViewSource)FindResource("FilteredEvents");
-        //    collectionViewSource.View.Refresh();
-        //}
+                // Set the filtered view as the ItemsSource for the ItemsControl
+                carouselItems.ItemsSource = collectionViewSource.View;
 
+                // Force a layout update to ensure UI refresh
+                carouselItems.UpdateLayout();
+            }
+        }
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the left arrow click to animate horizontal scrolling to the left.
+        /// </summary>
         private void LeftArrow_Click(object sender, RoutedEventArgs e)
         {
             DoubleAnimation horizontalAnimation = new DoubleAnimation
@@ -120,51 +172,30 @@ namespace Municipal_App.Components
             scrollViewer.BeginAnimation(ScrollViewerBehavior.HorizontalOffsetProperty, horizontalAnimation);
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the right arrow click to animate horizontal scrolling to the right.
+        /// </summary>
         private void RightArrow_Click(object sender, RoutedEventArgs e)
         {
             DoubleAnimation horizontalAnimation = new DoubleAnimation
             {
-                To = scrollViewer.HorizontalOffset + this.CarouselContentWidth, // Scroll right by 120px
+                To = scrollViewer.HorizontalOffset + this.CarouselContentWidth,
                 Duration = new Duration(TimeSpan.FromMilliseconds(600))
             };
             scrollViewer.BeginAnimation(ScrollViewerBehavior.HorizontalOffsetProperty, horizontalAnimation);
         }
 
-        private void AdjustLatoLetterSpacing(string text, double spacing, TextBlock textBlock)
-        {
-            textBlock.Inlines.Clear();  // Clear any existing text in the TextBlock
-
-            // Loop through each character in the string
-            for (int i = 0; i < text.Length; i++)
-            {
-                // Create a new Run for each character
-                Run run = new Run(text[i].ToString());
-
-                // Add the character to the TextBlock
-                textBlock.Inlines.Add(run);
-
-                // If it's not the last character, add a space Run to simulate spacing
-                if (i < text.Length - 1)
-                {
-                    // Add spacing by adding a space character with adjusted FontSize or Width
-                    Run space = new Run(" ");
-                    space.FontSize = textBlock.FontSize + spacing;  // Increase space size
-                    textBlock.Inlines.Add(space);
-                }
-            }
-        }
-
-        private void LatoText_Loaded(object sender, RoutedEventArgs e)
-        {
-            var textBlock = sender as TextBlock;
-            AdjustLatoLetterSpacing(textBlock.Text, 7, textBlock);
-        }
-
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles mouse wheel scrolling within the carousel. Propagates vertical 
+        /// scroll events to a parent scroll viewer to allow the page to scroll.
+        /// </summary>
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             var scrollViewer = sender as ScrollViewer;
 
-            // Check if we are scrolling horizontally
+            // Check if scrolling Horizontally
             if (scrollViewer != null && scrollViewer.ComputedHorizontalScrollBarVisibility == Visibility.Visible)
             {
                 if (e.Delta < 0)
@@ -175,9 +206,6 @@ namespace Municipal_App.Components
                 {
                     scrollViewer.LineLeft();
                 }
-
-                // If you want to scroll horizontally within the carousel and NOT scroll the page, set e.Handled to true.
-                // But in this case, we're allowing vertical scrolling, so we don't handle the event here.
                 e.Handled = false;
             }
 
@@ -194,7 +222,14 @@ namespace Municipal_App.Components
             }
         }
 
-        // Helper method to find the parent ScrollViewer
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Finds the parent scroll viewer of the current control in the visual tree.
+        /// This method is used to propagate vertical scrolling to the parent scroll viewer.
+        /// </summary>
+        /// <param name="child">The child element whose parent scroll viewer is to be 
+        /// found.</param>
+        /// <returns>The parent ScrollViewer, or null if not found.</returns>
         private ScrollViewer FindParentScrollViewer(DependencyObject child)
         {
             DependencyObject parent = VisualTreeHelper.GetParent(child);
@@ -210,41 +245,63 @@ namespace Municipal_App.Components
 
             return null;
         }
-
-        public void ApplySearchFilter()
-        {
-            var collectionViewSource = (CollectionViewSource)this.FindResource("SortedItems");
-            if (collectionViewSource != null)
-            {
-                // Refresh the view to reapply the filter
-                collectionViewSource.View.Refresh();
-
-                // Set the filtered view as the ItemsSource for the ItemsControl
-                carouselItems.ItemsSource = collectionViewSource.View;
-
-                // Force a layout update to ensure UI refresh
-                carouselItems.UpdateLayout();
-            }
-        }
     }
 
-    // Behavior to enable animated scrolling
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// A behavior class that provides attached properties for controlling the 
+    /// horizontal scroll offset of a ScrollViewer.
+    /// This allows for smooth scrolling animations and programmatic control of 
+    /// ScrollViewer offsets.
+    /// </summary>
     public static class ScrollViewerBehavior
     {
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// An attached dependency property for controlling the horizontal offset of a 
+        /// ScrollViewer. Changes to this property trigger the ScrollToHorizontalOffset 
+        /// behavior.
+        /// </summary>
         public static readonly DependencyProperty HorizontalOffsetProperty =
             DependencyProperty.RegisterAttached("HorizontalOffset", typeof(double), typeof(ScrollViewerBehavior),
                 new PropertyMetadata(OnHorizontalOffsetChanged));
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the current horizontal offset value from the attached property on the 
+        /// specified object.
+        /// </summary>
+        /// <param name="obj">The object (typically a ScrollViewer) from which to 
+        /// retrieve the horizontal offset value.</param>
+        /// <returns>The horizontal offset value as a double.</returns>
         public static double GetHorizontalOffset(DependencyObject obj)
         {
             return (double)obj.GetValue(HorizontalOffsetProperty);
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Sets the horizontal offset value on the attached property for the specified 
+        /// object.
+        /// This triggers the scrolling behavior when the property value is changed.
+        /// </summary>
+        /// <param name="obj">The object on which to set the 
+        /// horizontal offset value.</param>
+        /// <param name="value">The new horizontal offset value as a double.</param>
         public static void SetHorizontalOffset(DependencyObject obj, double value)
         {
             obj.SetValue(HorizontalOffsetProperty, value);
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles changes to the HorizontalOffset property and scrolls the 
+        /// ScrollViewer to the new offset.
+        /// This method is called whenever the attached HorizontalOffsetProperty changes.
+        /// </summary>
+        /// <param name="d">The dependency object whose property changed</param>
+        /// <param name="e">The event arguments containing the old and new values of 
+        /// the property.</param>
         private static void OnHorizontalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ScrollViewer viewer)
@@ -253,5 +310,5 @@ namespace Municipal_App.Components
             }
         }
     }
-
 }
+//---------------------------------------EOF-------------------------------------------

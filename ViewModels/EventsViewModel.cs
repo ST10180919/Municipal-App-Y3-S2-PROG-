@@ -40,6 +40,11 @@ namespace Municipal_App.ViewModels
         }
 
         private string _searchText = string.Empty;
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// The search text entered by the user. Updates the filter stores for events 
+        /// and announcements when modified.
+        /// </summary>
         public string SearchText
         {
             get
@@ -61,6 +66,10 @@ namespace Municipal_App.ViewModels
         /// </summary>
         public ObservableQueue<MunicipalEventViewModel> EventsQueue { get; set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Queue containing web scraped announcements for the UI to bind to.
+        /// </summary>
         public ObservableQueue<AnnouncementViewModel> AnnouncementsQueue { get; set; }
 
         //-----------------------------------------------------------------------------
@@ -69,11 +78,16 @@ namespace Municipal_App.ViewModels
         /// </summary>
         public ICommand MainViewNavCommand { get; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Command used to apply search filters to events and announcements.
+        /// </summary>
         public RelayCommand ApplySearchFilterCommand { get; set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a new instance of the EventsViewModel
+        /// Creates a new instance of the EventsViewModel, sets up the navigation command,
+        /// initializes the events and announcements queues, and prepares the search filter command.
         /// </summary>
         public EventsViewModel()
         {
@@ -105,6 +119,11 @@ namespace Municipal_App.ViewModels
             ApplySearchFilterCommand = new RelayCommand(o => this.ApplyFilters());
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Applies the search filters to events and announcements by adding the search
+        /// text to the recommendation service and invoking the filter actions.
+        /// </summary>
         private void ApplyFilters()
         {
             // Add search term to recommendations
@@ -121,8 +140,7 @@ namespace Municipal_App.ViewModels
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Calles the corresponding services to populate Events and or Announcements
-        /// shown on the view Bound to this ViewModel
+        /// Calls the corresponding service to populate the EventsQueue with web-scraped events.
         /// </summary>
         private async void InitializeEvents()
         {
@@ -131,6 +149,10 @@ namespace Municipal_App.ViewModels
             await webservice.LoadEventsAsync(this.EventsQueue);
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Calls the corresponding service to populate the AnnouncementsQueue with web-scraped announcements.
+        /// </summary>
         private async void InitializeAnnouncements()
         {
             var webservice = new AnnouncementsWebService();
@@ -139,9 +161,9 @@ namespace Municipal_App.ViewModels
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a new LandingViewModel
+        /// Creates a new instance of the LandingViewModel to navigate to the landing page.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>LandingViewModel instance.</returns>
         public LandingViewModel CreateLandingViewModel()
         {
             return new LandingViewModel();

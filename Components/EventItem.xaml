@@ -27,8 +27,8 @@
             <Border Background="{StaticResource TextWhiteBrush}" Effect="{StaticResource EventsItemDropShadow}" />
 
             <StackPanel>
+                <!--  Image of the Event  -->
                 <Image
-                    x:Name="EventImage"
                     Width="263"
                     Height="165"
                     Source="{Binding Image}"
@@ -36,8 +36,8 @@
 
                 <Border Height="3" Background="{StaticResource FlaxBrush}" />
 
+                <!--  Event Category  -->
                 <TextBlock
-                    x:Name="EventCategory"
                     Margin="0,17,0,0"
                     HorizontalAlignment="Center"
                     FontFamily="{StaticResource Lato}"
@@ -47,8 +47,8 @@
                     Loaded="LatoText_Loaded"
                     Text="{Binding Category}" />
 
+                <!--  Event Title  -->
                 <TextBlock
-                    x:Name="EventTitle"
                     Margin="22,13,22,0"
                     HorizontalAlignment="Center"
                     FontSize="24"
@@ -56,6 +56,7 @@
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
 
+                <!--  Event Date  -->
                 <TextBlock
                     x:Name="EventDate"
                     Margin="22,20,22,0"
@@ -64,8 +65,8 @@
                     FontWeight="Bold"
                     Text="{Binding Date}" />
 
+                <!--  Event Time  -->
                 <TextBlock
-                    x:Name="EventTime"
                     Margin="22,3,22,0"
                     HorizontalAlignment="Center"
                     FontSize="16"
@@ -81,8 +82,8 @@
                     Loaded="LatoText_Loaded"
                     Text="- VENUE -" />
 
+                <!--  Event Venue  -->
                 <TextBlock
-                    x:Name="EventVenue"
                     Margin="22,5,22,0"
                     HorizontalAlignment="Center"
                     FontSize="16"
@@ -93,6 +94,7 @@
                     TextWrapping="Wrap" />
             </StackPanel>
 
+            <!--  Recommendation Image  -->
             <Image
                 Width="50"
                 Height="50"

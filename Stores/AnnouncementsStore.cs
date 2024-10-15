@@ -20,37 +20,46 @@ namespace Municipal_App.Stores
     {
         //---------------------------------------------------------------------------------
         /// <summary>
-        /// Stores the the announcement information scraped from the internet.
+        /// Stores the announcement information scraped from the internet. This class manages the queue of announcements, 
+        /// provides filtering and recommendation functionalities, and tracks announcements by date.
         /// </summary>
         internal class AnnouncementsStore
         {
             //-----------------------------------------------------------------------------
             /// <summary>
-            /// Queue Storing the events in the order they were scraped from the internet.
+            /// Queue storing the announcements in the order they were scraped from the internet.
             /// </summary>
             public ObservableQueue<AnnouncementViewModel> AnnouncementsQueue { get; private set; } = new ObservableQueue<AnnouncementViewModel>();
 
             //-----------------------------------------------------------------------------
             /// <summary>
-            /// Indicates whether the Queue has been initialized or not
-            /// True if initialized, false if not
+            /// Indicates whether the announcements queue has been initialized. 
+            /// True if initialized and contains items, false if empty.
             /// </summary>
             public bool IsQueueInitialized => AnnouncementsQueue.Count > 0;
 
             //-----------------------------------------------------------------------------
             /// <summary>
-            /// A sorted Dictionary of Announcements keyed by date. Used to allow the user to 
-            /// filter the announcements by date 
+            /// A sorted dictionary of announcements, keyed by date type (Today, ThisWeek, ThisMonth, AnyTime). 
+            /// Used to allow users to filter the announcements by date.
             /// </summary>
             public SortedDictionary<DateType, ObservableCollection<AnnouncementViewModel>> SortedAnnouncements { get; private set; }
 
+            //-----------------------------------------------------------------------------
+            /// <summary>
+            /// The filter store for announcements, responsible for applying search and date filters.
+            /// </summary>
             public AnnouncementsFilter FilterStore { get; private set; }
 
+            //-----------------------------------------------------------------------------
+            /// <summary>
+            /// The recommendation service responsible for determining which announcements to recommend based on user preferences.
+            /// </summary>
             public RecommendationService RecommendationService { get; private set; }
 
             //-----------------------------------------------------------------------------
             /// <summary>
-            /// Creates a new instance of the AnnouncementsStore
+            /// Creates a new instance of the AnnouncementsStore class. This initializes the sorted dictionary, filter store, and recommendation service.
             /// </summary>
             public AnnouncementsStore()
             {
@@ -61,11 +70,10 @@ namespace Municipal_App.Stores
 
             //-----------------------------------------------------------------------------
             /// <summary>
-            /// Updates the SortedAnnouncements adding the new announcement.
+            /// Updates the SortedAnnouncements dictionary by adding a new announcement based on its date. 
+            /// The announcement is categorized by date (Today, ThisWeek, ThisMonth, or AnyTime).
             /// </summary>
-            /// <param name="announcement"> 
-            /// AnnouncementViewModel to be added to the fields 
-            /// </param>
+            /// <param name="announcement">The AnnouncementViewModel to be added to the sorted dictionary.</param>
             public void UpdateSortedDictionary(AnnouncementViewModel announcement)
             {
                 if (DateTime.TryParse(announcement.Date, out DateTime announcementDate))

@@ -38,8 +38,16 @@ namespace Municipal_App.Stores
         /// </summary>
         public IssueReportStore IssueReportStore { get; private set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Stores and operates on the events 
+        /// </summary>
         public EventsStore EventsStore { get; private set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Stores and operates on the Announcements
+        /// </summary>
         public AnnouncementsStore AnnouncementsStore { get; private set; }
 
         //-----------------------------------------------------------------------------

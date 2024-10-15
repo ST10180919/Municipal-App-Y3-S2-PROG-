@@ -126,7 +126,11 @@ namespace Municipal_App.ViewModels
 		}
 
 		private bool _isRecommended = false;
-		public bool IsRecommended
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Boolean to store whether this Announcement is recommended
+        /// </summary>
+        public bool IsRecommended
 		{
 			get
 			{

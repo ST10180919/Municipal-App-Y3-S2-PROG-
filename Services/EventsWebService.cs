@@ -198,6 +198,13 @@ namespace Municipal_App.Services
             return new BitmapImage();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Sanitizes an HTML field by decoding and trimming its content to ensure clean text.
+        /// Also removes common redundant strings from the fieldValue.
+        /// </summary>
+        /// <param name="fieldValue">The HTML content to sanitize.</param>
+        /// <returns>The sanitized string.</returns>
         private string SanitizeWebField(string fieldValue)
         {
             return System.Net.WebUtility.HtmlDecode(

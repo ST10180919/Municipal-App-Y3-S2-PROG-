@@ -36,6 +36,7 @@
                         <RowDefinition Height="111" />
                     </Grid.RowDefinitions>
 
+                    <!--  Announcement Image  -->
                     <Image
                         Grid.Column="0"
                         Source="{Binding Image}"
@@ -47,6 +48,7 @@
                         HorizontalAlignment="Left"
                         Background="{StaticResource FlaxBrush}" />
 
+                    <!--  Announcement Title  -->
                     <TextBlock
                         Grid.Column="1"
                         Margin="16,5,16,0"
@@ -54,6 +56,7 @@
                         Text="{Binding Title}"
                         TextWrapping="Wrap" />
 
+                    <!--  Announcement Date  -->
                     <TextBlock
                         Grid.Column="1"
                         Margin="16,0,16,5"
@@ -63,6 +66,7 @@
                         Text="{Binding Date}" />
                 </Grid>
 
+                <!--  Announcement Description  -->
                 <TextBlock
                     Margin="16"
                     FontSize="16"
@@ -71,6 +75,7 @@
                     TextWrapping="wrap" />
             </StackPanel>
 
+            <!--  Recommendation Image  -->
             <Image
                 Width="50"
                 Height="50"

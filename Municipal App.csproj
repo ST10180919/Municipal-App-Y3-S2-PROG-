@@ -107,10 +107,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Components\SearchComponent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,9 +179,6 @@
     </Compile>
     <Compile Include="Components\FilterComponent.xaml.cs">
       <DependentUpon>FilterComponent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\SearchComponent.xaml.cs">
-      <DependentUpon>SearchComponent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\EventControlsMarginConverter.cs" />

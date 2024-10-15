@@ -20,7 +20,7 @@
             <local:AnnouncementItem />
         </DataTemplate>
 
-        <!--  Define the CollectionViewSource with sorting by Date  -->
+        <!--  CollectionViewSource used to filter the bound itemsSource before displaying  -->
         <CollectionViewSource
             x:Key="SortedItems"
             Filter="OnFilterEvents"
@@ -30,8 +30,6 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </UserControl.Resources>
-
-    <!--  Testing Carousel Control  -->
     <Grid x:Name="CarouselGrid">
 
         <Grid.RowDefinitions>

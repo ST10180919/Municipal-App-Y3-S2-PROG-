@@ -13,6 +13,12 @@ using System.Windows.Media.Imaging;
 
 namespace Municipal_App.Services
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// This class is responsible for scraping and loading announcement data from a specified website.
+    /// It handles downloading the webpage, parsing the HTML content, and converting the relevant information 
+    /// into a list of AnnouncementViewModels, which are then enqueued into an ObservableQueue for display.
+    /// </summary>
     internal class AnnouncementsWebService
     {
         //-----------------------------------------------------------------------------
@@ -23,15 +29,16 @@ namespace Municipal_App.Services
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Html document created from the _announcementsURL
+        /// The HTML document created from the _announcementsURL after being loaded from the web.
         /// </summary>
         private HtmlDocument HtmlDocument;
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes the Announcement Document by loading it from the _announcementsURL
+        /// Initializes the HTML document for announcements by downloading the content from the announcements URL.
+        /// This method uses an HttpClient to asynchronously retrieve the HTML content.
         /// </summary>
-        /// <returns> Awaitable Task </returns>
+        /// <returns>Returns an awaitable Task.</returns>
         private async Task InitializeAnnouncements()
         {
             // Downloading the page from the internet and populating local fields
@@ -43,19 +50,14 @@ namespace Municipal_App.Services
 
         //---------------------------------------------------------------------------------
         /// <summary>
-        /// Loads the Announcements from the website asynchronously, populating the fields 
-        /// of AnnouncementViewModels which are then enqueued into the announcementQueue 
-        /// param.
-        /// 
-        /// Since the AnnouncementViewModels implements INotifyPropertyChanged, 
-        /// the UI is updated the moment a field is set.
+        /// Loads the announcements from the website asynchronously and populates the provided ObservableQueue.
+        /// Each scraped announcement is converted into an AnnouncementViewModel and enqueued.
         /// </summary>
-        /// 
-        /// <param name="announcementQueue"> 
-        /// An ObservableQueue for which scraped announcements will be enqueued, which must be 
-        /// bound to the UI 
+        /// <param name="announcementQueue">
+        /// The ObservableQueue where the scraped announcements are enqueued.
+        /// It must be bound to the UI to reflect real-time updates.
         /// </param>
-        /// <returns> Awaitable Task </returns>
+        /// <returns>Returns an awaitable Task.</returns>
         public async Task LoadAnnouncementsAsync(ObservableQueue<AnnouncementViewModel> announcementQueue)
         {
             // First, initializing page
@@ -88,61 +90,17 @@ namespace Municipal_App.Services
 
                     announcementQueue.Enqueue(announcement);
                     AppStore.Instance.AnnouncementsStore.UpdateSortedDictionary(announcement);
-
-                    // Load additional pages
-                    //ScrapeMultiplePages();
                 }
             }
         }
 
-        //public async Task ScrapeMultiplePages()
-        //{
-        //    using (HttpClient httpClient = new HttpClient())
-        //    {
-        //        string baseUrl = "https://eventsincapetown.com/blog/?nocache=";
-        //        string ajaxQuery = "&jet_blog_ajax=1";
-
-        //        int pageNumber = 1728783634; // Starting number, you can adjust this
-        //        bool hasMorePages = true;
-
-        //        while (hasMorePages)
-        //        {
-        //            // Construct the URL for the POST request
-        //            string url = $"{baseUrl}{pageNumber}{ajaxQuery}";
-
-        //            // Set up the POST request (if there is any POST data, you need to include it here)
-        //            var postData = new StringContent(""); // If POST data is required, add it here
-
-        //            // Send the POST request
-        //            HttpResponseMessage response = await httpClient.PostAsync(url, postData);
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                string pageContent = await response.Content.ReadAsStringAsync();
-
-        //                // Process the page content (e.g., parse it with HtmlAgilityPack)
-        //                Console.WriteLine($"Processing Page {pageNumber}");
-
-        //                // Check if there's more content. This logic will depend on how the pagination works.
-        //                hasMorePages = !pageContent.Contains("No more content");;
-
-        //                // Increment the page number for the next request
-        //                pageNumber++;
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine($"Failed to load page {pageNumber}. Status code: {response.StatusCode}");
-        //                hasMorePages = false;
-        //            }
-        //        }
-        //    }
-        //}
-
         //---------------------------------------------------------------------------------
         /// <summary>
-        /// Converts the source of an HtmlNode's image to a bitmap.
+        /// Converts an image from an HtmlNode to a BitmapImage. The image URL can be retrieved from
+        /// either the "data-lazy-src" or "src" attribute of the node.
         /// </summary>
-        /// <param name="imageNode"> HtmlNode where the image is located </param>
-        /// <returns> A task containing the converted image </returns>
+        /// <param name="imageNode">The HtmlNode representing the image element.</param>
+        /// <returns>A task that contains the converted BitmapImage.</returns>
         private async Task<BitmapImage> ConvertImageToBitmap(HtmlNode imageNode)
         {
             if (imageNode != null)
@@ -185,9 +143,15 @@ namespace Municipal_App.Services
             return new BitmapImage();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Converts a Base64-encoded data URI into a BitmapImage.
+        /// This method handles inline images that are encoded directly in the HTML.
+        /// </summary>
+        /// <param name="dataUri">The Base64-encoded image data URI.</param>
+        /// <returns>A BitmapImage constructed from the data URI.</returns>
         private BitmapImage ConvertDataUriToBitmap(string dataUri)
         {
-            // Extract the Base64-encoded string (remove the "data:image/svg+xml;base64," part)
             var base64Data = dataUri.Substring(dataUri.IndexOf(",") + 1);
             byte[] imageData = Convert.FromBase64String(base64Data);
 
@@ -198,16 +162,21 @@ namespace Municipal_App.Services
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
-                bitmap.Freeze(); // Optional: Freeze the BitmapImage for better performance
+                bitmap.Freeze(); // Freeze the BitmapImage for better performance
             }
-
             return bitmap;
         }
 
-
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Sanitizes an HTML field by decoding and trimming its content to ensure clean text.
+        /// </summary>
+        /// <param name="fieldValue">The HTML content to sanitize.</param>
+        /// <returns>The sanitized string.</returns>
         private string SanitizeWebField(string fieldValue)
         {
             return System.Net.WebUtility.HtmlDecode(fieldValue.Trim());
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

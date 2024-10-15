@@ -1,33 +1,41 @@
 ﻿using Municipal_App.Stores;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Municipal_App.Components
 {
+    //---------------------------------------------------------------------------------
     /// <summary>
-    /// Interaction logic for FilterComponent.xaml
+    /// A user control for filtering events in the application.
+    /// This component provides UI elements for selecting categories and date filters,
+    /// and allows the user to apply these filters to the displayed events.
     /// </summary>
     public partial class FilterComponent : UserControl
     {
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the instance of the EventsStore from the application state.
+        /// This store is used for managing and filtering events.
+        /// </summary>
         private EventsStore EventsStore => AppStore.Instance.EventsStore;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterComponent"/> class.
+        /// Registers a callback to handle new event categories.
+        /// </summary>
         public FilterComponent()
         {
             InitializeComponent();
             EventsStore.OnEventCategoryAdded += this.AddNewCategory;
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the click event for the filter button. Toggles the visibility of the filter popup.
+        /// When the popup is opened, it populates the categories and date comboboxes with appropriate filter options.
+        /// </summary>
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
             FilterPopup.IsOpen = !FilterPopup.IsOpen;  // Toggle popup visibility
@@ -39,6 +47,11 @@ namespace Municipal_App.Components
             this.PopulateDates();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Populates the DateComboBox with date filter options based on the current selected date type.
+        /// Ensures that the currently selected date type appears first in the list.
+        /// </summary>
         private void PopulateDates()
         {
             var existingDateType = EventsStore.FilterStore.DateType;
@@ -75,6 +88,11 @@ namespace Municipal_App.Components
             DateComboBox.SelectedIndex = 0;
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Populates the CategoriesComboBox with available event categories.
+        /// If a filter is already applied, it ensures that category is listed first.
+        /// </summary>
         private void PopulateCategories()
         {
             var eventCategories = EventsStore.EventCategories.ToList();
@@ -102,6 +120,12 @@ namespace Municipal_App.Components
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds a new category to the CategoriesComboBox if it doesn't already exist.
+        /// This method is triggered when a new category is added to the EventsStore.
+        /// </summary>
+        /// <param name="category">The category to add.</param>
         private void AddNewCategory(string category)
         {
             var alreadyExists = false;
@@ -119,6 +143,12 @@ namespace Municipal_App.Components
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the click event for the apply filter button.
+        /// Updates the category and date filters based on the user's selection,
+        /// and triggers the event filtering process.
+        /// </summary>
         private void ApplyFilterButton_Click(object sender, RoutedEventArgs e)
         {
             var dateText = DateComboBox.Text;
@@ -162,3 +192,4 @@ namespace Municipal_App.Components
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

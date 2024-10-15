@@ -11,6 +11,10 @@ using System.Windows.Data;
 
 namespace Municipal_App.Stores
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// Enum representing the different date types for filtering events.
+    /// </summary>
     public enum DateType
     {
         AnyTime,
@@ -21,13 +25,15 @@ namespace Municipal_App.Stores
 
     //---------------------------------------------------------------------------------
     /// <summary>
-    /// Stores the the event information scraped from the internet.
+    /// Stores the event information scraped from the internet, including functionality 
+    /// to filter and sort events based on date, category, and other criteria.
     /// </summary>
     internal class EventsStore
     {
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Queue Storing the events in the order they were scraped from the internet.
+        /// Indicates whether the queue has been initialized or not.
+        /// True if initialized, false if not.
         /// </summary>
         public ObservableQueue<MunicipalEventViewModel> EventsQueue { get; private set; } = new ObservableQueue<MunicipalEventViewModel>();
 
@@ -40,26 +46,40 @@ namespace Municipal_App.Stores
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// A sorted Dictionary of Events keyed by date. Used to allow the user to 
-        /// filter the events by date 
+        /// A sorted dictionary of events keyed by date type. This allows the user to 
+        /// filter events based on date ranges like "Today," "This Week," or "This Month."
         /// </summary>
         public SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>> SortedEvents { get; private set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// A set containing all of the Categories assigned to currently stored events.
+        /// A set containing all of the categories assigned to currently stored events.
+        /// Used to filter events by category.
         /// </summary>
         public HashSet<string> EventCategories { get; private set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Action that gets triggered whenever a new event category is added.
+        /// </summary>
         public Action<string> OnEventCategoryAdded { get; set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Manages filtering events based on search text, category, and date criteria.
+        /// </summary>
         public EventsFilter FilterStore { get; private set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Manages recommending events based on user interactions and search behavior.
+        /// </summary>
         public RecommendationService RecommendationService { get; private set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a new instance of the EventsStore
+        /// Creates a new instance of the EventsStore, initializing the sorted events 
+        /// dictionary, event categories set, recommendation service, and filter store.
         /// </summary>
         public EventsStore()
         {
@@ -71,10 +91,12 @@ namespace Municipal_App.Stores
 
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Updates the SortedEvents, EventCategories
+        /// Updates the sorted events dictionary and event categories with a new event.
+        /// This method determines the appropriate date type for the event and adds it
+        /// to the corresponding category and date filter collections.
         /// </summary>
-        /// <param name="municipalEvent"> 
-        /// MunicipalEventViewModel to be added to the fields 
+        /// <param name="municipalEvent">
+        /// The event to be added to the store.
         /// </param>
         public void UpdateFields(MunicipalEventViewModel municipalEvent)
         {

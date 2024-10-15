@@ -17,18 +17,35 @@ using System.Windows.Shapes;
 
 namespace Municipal_App.Components
 {
+    //---------------------------------------------------------------------------------
     /// <summary>
-    /// Interaction logic for FilterAnnouncementsComponent.xaml
+    /// A user control for filtering announcements in the application.
+    /// This component provides UI elements for selecting filter criteria such as date,
+    /// and it allows the user to apply filters to the displayed announcements.
     /// </summary>
     public partial class FilterAnnouncementsComponent : UserControl
     {
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the instance of the AnnouncementsStore from the application state.
+        /// This store is used for managing and filtering announcements.
+        /// </summary>
         private AnnouncementsStore AnnouncementsStore => AppStore.Instance.AnnouncementsStore;
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterAnnouncementsComponent"/> class.
+        /// </summary>
         public FilterAnnouncementsComponent()
         {
             InitializeComponent();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the click event for the filter button. Toggles the visibility of the filter popup.
+        /// When the popup is opened, it populates the date combobox with the appropriate filter options.
+        /// </summary>
         private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
             FilterPopup.IsOpen = !FilterPopup.IsOpen;  // Toggle popup visibility
@@ -37,11 +54,17 @@ namespace Municipal_App.Components
             this.PopulateDates();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Populates the DateComboBox with date filter options based on the current selected date type.
+        /// Ensures that the currently selected date type appears first in the list.
+        /// </summary>
         private void PopulateDates()
         {
             var existingDateType = AnnouncementsStore.FilterStore.DateType;
             DateComboBox.Items.Clear();
 
+            // True coding at it's finest
             if (existingDateType.Equals(DateType.AnyTime))
             {
                 DateComboBox.Items.Add("Any Time");
@@ -73,6 +96,12 @@ namespace Municipal_App.Components
             DateComboBox.SelectedIndex = 0;
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the click event for the apply filter button.
+        /// Updates the date filter based on the selected value from the DateComboBox,
+        /// and triggers the announcement filtering process.
+        /// </summary>
         private void ApplyFilterButton_Click(object sender, RoutedEventArgs e)
         {
             var dateText = DateComboBox.Text;
@@ -105,3 +134,4 @@ namespace Municipal_App.Components
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

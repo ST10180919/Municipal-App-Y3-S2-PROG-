@@ -7,6 +7,13 @@ using System.Windows.Media.Imaging;
 
 namespace Municipal_App.ViewModels
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// ViewModel representing an announcement in the system. 
+    /// Contains properties such as the title, image, date, description, and whether the 
+    /// announcement is recommended or not. Inherits from ViewModelBase to provide 
+    /// property change notifications.
+    /// </summary>
     internal class AnnouncementViewModel : ViewModelBase
     {
         private string _title;
@@ -73,6 +80,10 @@ namespace Municipal_App.ViewModels
         }
 
         private bool _isRecommended = false;
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Boolean to store whether this Announcement is recommended
+        /// </summary>
         public bool IsRecommended
         {
             get
@@ -87,3 +98,4 @@ namespace Municipal_App.ViewModels
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------
