@@ -17,8 +17,8 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
                                 <Border
-                                    Width="30"
-                                    Height="30"
+                                    Width="26"
+                                    Height="26"
                                     Background="{StaticResource TextWhiteBrush}"
                                     CornerRadius="5"
                                     Cursor="Hand">
@@ -34,8 +34,8 @@
                                     </Border.Effect>
 
                                     <Image
-                                        Width="24"
-                                        Height="24"
+                                        Width="18"
+                                        Height="18"
                                         Source="/Images/filter2.png" />
                                 </Border>
                                 <ControlTemplate.Triggers>
@@ -96,153 +96,155 @@
             PlacementTarget="{Binding ElementName=FilterButton}"
             PopupAnimation="Fade"
             StaysOpen="False">
-            <Grid Width="273" Height="160">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="47" />
-                    <RowDefinition Height="48" />
-                    <RowDefinition Height="60" />
-                </Grid.RowDefinitions>
+            <Viewbox Width="180">
+                <Grid Width="273" Height="160">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="47" />
+                        <RowDefinition Height="48" />
+                        <RowDefinition Height="60" />
+                    </Grid.RowDefinitions>
 
-                <Border
-                    Grid.Row="0"
-                    Grid.RowSpan="3"
-                    Background="{StaticResource TextWhiteBrush}"
-                    BorderBrush="{StaticResource EerieBlackBrush}"
-                    BorderThickness="2" />
-
-
-                <!--  Filter Image  -->
-
-                <Image
-                    Grid.Row="0"
-                    Width="24"
-                    Height="24"
-                    Margin="7,7,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Source="/Images/filter2.png" />
+                    <Border
+                        Grid.Row="0"
+                        Grid.RowSpan="3"
+                        Background="{StaticResource TextWhiteBrush}"
+                        BorderBrush="{StaticResource EerieBlackBrush}"
+                        BorderThickness="2" />
 
 
-                <!--  Popup Title  -->
+                    <!--  Filter Image  -->
 
-                <TextBlock
-                    Grid.Row="0"
-                    Margin="0,6,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    FontSize="20"
-                    Text="Filter Events" />
-
-
-                <!--  Filter Button  -->
-
-                <Button
-                    x:Name="ApplyFilterButton"
-                    Grid.Row="0"
-                    Margin="0,7,7,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Click="ApplyFilterButton_Click">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Grid Grid.Column="2" Height="30">
-                                            <Border
-                                                x:Name="ButtonBackground"
-                                                Width="30"
-                                                Background="{StaticResource EerieBlackBrush}"
-                                                CornerRadius="5"
-                                                Effect="{StaticResource EventsDropShadow}" />
-
-                                            <Image
-                                                Width="14"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Effect="{StaticResource NoDropShadow}"
-                                                Source="/Images/play.png"
-                                                UseLayoutRounding="True" />
-                                        </Grid>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Trigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation
-                                                                Storyboard.TargetName="ButtonBackground"
-                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                To="{StaticResource Jet}"
-                                                                Duration="0:0:0.15" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.EnterActions>
-                                                <Trigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation
-                                                                Storyboard.TargetName="ButtonBackground"
-                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                To="{StaticResource EerieBlack}"
-                                                                Duration="0:0:0.15" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.ExitActions>
-                                                <Setter Property="Cursor" Value="Hand" />
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
-                                                <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource JetBrush}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="True">
-                                                <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource EerieBlackBrush}" />
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                    <Image
+                        Grid.Row="0"
+                        Width="24"
+                        Height="24"
+                        Margin="7,7,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Source="/Images/filter2.png" />
 
 
-                <!--  Categories Combo box  -->
+                    <!--  Popup Title  -->
 
-                <Viewbox
-                    Grid.Row="1"
-                    Height="40"
-                    Margin="20,0"
-                    VerticalAlignment="Top">
-                    <ComboBox
-                        x:Name="CategoriesComboBox"
-                        Height="55"
-                        ItemContainerStyle="{StaticResource EventsAndAnnouncementsComboBoxItem}"
-                        SelectedIndex="0"
-                        Style="{StaticResource EventsAndAnnouncementsComboBox}">
-                        <ComboBoxItem>All Categories</ComboBoxItem>
-                    </ComboBox>
-                </Viewbox>
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,6,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        FontSize="20"
+                        Text="Filter Events" />
 
 
-                <!--  Select Date  -->
+                    <!--  Filter Button  -->
 
-                <Viewbox
-                    Grid.Row="2"
-                    Height="40"
-                    Margin="20,0"
-                    VerticalAlignment="Top">
-                    <ComboBox
-                        x:Name="DateComboBox"
-                        Height="55"
-                        ItemContainerStyle="{StaticResource EventsAndAnnouncementsComboBoxItem}"
-                        SelectedIndex="0"
-                        Style="{StaticResource EventsAndAnnouncementsComboBox}">
-                        <ComboBoxItem>Any Time</ComboBoxItem>
-                        <ComboBoxItem>Today</ComboBoxItem>
-                        <ComboBoxItem>This Week</ComboBoxItem>
-                        <ComboBoxItem>This Month</ComboBoxItem>
-                    </ComboBox>
-                </Viewbox>
-            </Grid>
+                    <Button
+                        x:Name="ApplyFilterButton"
+                        Grid.Row="0"
+                        Margin="0,7,7,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Click="ApplyFilterButton_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid Grid.Column="2" Height="30">
+                                                <Border
+                                                    x:Name="ButtonBackground"
+                                                    Width="30"
+                                                    Background="{StaticResource EerieBlackBrush}"
+                                                    CornerRadius="5"
+                                                    Effect="{StaticResource EventsDropShadow}" />
+
+                                                <Image
+                                                    Width="14"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Effect="{StaticResource NoDropShadow}"
+                                                    Source="/Images/play.png"
+                                                    UseLayoutRounding="True" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation
+                                                                    Storyboard.TargetName="ButtonBackground"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource Jet}"
+                                                                    Duration="0:0:0.15" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation
+                                                                    Storyboard.TargetName="ButtonBackground"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource EerieBlack}"
+                                                                    Duration="0:0:0.15" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                    <Setter Property="Cursor" Value="Hand" />
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+                                                    <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource JetBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="True">
+                                                    <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource EerieBlackBrush}" />
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+
+                    <!--  Categories Combo box  -->
+
+                    <Viewbox
+                        Grid.Row="1"
+                        Height="40"
+                        Margin="20,0"
+                        VerticalAlignment="Top">
+                        <ComboBox
+                            x:Name="CategoriesComboBox"
+                            Height="55"
+                            ItemContainerStyle="{StaticResource EventsAndAnnouncementsComboBoxItem}"
+                            SelectedIndex="0"
+                            Style="{StaticResource EventsAndAnnouncementsComboBox}">
+                            <ComboBoxItem>All Categories</ComboBoxItem>
+                        </ComboBox>
+                    </Viewbox>
+
+
+                    <!--  Select Date  -->
+
+                    <Viewbox
+                        Grid.Row="2"
+                        Height="40"
+                        Margin="20,0"
+                        VerticalAlignment="Top">
+                        <ComboBox
+                            x:Name="DateComboBox"
+                            Height="55"
+                            ItemContainerStyle="{StaticResource EventsAndAnnouncementsComboBoxItem}"
+                            SelectedIndex="0"
+                            Style="{StaticResource EventsAndAnnouncementsComboBox}">
+                            <ComboBoxItem>Any Time</ComboBoxItem>
+                            <ComboBoxItem>Today</ComboBoxItem>
+                            <ComboBoxItem>This Week</ComboBoxItem>
+                            <ComboBoxItem>This Month</ComboBoxItem>
+                        </ComboBox>
+                    </Viewbox>
+                </Grid>
+            </Viewbox>
         </Popup>
     </Grid>
 </UserControl>

@@ -82,11 +82,21 @@ namespace Municipal_App.Components
         {
             if (e.Item != null && e.Item is MunicipalEventViewModel)
             {
-                e.Accepted = AppStore.Instance.EventsStore.FilterStore.IsAccepted(e.Item as MunicipalEventViewModel);
+                var viewModel = e.Item as MunicipalEventViewModel;
+                // Setting recommendation
+                var isRecommended = AppStore.Instance.EventsStore.RecommendationService.GetRecommendation(viewModel.Title, viewModel.Category, viewModel.Date);
+                viewModel.IsRecommended = isRecommended;
+                // Accepting or denying item
+                e.Accepted = AppStore.Instance.EventsStore.FilterStore.IsAccepted(viewModel);
 
             } else if (e.Item != null && e.Item is AnnouncementViewModel)
             {
-                e.Accepted = AppStore.Instance.AnnouncementsStore.FilterStore.IsAccepted(e.Item as AnnouncementViewModel);
+                var viewModel = e.Item as AnnouncementViewModel;
+                // Setting recommendation
+                var isRecommended = AppStore.Instance.AnnouncementsStore.RecommendationService.GetRecommendation(viewModel.Title, "", viewModel.Date);
+                viewModel.IsRecommended = isRecommended;
+                // Accepting or denying item
+                e.Accepted = AppStore.Instance.AnnouncementsStore.FilterStore.IsAccepted(viewModel);
             }
         }
 

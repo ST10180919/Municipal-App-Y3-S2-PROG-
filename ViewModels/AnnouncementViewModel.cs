@@ -71,5 +71,19 @@ namespace Municipal_App.ViewModels
                 OnPropertyChanged(nameof(Description));
             }
         }
+
+        private bool _isRecommended = false;
+        public bool IsRecommended
+        {
+            get
+            {
+                return _isRecommended;
+            }
+            set
+            {
+                _isRecommended = value;
+                OnPropertyChanged(nameof(IsRecommended));
+            }
+        }
     }
 }

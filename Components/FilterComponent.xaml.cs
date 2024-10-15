@@ -131,24 +131,32 @@ namespace Municipal_App.Components
             else
             {
                 EventsStore.FilterStore.CategoryText = categoryText;
+                EventsStore.RecommendationService.AddTerm(Services.RecommendationTermType.Category, categoryText);
             }
 
+            var dateType = DateType.AnyTime;
             if (dateText.Equals("Any Time"))
             {
-                EventsStore.FilterStore.DateType = DateType.AnyTime;
+                dateType = DateType.AnyTime;
             }
-            else if (dateText.Equals("Today"))
+            else
             {
-                EventsStore.FilterStore.DateType = DateType.Today;
+                if (dateText.Equals("Today"))
+                {
+                    dateType = DateType.Today;
+                }
+                else if (dateText.Equals("This Week"))
+                {
+                    dateType = DateType.ThisWeek;
+                }
+                else if (dateText.Equals("This Month"))
+                {
+                    dateType = DateType.ThisMonth;
+                }
+                // Add the term to the for recommendation consideration
+                EventsStore.RecommendationService.AddTerm(Services.RecommendationTermType.Date, dateType.ToString());
             }
-            else if (dateText.Equals("This Week"))
-            {
-                EventsStore.FilterStore.DateType = DateType.ThisWeek;
-            }
-            else if (dateText.Equals("This Month"))
-            {
-                EventsStore.FilterStore.DateType = DateType.ThisMonth;
-            }
+            EventsStore.FilterStore.DateType = dateType;
 
             EventsStore.FilterStore.OnFilterEvents?.Invoke();
         }

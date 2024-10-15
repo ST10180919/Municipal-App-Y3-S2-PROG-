@@ -13,146 +13,11 @@
     <!--  Item templates  -->
     <UserControl.Resources>
         <DataTemplate x:Key="EventItemTemplate">
-            <Viewbox>
-                <Grid
-                    Width="263"
-                    Height="445"
-                    Margin="0,0,50,0">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Border Background="{StaticResource TextWhiteBrush}" Effect="{StaticResource EventsItemDropShadow}" />
-
-                    <StackPanel>
-                        <Image
-                            x:Name="EventImage"
-                            Width="263"
-                            Height="165"
-                            Source="{Binding Image}"
-                            Stretch="UniformToFill" />
-
-                        <Border Height="3" Background="{StaticResource FlaxBrush}" />
-
-                        <TextBlock
-                            x:Name="EventCategory"
-                            Margin="0,17,0,0"
-                            HorizontalAlignment="Center"
-                            FontFamily="{StaticResource Lato}"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Foreground="{StaticResource EventTextLiteBrush}"
-                            Loaded="LatoText_Loaded"
-                            Text="{Binding Category}" />
-
-                        <TextBlock
-                            x:Name="EventTitle"
-                            Margin="22,13,22,0"
-                            HorizontalAlignment="Center"
-                            FontSize="24"
-                            Text="{Binding Title}"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            x:Name="EventDate"
-                            Margin="22,20,22,0"
-                            HorizontalAlignment="Center"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Text="{Binding Date}" />
-
-                        <TextBlock
-                            x:Name="EventTime"
-                            Margin="22,3,22,0"
-                            HorizontalAlignment="Center"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Text="{Binding Time}" />
-
-                        <TextBlock
-                            Margin="0,18,0,0"
-                            HorizontalAlignment="Center"
-                            FontFamily="{StaticResource Lato}"
-                            FontSize="16"
-                            FontWeight="Medium"
-                            Loaded="LatoText_Loaded"
-                            Text="- VENUE -" />
-
-                        <TextBlock
-                            x:Name="EventVenue"
-                            Margin="22,5,22,0"
-                            HorizontalAlignment="Center"
-                            FontSize="16"
-                            FontWeight="Light"
-                            LineHeight="25"
-                            Text="{Binding Venue}"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                </Grid>
-            </Viewbox>
+            <local:EventItem />
         </DataTemplate>
 
         <DataTemplate x:Key="AnnouncementItemTemplate">
-            <Viewbox>
-                <Grid
-                    Width="500"
-                    Height="248"
-                    Margin="0,0,50,0">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Border Background="{StaticResource TextWhiteBrush}" Effect="{StaticResource EventsItemDropShadow}" />
-
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="196" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="111" />
-                            </Grid.RowDefinitions>
-
-                            <Image
-                                Grid.Column="0"
-                                Source="{Binding Image}"
-                                Stretch="UniformToFill" />
-
-                            <Border
-                                Grid.Column="1"
-                                Width="3"
-                                HorizontalAlignment="Left"
-                                Background="{StaticResource FlaxBrush}" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="16,5,16,0"
-                                FontSize="24"
-                                Text="{Binding Title}"
-                                TextWrapping="Wrap" />
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="16,0,16,5"
-                                VerticalAlignment="Bottom"
-                                FontFamily="{StaticResource Lato}"
-                                FontSize="16"
-                                Text="{Binding Date}" />
-                        </Grid>
-
-                        <TextBlock
-                            Margin="16"
-                            FontSize="16"
-                            LineHeight="25"
-                            Text="{Binding Description}"
-                            TextWrapping="wrap" />
-                    </StackPanel>
-                </Grid>
-            </Viewbox>
+            <local:AnnouncementItem />
         </DataTemplate>
 
         <!--  Define the CollectionViewSource with sorting by Date  -->
@@ -160,9 +25,9 @@
             x:Key="SortedItems"
             Filter="OnFilterEvents"
             Source="{Binding ItemsSource, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}">
-            <!--<CollectionViewSource.SortDescriptions>
-                <scm:SortDescription Direction="Ascending" PropertyName="Title" />
-            </CollectionViewSource.SortDescriptions>-->
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Descending" PropertyName="IsRecommended" />
+            </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </UserControl.Resources>
 
@@ -265,7 +130,7 @@
             VerticalScrollBarVisibility="Disabled">
             <ItemsControl
                 Name="carouselItems"
-                Padding="5"
+                Padding="5,15,5,5"
                 ItemTemplate="{Binding SelectedItemTemplate, RelativeSource={RelativeSource AncestorType={x:Type local:CarouselControl}}}"
                 ItemsSource="{Binding Source={StaticResource SortedItems}}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"

@@ -107,6 +107,14 @@ namespace Municipal_App.ViewModels
 
         private void ApplyFilters()
         {
+            // Add search term to recommendations
+            if (SearchText != string.Empty)
+            {
+                AppStore.Instance.EventsStore.RecommendationService.AddTerm(RecommendationTermType.Search, SearchText);
+                AppStore.Instance.AnnouncementsStore.RecommendationService.AddTerm(RecommendationTermType.Search, SearchText);
+            }
+
+            // Invoke Filter Actions
             AppStore.Instance.EventsStore.FilterStore.OnFilterEvents?.Invoke();
             AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterAnnouncements?.Invoke();
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Municipal_App.Stores
 {
     using global::Municipal_App.Models;
+    using global::Municipal_App.Services;
     using global::Municipal_App.ViewModels;
     using System;
     using System.Collections.Generic;
@@ -45,6 +46,8 @@ namespace Municipal_App.Stores
 
             public AnnouncementsFilter FilterStore { get; private set; }
 
+            public RecommendationService RecommendationService { get; private set; }
+
             //-----------------------------------------------------------------------------
             /// <summary>
             /// Creates a new instance of the AnnouncementsStore
@@ -53,6 +56,7 @@ namespace Municipal_App.Stores
             {
                 this.SortedAnnouncements = new SortedDictionary<DateType, ObservableCollection<AnnouncementViewModel>>();
                 this.FilterStore = new AnnouncementsFilter(this.SortedAnnouncements);
+                this.RecommendationService = new RecommendationService();
             }
 
             //-----------------------------------------------------------------------------

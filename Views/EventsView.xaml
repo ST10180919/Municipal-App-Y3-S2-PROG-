@@ -16,6 +16,7 @@
     <UserControl.Resources>
         <converters:HeightToFractionConverter x:Key="HeightToFractionConverter" />
         <converters:HeightToMarginConverter x:Key="HeightToMarginConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Hidden">
@@ -78,14 +79,25 @@
                             Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,06'}"
                             Margin="85,0,0,0"
                             HorizontalAlignment="Left">
-                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                 <TextBlock
-                                    Margin="0,0,20,0"
+                                    Margin="0,0,10,0"
                                     VerticalAlignment="Bottom"
-                                    FontSize="24"
+                                    FontSize="18"
                                     Text="Events" />
 
                                 <components:FilterComponent HorizontalAlignment="Right" VerticalAlignment="Center" />
+
+                                <Image
+                                    Width="20"
+                                    Margin="30,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Source="/Images/star.png"/>
+                                <TextBlock
+                                    Margin="0,0,0,3"
+                                    VerticalAlignment="Bottom"
+                                    FontSize="14"
+                                    Text="Recommended"/>
                             </StackPanel>
                         </Viewbox>
 
@@ -101,13 +113,24 @@
                             Height="{Binding ElementName=MyUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,06'}"
                             Margin="85,0,0,0"
                             HorizontalAlignment="Left">
-                            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock
-                                    Margin="0,0,20,0"
-                                    FontSize="24"
+                                    Margin="0,0,10,0"
+                                    FontSize="18"
                                     Text="Announcements" />
 
                                 <components:FilterAnnouncementsComponent HorizontalAlignment="Right" VerticalAlignment="Center" />
+
+                                <Image
+                                    Width="20"
+                                    Margin="30,0,5,0"
+                                    VerticalAlignment="Bottom"
+                                    Source="/Images/star.png"/>
+                                <TextBlock
+                                    Margin="0,0,0,3"
+                                    VerticalAlignment="Bottom"
+                                    FontSize="14"
+                                    Text="Recommended"/>
                             </StackPanel>
                         </Viewbox>
 

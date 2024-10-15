@@ -87,7 +87,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Components\AnnouncementItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\CarouselControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Components\EventItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,8 +169,14 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RemoveAttachmentCommand.cs" />
     <Compile Include="Commands\SubmitFeedbackCommand.cs" />
+    <Compile Include="Components\AnnouncementItem.xaml.cs">
+      <DependentUpon>AnnouncementItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Components\CarouselControl.xaml.cs">
       <DependentUpon>CarouselControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\EventItem.xaml.cs">
+      <DependentUpon>EventItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\FilterAnnouncementsComponent.xaml.cs">
       <DependentUpon>FilterAnnouncementsComponent.xaml</DependentUpon>
@@ -173,12 +187,14 @@
     <Compile Include="Components\SearchComponent.xaml.cs">
       <DependentUpon>SearchComponent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\EventControlsMarginConverter.cs" />
     <Compile Include="Converters\HeightToFractionConverter.cs" />
     <Compile Include="ISSUE_REPORT.cs">
       <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ObservableQueue.cs" />
+    <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="Stores\AnnouncementsFilter.cs" />
     <Compile Include="Stores\AnnouncementsStore.cs" />
     <Compile Include="Stores\EventsFilter.cs" />
@@ -336,6 +352,7 @@
     <Resource Include="Images\Placeholder.png" />
     <Resource Include="Images\filter2.png" />
     <Resource Include="Images\play.png" />
+    <Resource Include="Images\star.png" />
     <Content Include="MunicipalDatabase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

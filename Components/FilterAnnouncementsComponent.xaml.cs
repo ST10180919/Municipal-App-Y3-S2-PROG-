@@ -77,22 +77,29 @@ namespace Municipal_App.Components
         {
             var dateText = DateComboBox.Text;
 
+            var dateType = DateType.AnyTime;
             if (dateText.Equals("Any Time"))
             {
-                AnnouncementsStore.FilterStore.DateType = DateType.AnyTime;
+                dateType = DateType.AnyTime;
             }
-            else if (dateText.Equals("Today"))
+            else
             {
-                AnnouncementsStore.FilterStore.DateType = DateType.Today;
+                if (dateText.Equals("Today"))
+                {
+                    dateType = DateType.Today;
+                }
+                else if (dateText.Equals("This Week"))
+                {
+                    dateType = DateType.ThisWeek;
+                }
+                else if (dateText.Equals("This Month"))
+                {
+                    dateType = DateType.ThisMonth;
+                }
+                // Add the term to the for recommendation consideration
+                AnnouncementsStore.RecommendationService.AddTerm(Services.RecommendationTermType.Date, dateType.ToString());
             }
-            else if (dateText.Equals("This Week"))
-            {
-                AnnouncementsStore.FilterStore.DateType = DateType.ThisWeek;
-            }
-            else if (dateText.Equals("This Month"))
-            {
-                AnnouncementsStore.FilterStore.DateType = DateType.ThisMonth;
-            }
+            AnnouncementsStore.FilterStore.DateType = dateType;
 
             AnnouncementsStore.FilterStore.OnFilterAnnouncements?.Invoke();
         }

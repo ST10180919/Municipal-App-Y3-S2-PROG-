@@ -1,4 +1,5 @@
 ﻿using Municipal_App.Models;
+using Municipal_App.Services;
 using Municipal_App.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,8 @@ namespace Municipal_App.Stores
 
         public EventsFilter FilterStore { get; private set; }
 
+        public RecommendationService RecommendationService { get; private set; }
+
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Creates a new instance of the EventsStore
@@ -62,6 +65,7 @@ namespace Municipal_App.Stores
         {
             this.SortedEvents = new SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>>();
             this.EventCategories = new HashSet<string>();
+            this.RecommendationService = new RecommendationService();
             this.FilterStore = new EventsFilter(this.SortedEvents);
         }
 
