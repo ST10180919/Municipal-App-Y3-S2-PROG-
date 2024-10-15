@@ -156,7 +156,7 @@ namespace Municipal_App.Services
             }
 
             // Return true if the occurences is greater than 2 and is the TopOccurence
-            return occurrences >= 2 && occurrences >= TopOccurence;
+            return occurrences > 2 && occurrences >= TopOccurence;
         }
     }
 }
