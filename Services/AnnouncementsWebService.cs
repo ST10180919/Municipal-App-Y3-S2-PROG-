@@ -51,7 +51,6 @@ namespace Municipal_App.Services
             catch (HttpRequestException)
             {
                 MessageBox.Show($"Failed to download webpage ${_announcementsURL}.\n Please Check your internet connection");
-                Application.Current.Shutdown();
             }
         }
 
@@ -71,6 +70,11 @@ namespace Municipal_App.Services
             {
                 // First, initializing page
                 await this.InitializeAnnouncements();
+
+                if (this.HtmlDocument == null)
+                {
+                    return;
+                }
 
                 // Iterating through all the events
                 var announcementNodes = this.HtmlDocument.DocumentNode.SelectNodes("//div[contains(@class, 'jet-smart-listing__post-wrapper')]");

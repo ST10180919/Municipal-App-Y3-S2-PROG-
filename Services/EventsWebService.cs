@@ -50,7 +50,6 @@ namespace Municipal_App.Services
             catch (HttpRequestException)
             {
                 MessageBox.Show($"Failed to download webpage ${_eventsURL}.\n Please Check your internet connection");
-                Application.Current.Shutdown();
             }
         }
 
@@ -74,6 +73,11 @@ namespace Municipal_App.Services
             {
                 // First, initializing page
                 await this.InitializeEvents();
+
+                if (this.HtmlDocument == null)
+                {
+                    return;
+                }
 
                 // Iterating through all the events
                 var eventNodes = this.HtmlDocument.DocumentNode.SelectNodes("//article[contains(@class, 'mec-event-article') and contains(@class, 'mec-clear')]");
