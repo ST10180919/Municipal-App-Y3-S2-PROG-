@@ -3,11 +3,8 @@ using Municipal_App.Models;
 using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 

@@ -4,10 +4,6 @@ using Municipal_App.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
 namespace Municipal_App.Stores
 {
@@ -35,7 +31,7 @@ namespace Municipal_App.Stores
         /// Indicates whether the queue has been initialized or not.
         /// True if initialized, false if not.
         /// </summary>
-        public ObservableQueue<MunicipalEventViewModel> EventsQueue { get; private set; } = new ObservableQueue<MunicipalEventViewModel>();
+        public ObservableQueue<EventViewModel> EventsQueue { get; private set; } = new ObservableQueue<EventViewModel>();
 
         //-----------------------------------------------------------------------------
         /// <summary>
@@ -49,7 +45,7 @@ namespace Municipal_App.Stores
         /// A sorted dictionary of events keyed by date type. This allows the user to 
         /// filter events based on date ranges like "Today," "This Week," or "This Month."
         /// </summary>
-        public SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>> SortedEvents { get; private set; }
+        public SortedDictionary<DateType, ObservableCollection<EventViewModel>> SortedEvents { get; private set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
@@ -68,7 +64,7 @@ namespace Municipal_App.Stores
         /// <summary>
         /// Manages filtering events based on search text, category, and date criteria.
         /// </summary>
-        public EventsFilter FilterStore { get; private set; }
+        public EventsFilter Filter { get; private set; }
 
         //-----------------------------------------------------------------------------
         /// <summary>
@@ -83,10 +79,10 @@ namespace Municipal_App.Stores
         /// </summary>
         public EventsStore()
         {
-            this.SortedEvents = new SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>>();
+            this.SortedEvents = new SortedDictionary<DateType, ObservableCollection<EventViewModel>>();
             this.EventCategories = new HashSet<string>();
             this.RecommendationService = new RecommendationService();
-            this.FilterStore = new EventsFilter(this.SortedEvents);
+            this.Filter = new EventsFilter(this.SortedEvents);
         }
 
         //-----------------------------------------------------------------------------
@@ -98,7 +94,7 @@ namespace Municipal_App.Stores
         /// <param name="municipalEvent">
         /// The event to be added to the store.
         /// </param>
-        public void UpdateFields(MunicipalEventViewModel municipalEvent)
+        public void UpdateFields(EventViewModel municipalEvent)
         {
             if (DateTime.TryParse(municipalEvent.Date, out DateTime eventDate))
             {
@@ -126,7 +122,7 @@ namespace Municipal_App.Stores
                 // Add the event to the SortedEvents dictionary based on the determined date type
                 if (!SortedEvents.ContainsKey(dateType))
                 {
-                    SortedEvents[dateType] = new ObservableCollection<MunicipalEventViewModel>();
+                    SortedEvents[dateType] = new ObservableCollection<EventViewModel>();
                 }
 
                 SortedEvents[dateType].Add(municipalEvent);

@@ -1,6 +1,4 @@
-﻿
-
-using Municipal_App.Services;
+﻿using Municipal_App.Services;
 
 namespace Municipal_App.Commands
 {

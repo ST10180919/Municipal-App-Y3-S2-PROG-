@@ -1,19 +1,6 @@
 ﻿using Municipal_App.Stores;
-using Municipal_App.Stores.Municipal_App.Stores;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Municipal_App.Components
 {
@@ -61,7 +48,7 @@ namespace Municipal_App.Components
         /// </summary>
         private void PopulateDates()
         {
-            var existingDateType = AnnouncementsStore.FilterStore.DateType;
+            var existingDateType = AnnouncementsStore.Filter.DateType;
             DateComboBox.Items.Clear();
 
             // True coding at it's finest
@@ -128,9 +115,9 @@ namespace Municipal_App.Components
                 // Add the term to the for recommendation consideration
                 AnnouncementsStore.RecommendationService.AddTerm(Services.RecommendationTermType.Date, dateType.ToString());
             }
-            AnnouncementsStore.FilterStore.DateType = dateType;
+            AnnouncementsStore.Filter.DateType = dateType;
 
-            AnnouncementsStore.FilterStore.OnFilterAnnouncements?.Invoke();
+            AnnouncementsStore.Filter.OnFilterAnnouncements?.Invoke();
         }
     }
 }

@@ -131,7 +131,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EventsView.xaml">
+    <Page Include="Views\EventsAnnouncementsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -219,7 +219,7 @@
     <Compile Include="Stores\IssueReportStore.cs" />
     <Compile Include="ViewModels\AttachmentViewModel.cs" />
     <Compile Include="ViewModels\BannerMessageViewModel.cs" />
-    <Compile Include="ViewModels\EventsViewModel.cs" />
+    <Compile Include="ViewModels\EventsAnnouncementsViewModel.cs" />
     <Compile Include="ViewModels\ReportIssuesViewModel.cs" />
     <Compile Include="ViewModels\LandingViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -229,8 +229,8 @@
     <Compile Include="Views\BannerMessageView.xaml.cs">
       <DependentUpon>BannerMessageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EventsView.xaml.cs">
-      <DependentUpon>EventsView.xaml</DependentUpon>
+    <Compile Include="Views\EventsAnnouncementsView.xaml.cs">
+      <DependentUpon>EventsAnnouncementsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IssuesView.xaml.cs">
       <DependentUpon>IssuesView.xaml</DependentUpon>

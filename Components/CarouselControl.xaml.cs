@@ -2,21 +2,12 @@
 using Municipal_App.ViewModels;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 namespace Municipal_App.Components
 {
     //---------------------------------------------------------------------------------
@@ -89,14 +80,28 @@ namespace Municipal_App.Components
 
         //-----------------------------------------------------------------------------
         /// <summary>
+        /// Property to access the EventsStore instance from the AppStore, which manages
+        /// the collection and filtering of events.
+        /// </summary>
+        private EventsStore EventsStore => AppStore.Instance.EventsStore;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Property to access the AnnouncementsStore instance from the AppStore, which manages
+        /// the collection and filtering of announcements.
+        /// </summary>
+        private AnnouncementsStore AnnouncementsStore => AppStore.Instance.AnnouncementsStore;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
         /// Initializes the carousel control and registers event handlers for filtering 
         /// and recommendations.
         /// </summary>
         public CarouselControl()
         {
             InitializeComponent();
-            AppStore.Instance.EventsStore.FilterStore.OnFilterEvents += this.ApplySearchFilter;
-            AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterAnnouncements += this.ApplySearchFilter;
+            EventsStore.Filter.OnFilterEvents += this.ApplySearchFilter;
+            AnnouncementsStore.Filter.OnFilterAnnouncements += this.ApplySearchFilter;
         }
 
         //-----------------------------------------------------------------------------
@@ -111,24 +116,24 @@ namespace Municipal_App.Components
         {
             try
             {
-                if (e.Item != null && e.Item is MunicipalEventViewModel)
+                if (e.Item != null && e.Item is EventViewModel)
                 {
-                    var viewModel = e.Item as MunicipalEventViewModel;
+                    var viewModel = e.Item as EventViewModel;
                     // Setting recommendation
-                    var isRecommended = AppStore.Instance.EventsStore.RecommendationService.GetRecommendation(viewModel.Title, viewModel.Category, viewModel.Date);
+                    var isRecommended = EventsStore.RecommendationService.GetRecommendation(viewModel.Title, viewModel.Category, viewModel.Date);
                     viewModel.IsRecommended = isRecommended;
                     // Accepting or denying item
-                    e.Accepted = AppStore.Instance.EventsStore.FilterStore.IsAccepted(viewModel);
+                    e.Accepted = EventsStore.Filter.IsAccepted(viewModel);
 
                 }
                 else if (e.Item != null && e.Item is AnnouncementViewModel)
                 {
                     var viewModel = e.Item as AnnouncementViewModel;
                     // Setting recommendation
-                    var isRecommended = AppStore.Instance.AnnouncementsStore.RecommendationService.GetRecommendation(viewModel.Title, "", viewModel.Date);
+                    var isRecommended = AnnouncementsStore.RecommendationService.GetRecommendation(viewModel.Title, "", viewModel.Date);
                     viewModel.IsRecommended = isRecommended;
                     // Accepting or denying item
-                    e.Accepted = AppStore.Instance.AnnouncementsStore.FilterStore.IsAccepted(viewModel);
+                    e.Accepted = AnnouncementsStore.Filter.IsAccepted(viewModel);
                 }
             }
             catch (Exception ex)

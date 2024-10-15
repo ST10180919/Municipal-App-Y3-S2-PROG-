@@ -1,10 +1,5 @@
 ﻿using Municipal_App.Commands;
 using Municipal_App.Stores;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Municipal_App.ViewModels
@@ -88,9 +83,9 @@ namespace Municipal_App.ViewModels
         /// Creates a new CreateEventsViewModel
         /// </summary>
         /// <returns></returns>
-        private EventsViewModel CreateEventsViewModel()
+        private EventsAnnouncementsViewModel CreateEventsViewModel()
         {
-            return new EventsViewModel();
+            return new EventsAnnouncementsViewModel();
         }
 
         //private RequestStatusViewModel CreateRequestStatusViewModel()

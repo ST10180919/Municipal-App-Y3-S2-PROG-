@@ -18,11 +18,11 @@ using static System.Net.Mime.MediaTypeNames;
 namespace Municipal_App.Views
 {
     /// <summary>
-    /// Interaction logic for EventsView.xaml
+    /// Interaction logic for EventsAnnouncementsViewModel.xaml
     /// </summary>
-    public partial class EventsView : UserControl
+    public partial class EventsAnnouncemetnsView : UserControl
     {
-        public EventsView()
+        public EventsAnnouncemetnsView()
         {
             InitializeComponent();
         }

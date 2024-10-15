@@ -1,12 +1,7 @@
-﻿using Municipal_App.Services;
-using Municipal_App.ViewModels;
+﻿using Municipal_App.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
 namespace Municipal_App.Stores
 {
@@ -49,14 +44,14 @@ namespace Municipal_App.Stores
         /// <summary>
         /// Dictionary containing events sorted by date, which is used to evaluate the date filter.
         /// </summary>
-        private SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>> SortedEventsHere;
+        private SortedDictionary<DateType, ObservableCollection<EventViewModel>> SortedEventsHere;
 
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the EventsFilter class and assigns the provided sorted events dictionary.
         /// </summary>
         /// <param name="sortedEvents">Dictionary of events sorted by date.</param>
-        public EventsFilter(SortedDictionary<DateType, ObservableCollection<MunicipalEventViewModel>> sortedEvents)
+        public EventsFilter(SortedDictionary<DateType, ObservableCollection<EventViewModel>> sortedEvents)
         {
             this.SortedEventsHere = sortedEvents;
         }
@@ -68,7 +63,7 @@ namespace Municipal_App.Stores
         /// </summary>
         /// <param name="item">The MunicipalEventViewModel being evaluated.</param>
         /// <returns>True if the event meets the filter criteria, false otherwise.</returns>
-        public bool IsAccepted(MunicipalEventViewModel item)
+        public bool IsAccepted(EventViewModel item)
         {
             bool searchTestPassed = true;
             bool categoryTestPassed = true;

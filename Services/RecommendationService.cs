@@ -1,13 +1,7 @@
 ﻿using Municipal_App.Stores;
-using Municipal_App.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Municipal_App.Services
 {

@@ -54,7 +54,7 @@ namespace Municipal_App.Components
         /// </summary>
         private void PopulateDates()
         {
-            var existingDateType = EventsStore.FilterStore.DateType;
+            var existingDateType = EventsStore.Filter.DateType;
             DateComboBox.Items.Clear();
 
             if (existingDateType.Equals(DateType.AnyTime))
@@ -99,7 +99,7 @@ namespace Municipal_App.Components
             CategoriesComboBox.Items.Clear();
 
             // Checking if a filter is currently applied
-            var existingCategoryText = EventsStore.FilterStore.CategoryText;
+            var existingCategoryText = EventsStore.Filter.CategoryText;
             if (existingCategoryText == string.Empty)
             {
                 CategoriesComboBox.Items.Add("All Categories");
@@ -156,11 +156,11 @@ namespace Municipal_App.Components
 
             if (categoryText == "All Categories")
             {
-                EventsStore.FilterStore.CategoryText = string.Empty;
+                EventsStore.Filter.CategoryText = string.Empty;
             }
             else
             {
-                EventsStore.FilterStore.CategoryText = categoryText;
+                EventsStore.Filter.CategoryText = categoryText;
                 EventsStore.RecommendationService.AddTerm(Services.RecommendationTermType.Category, categoryText);
             }
 
@@ -186,9 +186,9 @@ namespace Municipal_App.Components
                 // Add the term to the for recommendation consideration
                 EventsStore.RecommendationService.AddTerm(Services.RecommendationTermType.Date, dateType.ToString());
             }
-            EventsStore.FilterStore.DateType = dateType;
+            EventsStore.Filter.DateType = dateType;
 
-            EventsStore.FilterStore.OnFilterEvents?.Invoke();
+            EventsStore.Filter.OnFilterEvents?.Invoke();
         }
     }
 }

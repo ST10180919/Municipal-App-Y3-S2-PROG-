@@ -1,13 +1,5 @@
 ﻿using Municipal_App.Commands;
 using Municipal_App.Stores;
-using Municipal_App.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace Municipal_App.ViewModels
 {

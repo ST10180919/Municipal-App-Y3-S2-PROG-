@@ -3,11 +3,8 @@ using Municipal_App.Models;
 using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -61,7 +58,7 @@ namespace Municipal_App.Services
         /// bound to the UI 
         /// </param>
         /// <returns> Awaitable Task </returns>
-        public async Task LoadEventsAsync(ObservableQueue<MunicipalEventViewModel> eventsQueue)
+        public async Task LoadEventsAsync(ObservableQueue<EventViewModel> eventsQueue)
         {
             // First, initializing page
             await this.InitializeEvents();
@@ -72,7 +69,7 @@ namespace Municipal_App.Services
             {
                 foreach (var eventElement in eventNodes)
                 {
-                    var municipalEvent = new MunicipalEventViewModel();
+                    var municipalEvent = new EventViewModel();
 
                     // Extracting Event Title
                     var eventTitleNode = eventElement.SelectSingleNode(".//h4[@class='mec-event-title']/a");
@@ -115,7 +112,7 @@ namespace Municipal_App.Services
         /// municipal event
         /// </param>
         /// <returns> Awaitable Task </returns>
-        private async Task LoadEventDetails(MunicipalEventViewModel municipalEvent, string eventDetailsLink)
+        private async Task LoadEventDetails(EventViewModel municipalEvent, string eventDetailsLink)
         {
             if (eventDetailsLink != string.Empty)
             {

@@ -2,16 +2,7 @@
 using Municipal_App.Models;
 using Municipal_App.Services;
 using Municipal_App.Stores;
-using Municipal_App.Stores.Municipal_App.Stores;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace Municipal_App.ViewModels
 {
@@ -19,7 +10,7 @@ namespace Municipal_App.ViewModels
     /// <summary>
     /// Class containing the business logic for the Events View
     /// </summary>
-    internal class EventsViewModel : ViewModelBase
+    internal class EventsAnnouncementsViewModel : ViewModelBase
     {
         private string _feedbackLabel;
         //-----------------------------------------------------------------------------
@@ -54,8 +45,8 @@ namespace Municipal_App.ViewModels
             set
             {
                 _searchText = value;
-                AppStore.Instance.EventsStore.FilterStore.SearchText = value;
-                AppStore.Instance.AnnouncementsStore.FilterStore.SearchText = value;
+                AppStore.Instance.EventsStore.Filter.SearchText = value;
+                AppStore.Instance.AnnouncementsStore.Filter.SearchText = value;
                 OnPropertyChanged(nameof(SearchText));
             }
         }
@@ -89,7 +80,7 @@ namespace Municipal_App.ViewModels
         /// Creates a new instance of the EventsViewModel, sets up the navigation command,
         /// initializes the events and announcements queues, and prepares the search filter command.
         /// </summary>
-        public EventsViewModel()
+        public EventsAnnouncementsViewModel()
         {
             this.FeedbackLabel = "How can we improve our events and annoucements?";
 
@@ -134,8 +125,8 @@ namespace Municipal_App.ViewModels
             }
 
             // Invoke Filter Actions
-            AppStore.Instance.EventsStore.FilterStore.OnFilterEvents?.Invoke();
-            AppStore.Instance.AnnouncementsStore.FilterStore.OnFilterAnnouncements?.Invoke();
+            AppStore.Instance.EventsStore.Filter.OnFilterEvents?.Invoke();
+            AppStore.Instance.AnnouncementsStore.Filter.OnFilterAnnouncements?.Invoke();
         }
 
         //-----------------------------------------------------------------------------

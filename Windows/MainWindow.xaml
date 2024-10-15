@@ -42,8 +42,8 @@
             <DataTemplate DataType="{x:Type viewModels:LandingViewModel}">
                 <views:LandingView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:EventsViewModel}">
-                <views:EventsView />
+            <DataTemplate DataType="{x:Type viewModels:EventsAnnouncementsViewModel}">
+                <views:EventsAnnouncemetnsView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:ReportIssuesViewModel}">
                 <views:ReportIssuesView />
