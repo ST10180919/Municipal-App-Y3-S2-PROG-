@@ -196,7 +196,7 @@
                 HorizontalAlignment="Left"
                 Background="{StaticResource TextWhiteBrush}"
                 BorderThickness="0"
-                Command="{Binding RequestStatusNavCommand}">
+                Command="{Binding UnderConstructionRelayCommand}">
 
                 <Button.Template>
                     <ControlTemplate TargetType="Button">

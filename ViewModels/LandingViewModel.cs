@@ -54,6 +54,13 @@ namespace Municipal_App.ViewModels
 
         //-----------------------------------------------------------------------------
         /// <summary>
+        /// Used to show an Underconstruction Banner message when a user is trying to 
+        /// access a part of the app still being worked on.
+        /// </summary>
+        public RelayCommand UnderConstructionRelayCommand { get; }
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
         /// Creates the LandingViewModel
         /// </summary>
         public LandingViewModel()
@@ -64,6 +71,7 @@ namespace Municipal_App.ViewModels
             this.ReportIssuesNavCommand = new NavCommand(new Services.NavigationService(navigationStore, this.CreateIssuesViewModel));
             this.EventsAndAnnouncementsNavCommand = new NavCommand(new Services.NavigationService(navigationStore, this.CreateEventsViewModel));
 
+            this.UnderConstructionRelayCommand = new RelayCommand(o => AppStore.Instance.BannerMessageStore.SetBanner("To be Implemented in POE Part 3", BannerType.Confirmation));
             // To be implemented in future POE parts
             //this.RequestStatusNavCommand = new NavCommand(new Services.NavigationService(navigationStore, this.CreateRequestStatusViewModel));
         }

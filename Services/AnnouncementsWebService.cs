@@ -4,8 +4,10 @@ using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace Municipal_App.Services
@@ -39,10 +41,18 @@ namespace Municipal_App.Services
         private async Task InitializeAnnouncements()
         {
             // Downloading the page from the internet and populating local fields
-            HttpClient httpClient = new HttpClient();
-            string html = await httpClient.GetStringAsync(this._announcementsURL);
-            this.HtmlDocument = new HtmlDocument();
-            this.HtmlDocument.LoadHtml(html);
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                string html = await httpClient.GetStringAsync(this._announcementsURL);
+                this.HtmlDocument = new HtmlDocument();
+                this.HtmlDocument.LoadHtml(html);
+            }
+            catch (HttpRequestException)
+            {
+                MessageBox.Show($"Failed to download webpage ${_announcementsURL}.\n Please Check your internet connection");
+                Application.Current.Shutdown();
+            }
         }
 
         //---------------------------------------------------------------------------------
@@ -57,37 +67,43 @@ namespace Municipal_App.Services
         /// <returns>Returns an awaitable Task.</returns>
         public async Task LoadAnnouncementsAsync(ObservableQueue<AnnouncementViewModel> announcementQueue)
         {
-            // First, initializing page
-            await this.InitializeAnnouncements();
-
-            // Iterating through all the events
-            var announcementNodes = this.HtmlDocument.DocumentNode.SelectNodes("//div[contains(@class, 'jet-smart-listing__post-wrapper')]");
-            if (announcementNodes != null)
+            try
             {
-                foreach (var announcementNode in announcementNodes)
+                // First, initializing page
+                await this.InitializeAnnouncements();
+
+                // Iterating through all the events
+                var announcementNodes = this.HtmlDocument.DocumentNode.SelectNodes("//div[contains(@class, 'jet-smart-listing__post-wrapper')]");
+                if (announcementNodes != null)
                 {
-                    var announcement = new AnnouncementViewModel();
-                    
+                    foreach (var announcementNode in announcementNodes)
+                    {
+                        var announcement = new AnnouncementViewModel();
 
-                    // Extracting Announcement Title
-                    var announcementTitleNode = announcementNode.SelectSingleNode(".//div[@class='jet-smart-listing__post-title post-title-simple']/a");
-                    announcement.Title = announcementTitleNode != null ? this.SanitizeWebField(announcementTitleNode.InnerText) : "No Title";
+                        // Extracting Announcement Title
+                        var announcementTitleNode = announcementNode.SelectSingleNode(".//div[@class='jet-smart-listing__post-title post-title-simple']/a");
+                        announcement.Title = announcementTitleNode != null ? this.SanitizeWebField(announcementTitleNode.InnerText) : "No Title";
 
-                    // Extracting Announcement Date
-                    var announcementDateNode = announcementNode.SelectSingleNode(".//a[contains(@class, 'post__date-link')]/time");
-                    announcement.Date = announcementDateNode != null ? this.SanitizeWebField(announcementDateNode.InnerText) : "None";
+                        // Extracting Announcement Date
+                        var announcementDateNode = announcementNode.SelectSingleNode(".//a[contains(@class, 'post__date-link')]/time");
+                        announcement.Date = announcementDateNode != null ? this.SanitizeWebField(announcementDateNode.InnerText) : "None";
 
-                    // Extracting Announcement Image 
-                    var imageNode = announcementNode.SelectSingleNode(".//img[contains(@class, 'wp-post-image')]");
-                    announcement.Image = imageNode != null ? await ConvertImageToBitmap(imageNode) : new BitmapImage();
+                        // Extracting Announcement Image 
+                        var imageNode = announcementNode.SelectSingleNode(".//img[contains(@class, 'wp-post-image')]");
+                        announcement.Image = imageNode != null ? await ConvertImageToBitmap(imageNode) : new BitmapImage();
 
-                    // Extracting Announcement Description
-                    var announcementDescriptionNode = announcementNode.SelectSingleNode(".//div[@class='jet-smart-listing__post-excerpt post-excerpt-simple']");
-                    announcement.Description = announcementDescriptionNode != null ? this.SanitizeWebField(announcementDescriptionNode.InnerText) : "No Description";
+                        // Extracting Announcement Description
+                        var announcementDescriptionNode = announcementNode.SelectSingleNode(".//div[@class='jet-smart-listing__post-excerpt post-excerpt-simple']");
+                        announcement.Description = announcementDescriptionNode != null ? this.SanitizeWebField(announcementDescriptionNode.InnerText) : "No Description";
 
-                    announcementQueue.Enqueue(announcement);
-                    AppStore.Instance.AnnouncementsStore.UpdateSortedDictionary(announcement);
+                        announcementQueue.Enqueue(announcement);
+                        AppStore.Instance.AnnouncementsStore.UpdateSortedDictionary(announcement);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 

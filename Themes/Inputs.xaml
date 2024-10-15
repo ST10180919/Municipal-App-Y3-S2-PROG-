@@ -155,22 +155,12 @@
                             VerticalContentAlignment="Center"
                             Focusable="False" />
 
-                        <!--<TextBox
-                            x:Name="MyTextBox"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Background="{StaticResource EerieBlackBrush}"
-                            BorderThickness="0"
-                            FontSize="{TemplateBinding FontSize}"
-                            Foreground="{StaticResource TextWhiteBrush}"
-                            Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
-
                         <!--  Placeholder  -->
                         <TextBlock
                             x:Name="PlaceHolderTextBox"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Background="{StaticResource EerieBlackBrush}"
+                            Background="Transparent"
                             FontSize="{TemplateBinding FontSize}"
                             Foreground="{StaticResource TextWhiteBrush}"
                             IsHitTestVisible="False"

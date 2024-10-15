@@ -4,8 +4,10 @@ using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace Municipal_App.Services
@@ -38,10 +40,18 @@ namespace Municipal_App.Services
         private async Task InitializeEvents()
         {
             // Downloading the page from the internet and populating local fields
-            HttpClient httpClient = new HttpClient();
-            string html = await httpClient.GetStringAsync(this._eventsURL);
-            this.HtmlDocument = new HtmlDocument();
-            this.HtmlDocument.LoadHtml(html);
+            try
+            {
+                HttpClient httpClient = new HttpClient();
+                string html = await httpClient.GetStringAsync(this._eventsURL);
+                this.HtmlDocument = new HtmlDocument();
+                this.HtmlDocument.LoadHtml(html);
+            }
+            catch (HttpRequestException)
+            {
+                MessageBox.Show($"Failed to download webpage ${_eventsURL}.\n Please Check your internet connection");
+                Application.Current.Shutdown();
+            }
         }
 
         //---------------------------------------------------------------------------------
@@ -60,39 +70,46 @@ namespace Municipal_App.Services
         /// <returns> Awaitable Task </returns>
         public async Task LoadEventsAsync(ObservableQueue<EventViewModel> eventsQueue)
         {
-            // First, initializing page
-            await this.InitializeEvents();
-
-            // Iterating through all the events
-            var eventNodes = this.HtmlDocument.DocumentNode.SelectNodes("//article[contains(@class, 'mec-event-article') and contains(@class, 'mec-clear')]");
-            if (eventNodes != null)
+            try
             {
-                foreach (var eventElement in eventNodes)
+                // First, initializing page
+                await this.InitializeEvents();
+
+                // Iterating through all the events
+                var eventNodes = this.HtmlDocument.DocumentNode.SelectNodes("//article[contains(@class, 'mec-event-article') and contains(@class, 'mec-clear')]");
+                if (eventNodes != null)
                 {
-                    var municipalEvent = new EventViewModel();
+                    foreach (var eventElement in eventNodes)
+                    {
+                        var municipalEvent = new EventViewModel();
 
-                    // Extracting Event Title
-                    var eventTitleNode = eventElement.SelectSingleNode(".//h4[@class='mec-event-title']/a");
-                    municipalEvent.Title = eventTitleNode != null ? this.SanitizeWebField(eventTitleNode.InnerText) : "No Title";
+                        // Extracting Event Title
+                        var eventTitleNode = eventElement.SelectSingleNode(".//h4[@class='mec-event-title']/a");
+                        municipalEvent.Title = eventTitleNode != null ? this.SanitizeWebField(eventTitleNode.InnerText) : "No Title";
 
-                    // Extracting Event Category
-                    var eventCategoryNode = eventElement.SelectSingleNode(".//span[@class='mec-category']");
-                    municipalEvent.Category = eventCategoryNode != null ? this.SanitizeWebField(eventCategoryNode.InnerText) : "None";
+                        // Extracting Event Category
+                        var eventCategoryNode = eventElement.SelectSingleNode(".//span[@class='mec-category']");
+                        municipalEvent.Category = eventCategoryNode != null ? this.SanitizeWebField(eventCategoryNode.InnerText) : "None";
 
-                    // Extracting Event Image 
-                    var imageNode = eventElement.SelectSingleNode(".//div[@class='mec-event-image']//a//img");
-                    municipalEvent.Image = imageNode != null ? await ConvertImageToBitmap(imageNode) : new BitmapImage(); 
+                        // Extracting Event Image 
+                        var imageNode = eventElement.SelectSingleNode(".//div[@class='mec-event-image']//a//img");
+                        municipalEvent.Image = imageNode != null ? await ConvertImageToBitmap(imageNode) : new BitmapImage();
 
-                    // Adding the created event to the queue prior to all details being loaded
-                    eventsQueue.Enqueue(municipalEvent);
+                        // Adding the created event to the queue prior to all details being loaded
+                        eventsQueue.Enqueue(municipalEvent);
 
-                    // Extracting Event Details Link
-                    var eventDetailsLinkNode = eventElement.SelectSingleNode(".//h4[@class='mec-event-title']/a");
-                    var eventDetailsLink = eventDetailsLinkNode != null ? eventDetailsLinkNode.GetAttributeValue("href", "No Link") : "No Link";
+                        // Extracting Event Details Link
+                        var eventDetailsLinkNode = eventElement.SelectSingleNode(".//h4[@class='mec-event-title']/a");
+                        var eventDetailsLink = eventDetailsLinkNode != null ? eventDetailsLinkNode.GetAttributeValue("href", "No Link") : "No Link";
 
-                    // Loading details for the event's specific page in the background
-                    LoadEventDetails(municipalEvent, eventDetailsLink);
+                        // Loading details for the event's specific page in the background
+                        LoadEventDetails(municipalEvent, eventDetailsLink);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 
@@ -114,43 +131,53 @@ namespace Municipal_App.Services
         /// <returns> Awaitable Task </returns>
         private async Task LoadEventDetails(EventViewModel municipalEvent, string eventDetailsLink)
         {
-            if (eventDetailsLink != string.Empty)
+            try
             {
-                // Getting the document for the page
-                HttpClient httpClient = new HttpClient();
-                string html = await httpClient.GetStringAsync(eventDetailsLink);
-                var htmlDocument = new HtmlDocument();
-                htmlDocument.LoadHtml(html);
+                if (eventDetailsLink != string.Empty)
+                {
+                    // Getting the document for the page
+                    HttpClient httpClient = new HttpClient();
+                    string html = await httpClient.GetStringAsync(eventDetailsLink);
+                    var htmlDocument = new HtmlDocument();
+                    htmlDocument.LoadHtml(html);
 
-                // Extracting Event Date
-                var dateNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Event Date:')]]");
-                municipalEvent.Date = dateNode != null ? this.SanitizeWebField(dateNode.InnerText) : "Unspecified";
+                    // Extracting Event Date
+                    var dateNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Event Date:')] or " +
+                        "strong[contains(text(), 'Date:')] or " +
+                        "strong[contains(text(), 'Dates:')] or " +
+                        "strong[contains(text(), 'Event Dates:')]]");
+                    municipalEvent.Date = dateNode != null ? this.SanitizeWebField(dateNode.InnerText) : "Unspecified";
 
-                // Extracting Event Time
-                var timeNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[" +
-                    "contains(text(), 'Event Time:')] or " +
-                    "strong[contains(text(), 'Event Times:')] or " +
-                    "strong[contains(text(), 'Time:')] or " +
-                    "strong[contains(text(), 'Times:')]]");
-                municipalEvent.Time = timeNode != null ? this.SanitizeWebField(timeNode.InnerText) : "--:--";
+                    // Extracting Event Time
+                    var timeNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[" +
+                        "contains(text(), 'Event Time:')] or " +
+                        "strong[contains(text(), 'Event Times:')] or " +
+                        "strong[contains(text(), 'Time:')] or " +
+                        "strong[contains(text(), 'Times:')]]");
+                    municipalEvent.Time = timeNode != null ? this.SanitizeWebField(timeNode.InnerText) : "--:--";
 
-                // Extracting Event Venue
-                var venueNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Venue:')]]");
-                municipalEvent.Venue = venueNode != null ? this.SanitizeWebField(venueNode.InnerText) : "Unspecified";
+                    // Extracting Event Venue
+                    var venueNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Venue:')]]");
+                    municipalEvent.Venue = venueNode != null ? this.SanitizeWebField(venueNode.InnerText) : "Unspecified";
 
-                // Extracting Event Website Link 
-                var eventLinkNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Website:')]]");
-                municipalEvent.Link = eventLinkNode != null ? this.SanitizeWebField(eventLinkNode.InnerText) : "Unspecified";
+                    // Extracting Event Website Link 
+                    var eventLinkNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Website:')]]");
+                    municipalEvent.Link = eventLinkNode != null ? this.SanitizeWebField(eventLinkNode.InnerText) : "Unspecified";
 
-                // Update EventsStore Fields
-                AppStore.Instance.EventsStore.UpdateFields(municipalEvent);
+                    // Update EventsStore Fields
+                    AppStore.Instance.EventsStore.UpdateFields(municipalEvent);
+                }
+                else
+                {
+                    municipalEvent.Date = "Unspecified";
+                    municipalEvent.Time = "--:--";
+                    municipalEvent.Venue = "Unspecified";
+                    municipalEvent.Link = "Unspecified";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                municipalEvent.Date = "Unspecified";
-                municipalEvent.Time = "--:--";
-                municipalEvent.Venue = "Unspecified";
-                municipalEvent.Link = "Unspecified";
+                Console.WriteLine(ex.ToString());
             }
         }
 
