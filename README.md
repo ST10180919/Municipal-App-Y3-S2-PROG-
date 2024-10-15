@@ -41,5 +41,9 @@ with at least three previously searched/filtered terms.
 
 Code for recommendations can be found in RecommendationService.GetRecommendation()
 
+
+
+Link to GitHub Repo: https://github.com/ST10180919/Municipal-App-Y3-S2-PROG- (There are releases for each POE part)
+
 All icons were sourced for free from www.flaticon.com
 
