@@ -32,6 +32,8 @@ namespace Municipal_App.Services
         /// </summary>
         private HtmlDocument HtmlDocument;
 
+        private bool isOfflineMode = false;
+
         //---------------------------------------------------------------------------------
         /// <summary>
         /// Initializes the Event Document by loading it from the _eventsURL
@@ -46,10 +48,14 @@ namespace Municipal_App.Services
                 string html = await httpClient.GetStringAsync(this._eventsURL);
                 this.HtmlDocument = new HtmlDocument();
                 this.HtmlDocument.LoadHtml(html);
+
+                //SaveHtmlDocument(this.HtmlDocument, "OfflineData", "all-events.html");
             }
             catch (HttpRequestException)
             {
-                MessageBox.Show($"Failed to download webpage ${_eventsURL}.\n Please Check your internet connection");
+                MessageBox.Show($"Failed to download webpage ${_eventsURL}.\n Events will now be loaded from offline backup");
+                isOfflineMode = true;
+                this.HtmlDocument = LoadHtmlDocument("OfflineData", "all-events.html");
             }
         }
 
@@ -106,7 +112,6 @@ namespace Municipal_App.Services
                         var eventDetailsLinkNode = eventElement.SelectSingleNode(".//h4[@class='mec-event-title']/a");
                         var eventDetailsLink = eventDetailsLinkNode != null ? eventDetailsLinkNode.GetAttributeValue("href", "No Link") : "No Link";
 
-                        // Loading details for the event's specific page in the background
                         LoadEventDetails(municipalEvent, eventDetailsLink);
                     }
                 }
@@ -140,10 +145,21 @@ namespace Municipal_App.Services
                 if (eventDetailsLink != string.Empty)
                 {
                     // Getting the document for the page
-                    HttpClient httpClient = new HttpClient();
-                    string html = await httpClient.GetStringAsync(eventDetailsLink);
                     var htmlDocument = new HtmlDocument();
-                    htmlDocument.LoadHtml(html);
+                    if (!isOfflineMode)
+                    {
+                        // When online
+                        HttpClient httpClient = new HttpClient();
+                        string html = await httpClient.GetStringAsync(eventDetailsLink);
+                        htmlDocument.LoadHtml(html);
+                    } 
+                    else
+                    {
+                        // When offline
+                        htmlDocument = LoadHtmlDocument("OfflineData", $"{municipalEvent.Title}.html");
+                    }
+
+                    //SaveHtmlDocument(this.HtmlDocument, "OfflineData", $"{municipalEvent.Title}.html");
 
                     // Extracting Event Date
                     var dateNode = htmlDocument.DocumentNode.SelectSingleNode("//li[strong[contains(text(), 'Event Date:')] or " +
@@ -224,6 +240,85 @@ namespace Municipal_App.Services
                 Console.WriteLine("Failed to get image"); // Properly set this to Image not found image
             }
             return new BitmapImage();
+        }
+
+        /// <summary>
+        /// Saves an HtmlDocument to a specified folder relative to the project root.
+        /// </summary>
+        /// <param name="htmlDocument">The HtmlDocument to save.</param>
+        /// <param name="relativeFolderPath">The relative folder path from the project root.</param>
+        /// <param name="fileName">The name of the file to save (including extension).</param>
+        public void SaveHtmlDocument(HtmlDocument htmlDocument, string relativeFolderPath, string fileName)
+        {
+            try
+            {
+                // Get the directory of the executable
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                // Move up directories to get to the project root
+                // Adjust the number of Parent calls based on your project structure
+                string projectRoot = Directory.GetParent(baseDirectory).Parent.Parent.FullName;
+
+                // Combine the project root with the relative folder path
+                string fullFolderPath = Path.Combine(projectRoot, relativeFolderPath);
+
+                // Ensure the directory exists
+                Directory.CreateDirectory(fullFolderPath);
+
+                // Combine the full folder path with the file name
+                string fullFilePath = Path.Combine(fullFolderPath, fileName);
+
+                // Save the HtmlDocument to the specified file
+                htmlDocument.Save(fullFilePath);
+
+                Console.WriteLine($"File saved successfully at: {fullFilePath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving HTML document: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Loads an HtmlDocument from a specified file in the OfflineData folder.
+        /// </summary>
+        /// <param name="relativeFolderPath">The relative folder path from the project root (e.g., "OfflineData/EventDetails").</param>
+        /// <param name="fileName">The name of the HTML file to load (including extension).</param>
+        /// <returns>The loaded HtmlDocument, or null if the file does not exist.</returns>
+        public HtmlDocument LoadHtmlDocument(string relativeFolderPath, string fileName)
+        {
+            try
+            {
+                // Get the directory of the executable
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                // Move up directories to get to the project root
+                // Adjust the number of Parent calls based on your project structure
+                string projectRoot = Directory.GetParent(baseDirectory).Parent.Parent.FullName;
+
+                // Combine the project root with the relative folder path and file name
+                string fullFilePath = Path.Combine(projectRoot, relativeFolderPath, fileName);
+
+                // Check if the file exists
+                if (!File.Exists(fullFilePath))
+                {
+                    Console.WriteLine($"File not found: {fullFilePath}");
+                    return null;
+                }
+
+                // Load the HTML document from the file
+                var htmlDocument = new HtmlDocument();
+                htmlDocument.Load(fullFilePath);
+
+                Console.WriteLine($"File loaded successfully from: {fullFilePath}");
+
+                return htmlDocument;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading HTML document: {ex.Message}");
+                return null;
+            }
         }
 
         //-----------------------------------------------------------------------------

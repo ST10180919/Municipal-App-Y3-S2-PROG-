@@ -103,7 +103,7 @@ namespace Municipal_App.ViewModels
 
             if (!announcementsStore.IsQueueInitialized)
             {
-                InitializeAnnouncements();
+                //InitializeAnnouncements();
             }
 
             // Initializing relaycommands
