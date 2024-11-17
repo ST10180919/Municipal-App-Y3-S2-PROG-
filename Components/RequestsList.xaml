@@ -112,5 +112,29 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <TextBlock
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontStyle="Italic"
+            Foreground="Gray"
+            TextAlignment="Center"
+            MaxWidth="200"
+            LineHeight="20"
+            FontSize="14"
+            TextWrapping="Wrap"
+            Text="No data available. Please make use of our `Report Issues` service to create a service request.">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Items.Count, ElementName=MyList}" Value="0">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
     </Grid>
 </UserControl>
