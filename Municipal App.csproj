@@ -208,6 +208,7 @@
     <Compile Include="ISSUE_REPORT.cs">
       <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Graph.cs" />
     <Compile Include="Models\ObservableQueue.cs" />
     <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="Stores\AnnouncementsFilter.cs" />

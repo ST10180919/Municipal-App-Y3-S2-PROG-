@@ -16,7 +16,8 @@ namespace Municipal_App.ViewModels
 	{
 		Sanitation,
 		Roads,
-		Utilities
+		Utilities,
+		None
 	}
 
     /* CREDITS

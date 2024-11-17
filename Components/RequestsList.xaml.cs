@@ -2,10 +2,12 @@
 using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Municipal_App.Components
 {
@@ -15,6 +17,8 @@ namespace Municipal_App.Components
     public partial class RequestsList : UserControl
     {
         public ObservableCollection<ReportViewModel> RequestList;
+
+        private IssueCategory SelectedCategory = IssueCategory.None;
 
         public static readonly DependencyProperty NavigationStoreProperty =
         DependencyProperty.Register(
@@ -64,12 +68,56 @@ namespace Municipal_App.Components
             // Clearing the list
             this.RequestList.Clear();
 
-            var searchedList = AppStore.Instance.IssueReportStore.Search();
+            var newList = new List<ISSUE_REPORT>();
 
-            foreach (var report in searchedList)
+            if (this.SelectedCategory == IssueCategory.None)
+            {
+                // Apply search
+                newList = AppStore.Instance.IssueReportStore.Search();
+            }
+            else
+            {
+                // Apply search and filter
+                var filterTerm = SelectedCategory.ToString();
+                newList = AppStore.Instance.IssueReportStore.FilterAndSearch(filterTerm);
+            }
+
+            foreach (var report in newList)
             {
                 this.RequestList.Add(new ReportViewModel(report));
             }
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            // Clear borders on all radio buttons
+            RoadsRadioButton.IsChecked = false;
+            SanitationRadioButton.IsChecked = false;
+            UtilitiesRadioButton.IsChecked = false;
+
+            // Set gray border on the selected radio button
+            RadioButton selectedRadioButton = sender as RadioButton;
+            if (selectedRadioButton != null)
+            {
+                selectedRadioButton.IsChecked = true;
+
+                // Update selected category
+                 Enum.TryParse(selectedRadioButton.Content.ToString(), out SelectedCategory);
+
+                // UpdateList
+                this.UpdateList();
+            }
+        }
+
+        private void ClearFilter_Click(object sender, RoutedEventArgs e)
+        {
+            // Clear borders on all radio buttons
+            RoadsRadioButton.IsChecked = false;
+            SanitationRadioButton.IsChecked = false;
+            UtilitiesRadioButton.IsChecked = false;
+
+            this.SelectedCategory = IssueCategory.None;
+            this.UpdateList();
         }
     }
 }

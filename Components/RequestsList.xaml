@@ -9,10 +9,47 @@
     d:DesignWidth="300"
     Background="{StaticResource TextWhiteBrush}"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="CategoryRadioButtonStyle" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border
+                            x:Name="Border"
+                            Padding="5,2"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!--  Trigger for Checked State  -->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource PlatinumBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <!--  Header  -->
@@ -137,5 +174,61 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
+
+        <!--  Filter  -->
+        <StackPanel
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="18"
+                FontWeight="Medium"
+                Text="Filter By Category" />
+
+            <StackPanel
+                Margin="0,15,0,0"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+
+                <!--  Roads Radio Button  -->
+                <RadioButton
+                    x:Name="RoadsRadioButton"
+                    Margin="5,0"
+                    Click="RadioButton_Checked"
+                    Content="Roads"
+                    GroupName="Categories"
+                    Style="{StaticResource CategoryRadioButtonStyle}" />
+
+                <!--  Sanitation Radio Button  -->
+                <RadioButton
+                    x:Name="SanitationRadioButton"
+                    Margin="5,0"
+                    Click="RadioButton_Checked"
+                    Content="Sanitation"
+                    GroupName="Categories"
+                    Style="{StaticResource CategoryRadioButtonStyle}" />
+
+                <!--  Utilities Radio Button  -->
+                <RadioButton
+                    x:Name="UtilitiesRadioButton"
+                    Margin="5,0"
+                    Click="RadioButton_Checked"
+                    Content="Utilities"
+                    GroupName="Categories"
+                    Style="{StaticResource CategoryRadioButtonStyle}" />
+            </StackPanel>
+
+            <Button
+                Grid.Row="1"
+                Width="100"
+                Height="30"
+                Margin="0,10,0,30"
+                Click="ClearFilter_Click"
+                Content="Clear"
+                FontSize="14"
+                Style="{StaticResource FileChooserButton}" />
+        </StackPanel>
     </Grid>
 </UserControl>
