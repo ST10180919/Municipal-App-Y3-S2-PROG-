@@ -49,6 +49,9 @@ namespace Municipal_App.Commands
                 // Success
                 this._bannerMessageStore.SetBanner("Report Successfully Submited!", BannerType.Confirmation);
 
+                // Adding Identifier
+                this.setReportIdentifierDetails();
+
                 // Add to database
                 AppStore.Instance.IssueReportStore.AddIssueReport(this._reportToBeAdded.convertToIssueReport());
 
@@ -56,6 +59,18 @@ namespace Municipal_App.Commands
                 var navigationService = new NavigationService(AppStore.Instance.NavigationStore, () => { return new LandingViewModel(); });
                 navigationService.Navigate();
             }
+        }
+
+        private void setReportIdentifierDetails()
+        {
+            // Identifier
+            var reportNumber = AppStore.Instance.IssueReportStore.IssueReportList.Count + 1;
+            var categoryPart = this._reportToBeAdded.Category.Substring(0, 3);
+
+            this._reportToBeAdded.Identifier = $"REQ-{categoryPart}-00{reportNumber}";
+
+            // StatusString
+            this._reportToBeAdded.StatusString = "Pending";
         }
 
         //-----------------------------------------------------------------------------

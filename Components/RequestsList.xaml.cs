@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Municipal_App.Stores;
+using Municipal_App.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,15 +23,17 @@ namespace Municipal_App.Components
     /// </summary>
     public partial class RequestsList : UserControl
     {
-        public ObservableCollection<RequestStatus> requestList;
+        public ObservableCollection<ReportViewModel> requestList;
         public RequestsList()
         {
             InitializeComponent();
 
-            requestList = new ObservableCollection<RequestStatus>
+            // Adding reports to the observable list
+            requestList = new ObservableCollection<ReportViewModel>();
+            foreach (var Report in AppStore.Instance.IssueReportStore.IssueReportList)
             {
-                new RequestStatus {Identifier = "#REQ-995108", StatusString = "Pending", StatusColorBrush = new SolidColorBrush(new Color {R = 255, G = 221, B = 0, A = 255})}
-            };
+                requestList.Add(new ReportViewModel(Report));
+            }
 
             MyList.ItemsSource = requestList;
         }

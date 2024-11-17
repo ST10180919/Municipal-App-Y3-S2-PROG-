@@ -25,6 +25,8 @@ namespace Municipal_App
         public string DESCRIPTION { get; set; }
         public string CATEGORY { get; set; }
         public string SOLUTION { get; set; }
+        public string IDENTIFIER { get; set; }
+        public string STATUS_STRING { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTACHMENT> ATTACHMENTs { get; set; }
