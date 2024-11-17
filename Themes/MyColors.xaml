@@ -29,4 +29,10 @@
     <Color x:Key="EerieBlack">#1E1E1E</Color>
     <SolidColorBrush x:Key="EerieBlackBrush" Color="{StaticResource EerieBlack}" />
 
+    <Color x:Key="ColumbiaBlue">#CAE0F7</Color>
+    <SolidColorBrush x:Key="ColumbiaBlueBrush" Color="{StaticResource ColumbiaBlue}" />
+
+    <Color x:Key="RequestStatusGrey">#D9D9D9</Color>
+    <SolidColorBrush x:Key="RequestStatusGreyBrush" Color="{StaticResource RequestStatusGrey}" />
+
 </ResourceDictionary>

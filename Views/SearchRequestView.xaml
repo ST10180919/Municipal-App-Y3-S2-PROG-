@@ -1,0 +1,171 @@
+﻿<UserControl
+    x:Class="Municipal_App.Views.SearchRequestView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Municipal_App.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Municipal_App.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="ServiceRequestUserControl"
+    d:DesignHeight="670"
+    d:DesignWidth="980"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:HeightToFractionConverter x:Key="HeightToFractionConverter" />
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource ColumbiaBlueBrush}">
+        <!--  Back button  -->
+        <Button
+            Grid.Row="0"
+            Margin="60,20,0,0"
+            VerticalAlignment="Top"
+            Command="{Binding LandingNavCommand}"
+            Content="Back to services"
+            Style="{StaticResource BackButtonStyle}" />
+
+        <!--  Main Content  -->
+        <Viewbox
+            Height="{Binding ElementName=ServiceRequestUserControl, Path=ActualHeight, Converter={StaticResource HeightToFractionConverter}, ConverterParameter='0,7'}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel>
+                <Image
+                    Width="200"
+                    Height="200"
+                    HorizontalAlignment="Center"
+                    Source="/Images/status.png" />
+
+                <TextBlock
+                    MaxWidth="400"
+                    Margin="0,30,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="50"
+                    FontWeight="Medium"
+                    Text="Service Request Status"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Margin="0,40,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="28"
+                    Text="Enter your request identifier" />
+
+                <!--  Search Bar  -->
+                <Grid
+                    Width="487"
+                    Height="80"
+                    Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="414" />
+                        <ColumnDefinition Width="13" />
+                        <ColumnDefinition Width="60" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Search input  -->
+                    <Grid Grid.Column="0" Height="50">
+                        <Border
+                            Background="{StaticResource EerieBlackBrush}"
+                            CornerRadius="25"
+                            Effect="{StaticResource EventsDropShadow}"
+                            IsHitTestVisible="False" />
+
+                        <TextBox
+                            Margin="27,0"
+                            Panel.ZIndex="100"
+                            Background="Transparent"
+                            CaretBrush="{StaticResource TextWhiteBrush}"
+                            FontSize="20"
+                            Foreground="{StaticResource TextWhiteBrush}"
+                            GotFocus="TextBox_GotFocus"
+                            Style="{StaticResource SearchInput}"
+                            Tag="Search"
+                            Text="{Binding SearchText, Mode=TwoWay}" />
+                    </Grid>
+
+
+                    <!--  Search button  -->
+                    <Button
+                        Grid.Column="2"
+                        Height="50"
+                        Command="{Binding ApplySearchFilterCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid Grid.Column="2" Height="50">
+                                                <Border
+                                                    x:Name="ButtonBackground"
+                                                    Background="{StaticResource EerieBlackBrush}"
+                                                    CornerRadius="25"
+                                                    Effect="{StaticResource EventsDropShadow}" />
+
+                                                <Image
+                                                    Width="22"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Effect="{StaticResource NoDropShadow}"
+                                                    Source="/Images/search.png"
+                                                    UseLayoutRounding="True" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation
+                                                                    Storyboard.TargetName="ButtonBackground"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource Jet}"
+                                                                    Duration="0:0:0.15" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation
+                                                                    Storyboard.TargetName="ButtonBackground"
+                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                    To="{StaticResource EerieBlack}"
+                                                                    Duration="0:0:0.15" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                    <Setter Property="Cursor" Value="Hand" />
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
+                                                    <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource JetBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="True">
+                                                    <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource EerieBlackBrush}" />
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+
+                <TextBlock
+                    Margin="0,18"
+                    HorizontalAlignment="Center"
+                    FontSize="40"
+                    FontWeight="Medium"
+                    Text="Or" />
+
+                <TextBlock
+                    MaxWidth="400"
+                    FontSize="28"
+                    Text="Choose a request from the list on the left of the screen"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </Viewbox>
+    </Grid>
+</UserControl>

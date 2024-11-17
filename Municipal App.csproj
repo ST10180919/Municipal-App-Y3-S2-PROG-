@@ -107,6 +107,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\RequestsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,6 +118,10 @@
     <Page Include="Themes\DefaultThemes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Inputs.xaml">
       <SubType>Designer</SubType>
@@ -144,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RequestStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchRequestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,6 +191,9 @@
     </Compile>
     <Compile Include="Components\FilterComponent.xaml.cs">
       <DependentUpon>FilterComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\RequestsList.xaml.cs">
+      <DependentUpon>RequestsList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\EventControlsMarginConverter.cs" />
@@ -225,6 +240,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
     <Compile Include="ViewModels\RequestStatusViewModel.cs" />
+    <Compile Include="ViewModels\SearchRequestViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\BannerMessageView.xaml.cs">
       <DependentUpon>BannerMessageView.xaml</DependentUpon>
@@ -240,6 +256,9 @@
     </Compile>
     <Compile Include="Views\RequestStatusView.xaml.cs">
       <DependentUpon>RequestStatusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchRequestView.xaml.cs">
+      <DependentUpon>SearchRequestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
