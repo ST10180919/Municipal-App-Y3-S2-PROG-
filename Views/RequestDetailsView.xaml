@@ -8,11 +8,156 @@
     d:DesignHeight="670"
     d:DesignWidth="980"
     mc:Ignorable="d">
-    <Grid Background="{StaticResource ColumbiaBlueBrush}">
-        <TextBlock Text="{Binding ServiceRequest.Identifier}" />
-        <TextBlock Text="{Binding ServiceRequest.Location}" />
-        <TextBlock Text="{Binding ServiceRequest.Category}" />
-        <TextBlock Text="{Binding ServiceRequest.Description}" />
-        <TextBlock Text="{Binding ServiceRequest.Solution}" />
-    </Grid>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+        <Grid Background="{StaticResource ColumbiaBlueBrush}">
+            <!--  Back button  -->
+            <Button
+                Grid.Row="0"
+                Margin="60,20,0,0"
+                VerticalAlignment="Top"
+                Command="{Binding SearchRequestNavCommand}"
+                Content="Back to search"
+                Style="{StaticResource BackButtonStyle}" />
+
+            <!--  Content  -->
+            <StackPanel Margin="0,70,0,0" HorizontalAlignment="Center">
+                <!--  Header  -->
+                <Border
+                    Padding="24,14"
+                    HorizontalAlignment="Center"
+                    Background="{StaticResource TextWhiteBrush}"
+                    CornerRadius="10">
+                    <!--  Identifier  -->
+                    <StackPanel>
+                        <TextBlock
+                            FontSize="30"
+                            FontWeight="Medium"
+                            Text="#REQ-995108" />
+                        <!--  Status  -->
+                        <StackPanel
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                            <Ellipse
+                                Width="22"
+                                Height="22"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Fill="{StaticResource GreenBrush}" />
+
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                FontWeight="Light"
+                                Text="Pending" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <!--  Details  -->
+                <Border
+                    MaxWidth="1050"
+                    Margin="0,28,0,0"
+                    Padding="40,20"
+                    Background="{StaticResource TextWhiteBrush}"
+                    CornerRadius="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="170" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--  Location  -->
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            FontSize="20"
+                            Text="Location" />
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="0,0,0,3"
+                            VerticalAlignment="Bottom"
+                            FontSize="16"
+                            Foreground="{StaticResource JetBrush}"
+                            Text="{Binding ServiceRequest.Location}"
+                            TextWrapping="WrapWithOverflow" />
+
+                        <!--  Category  -->
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            FontSize="20"
+                            Text="Category" />
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="0,0,0,3"
+                            VerticalAlignment="Bottom"
+                            FontSize="16"
+                            Foreground="{StaticResource JetBrush}"
+                            Text="{Binding ServiceRequest.Category}"
+                            TextWrapping="WrapWithOverflow" />
+
+                        <!--  Description  -->
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            FontSize="20"
+                            Text="Description" />
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="0,0,0,3"
+                            VerticalAlignment="Bottom"
+                            FontSize="16"
+                            Foreground="{StaticResource JetBrush}"
+                            Text="{Binding ServiceRequest.Description}"
+                            TextWrapping="WrapWithOverflow" />
+
+                        <!--  Solution  -->
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            FontSize="20"
+                            Text="Solution" />
+
+                        <TextBlock
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Margin="0,0,0,3"
+                            VerticalAlignment="Bottom"
+                            FontSize="16"
+                            Foreground="{StaticResource JetBrush}"
+                            Text="{Binding ServiceRequest.Solution}"
+                            TextWrapping="WrapWithOverflow" />
+
+                        <!--  Files  -->
+                        <StackPanel
+                            Grid.Row="8"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2">
+                            <TextBlock FontSize="20" Text="Files" />
+
+
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

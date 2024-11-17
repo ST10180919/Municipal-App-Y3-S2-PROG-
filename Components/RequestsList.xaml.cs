@@ -50,7 +50,7 @@ namespace Municipal_App.Components
             var reportViewModel = border?.DataContext as ReportViewModel;
             if (reportViewModel != null) 
             {
-                var navigationService = new NavigationService(this.NavigationStore, () => { return new RequestDetailsViewModel(reportViewModel); });
+                var navigationService = new NavigationService(this.NavigationStore, () => { return new RequestDetailsViewModel(reportViewModel, this.NavigationStore); });
                 navigationService.Navigate();
             }
         }
