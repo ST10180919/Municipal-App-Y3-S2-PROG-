@@ -1,4 +1,6 @@
 ﻿
+using Municipal_App.Models;
+
 namespace Municipal_App.ViewModels
 {
     //---------------------------------------------------------------------------------

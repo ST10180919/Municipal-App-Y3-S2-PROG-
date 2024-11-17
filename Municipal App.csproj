@@ -174,9 +174,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ATTACHMENT.cs">
-      <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Commands\AddIssueReportCommand.cs" />
     <Compile Include="Commands\ChooseFileCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
@@ -205,10 +202,19 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\EventControlsMarginConverter.cs" />
     <Compile Include="Converters\HeightToFractionConverter.cs" />
-    <Compile Include="ISSUE_REPORT.cs">
-      <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
+    <Compile Include="Migrations\202411171903138_InitialCreate.cs" />
+    <Compile Include="Migrations\202411171903138_InitialCreate.designer.cs">
+      <DependentUpon>202411171903138_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202411171912311_ChangeAttachment.cs" />
+    <Compile Include="Migrations\202411171912311_ChangeAttachment.designer.cs">
+      <DependentUpon>202411171912311_ChangeAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ATTACHMENT.cs" />
     <Compile Include="Models\Graph.cs" />
+    <Compile Include="Models\ISSUE_REPORT.cs" />
+    <Compile Include="Models\MunicipalDBContext.cs" />
     <Compile Include="Models\ObservableQueue.cs" />
     <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="Stores\AnnouncementsFilter.cs" />
@@ -217,21 +223,6 @@
     <Compile Include="Stores\EventsStore.cs" />
     <Compile Include="ViewModels\AnnouncementViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
-    <Compile Include="MunicipalDatabaseModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MunicipalDatabaseModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MunicipalDatabaseModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MunicipalDatabaseModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Services\AnnouncementsWebService.cs" />
     <Compile Include="Services\DatabaseServices\ReportIssuesDataService.cs" />
     <Compile Include="Services\EventsWebService.cs" />
@@ -291,6 +282,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\202411171903138_InitialCreate.resx">
+      <DependentUpon>202411171903138_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411171912311_ChangeAttachment.resx">
+      <DependentUpon>202411171912311_ChangeAttachment.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -307,10 +304,6 @@
     <Resource Include="Fonts\Roboto-Regular.ttf" />
     <Resource Include="Fonts\Roboto-Thin.ttf" />
     <Resource Include="Fonts\Roboto-ThinItalic.ttf" />
-    <EntityDeploy Include="MunicipalDatabaseModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MunicipalDatabaseModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <Resource Include="Fonts\Lato-Black.ttf" />
     <Resource Include="Fonts\Lato-BlackItalic.ttf" />
     <Resource Include="Fonts\Lato-Bold.ttf" />
@@ -321,9 +314,6 @@
     <Resource Include="Fonts\Lato-Regular.ttf" />
     <Resource Include="Fonts\Lato-Thin.ttf" />
     <Resource Include="Fonts\Lato-ThinItalic.ttf" />
-    <None Include="MunicipalDatabaseModel.edmx.diagram">
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -333,7 +323,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\calendar.png" />
     <Resource Include="Images\exit-white.png" />
@@ -377,21 +366,13 @@
     <Resource Include="Images\filter2.png" />
     <Resource Include="Images\play.png" />
     <Resource Include="Images\star.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="MunicipalDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="MunicipalDatabaseModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>MunicipalDatabaseModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="MunicipalDatabaseModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>MunicipalDatabaseModel.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="MunicipalDatabase_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>MunicipalDatabase.mdf</DependentUpon>
     </Content>
   </ItemGroup>

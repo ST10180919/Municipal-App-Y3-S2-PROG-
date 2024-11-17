@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Municipal_App.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -248,7 +249,7 @@ namespace Municipal_App.ViewModels
 			this.setStatusColorBrush(report.STATUS_STRING);
 
 			this._attachments = new ObservableCollection<AttachmentViewModel>();
-			foreach (var attachment in report.ATTACHMENTs)
+			foreach (var attachment in report.ATTACHMENTS)
 			{
 				this._attachments.Add(new AttachmentViewModel(attachment));
 			}
@@ -273,7 +274,7 @@ namespace Municipal_App.ViewModels
 				CATEGORY = this._category,
 				DESCRIPTION = this._description,
 				SOLUTION = this._solution,
-				ATTACHMENTs = attachments,
+				ATTACHMENTS = attachments,
 				IDENTIFIER = this._identifier,
 				STATUS_STRING = this._statusString,
 			};
