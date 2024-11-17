@@ -16,6 +16,9 @@
         <DataTemplate DataType="{x:Type viewModels:SearchRequestViewModel}">
             <local:SearchRequestView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:RequestDetailsViewModel}">
+            <local:RequestDetailsView />
+        </DataTemplate>
     </UserControl.Resources>
 
     <Grid>
@@ -25,7 +28,7 @@
         </Grid.ColumnDefinitions>
 
         <!--  Requests list  -->
-        <components:RequestsList Grid.Column="0" />
+        <components:RequestsList Grid.Column="0" NavigationStore="{Binding ServiceRequestNavigationStore}" />
 
         <!--  Request Details  -->
         <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />

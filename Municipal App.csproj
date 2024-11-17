@@ -151,6 +151,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RequestDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RequestStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -239,6 +243,7 @@
     <Compile Include="ViewModels\LandingViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
+    <Compile Include="ViewModels\RequestDetailsViewModel.cs" />
     <Compile Include="ViewModels\RequestStatusViewModel.cs" />
     <Compile Include="ViewModels\SearchRequestViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -253,6 +258,9 @@
     </Compile>
     <Compile Include="Views\LandingView.xaml.cs">
       <DependentUpon>LandingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RequestDetailsView.xaml.cs">
+      <DependentUpon>RequestDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RequestStatusView.xaml.cs">
       <DependentUpon>RequestStatusView.xaml</DependentUpon>

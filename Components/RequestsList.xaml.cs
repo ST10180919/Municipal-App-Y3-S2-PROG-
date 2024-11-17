@@ -1,20 +1,10 @@
-﻿using Municipal_App.Stores;
+﻿using Municipal_App.Services;
+using Municipal_App.Stores;
 using Municipal_App.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Municipal_App.Components
 {
@@ -23,28 +13,46 @@ namespace Municipal_App.Components
     /// </summary>
     public partial class RequestsList : UserControl
     {
-        public ObservableCollection<ReportViewModel> requestList;
+        public ObservableCollection<ReportViewModel> RequestList;
+
+        public static readonly DependencyProperty NavigationStoreProperty =
+        DependencyProperty.Register(
+            nameof(NavigationStore), // Property name
+            typeof(NavigationStore), // Property type
+            typeof(RequestsList), // Owner class
+            new PropertyMetadata(null) // Default value
+        );
+
+        public NavigationStore NavigationStore
+        {
+            get => (NavigationStore)GetValue(NavigationStoreProperty);
+            set => SetValue(NavigationStoreProperty, value);
+        }
+
         public RequestsList()
         {
             InitializeComponent();
 
             // Adding reports to the observable list
-            requestList = new ObservableCollection<ReportViewModel>();
+            RequestList = new ObservableCollection<ReportViewModel>();
             foreach (var Report in AppStore.Instance.IssueReportStore.IssueReportList)
             {
-                requestList.Add(new ReportViewModel(Report));
+                RequestList.Add(new ReportViewModel(Report));
             }
 
-            MyList.ItemsSource = requestList;
+            MyList.ItemsSource = RequestList;
         }
-    }
 
-    public class RequestStatus
-    {
-        public string Identifier { get; set; }
-
-        public string StatusString { get; set; }
-
-        public SolidColorBrush StatusColorBrush { get; set; }
+        private void ListViewItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // Navigating to the RequestDetailsView (passing the ServiceRequest's details)
+            var border = sender as Border;
+            var reportViewModel = border?.DataContext as ReportViewModel;
+            if (reportViewModel != null) 
+            {
+                var navigationService = new NavigationService(this.NavigationStore, () => { return new RequestDetailsViewModel(reportViewModel); });
+                navigationService.Navigate();
+            }
+        }
     }
 }

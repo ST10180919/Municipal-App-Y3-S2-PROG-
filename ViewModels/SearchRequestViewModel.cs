@@ -21,8 +21,8 @@ namespace Municipal_App.ViewModels
         public SearchRequestViewModel()
         {
             // Setup navigation
-            var navStoreHere = AppStore.Instance.NavigationStore;
-            this.LandingNavCommand = new NavCommand(new Services.NavigationService(navStoreHere, CreateLandingViewModel));
+            var appNavStore = AppStore.Instance.NavigationStore;
+            this.LandingNavCommand = new NavCommand(new Services.NavigationService(appNavStore, CreateLandingViewModel));
         }
 
         public LandingViewModel CreateLandingViewModel()

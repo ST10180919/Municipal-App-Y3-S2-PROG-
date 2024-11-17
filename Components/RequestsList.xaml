@@ -43,7 +43,8 @@
                     <Border
                         x:Name="itemBorder"
                         BorderBrush="{StaticResource RequestStatusGreyBrush}"
-                        BorderThickness="0,2,0,2">
+                        BorderThickness="0,2,0,2"
+                        MouseDown="ListViewItem_MouseDown">
 
                         <Border.Background>
                             <SolidColorBrush x:Name="BorderBackgroundBrush" Color="{StaticResource TextWhite}" />
@@ -115,16 +116,16 @@
 
         <TextBlock
             Grid.Row="1"
+            MaxWidth="200"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            FontSize="14"
             FontStyle="Italic"
             Foreground="Gray"
-            TextAlignment="Center"
-            MaxWidth="200"
             LineHeight="20"
-            FontSize="14"
-            TextWrapping="Wrap"
-            Text="No data available. Please make use of our `Report Issues` service to create a service request.">
+            Text="No data available. Please make use of our `Report Issues` service to create a service request."
+            TextAlignment="Center"
+            TextWrapping="Wrap">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Collapsed" />
