@@ -18,6 +18,21 @@ namespace Municipal_App.ViewModels
         /// </summary>
         public ICommand LandingNavCommand { get; }
 
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value;
+                    OnPropertyChanged(nameof(SearchText));
+                    AppStore.Instance.IssueReportStore.SearchTerm = _searchText;
+                }
+            }
+        }
+
         public SearchRequestViewModel()
         {
             // Setup navigation

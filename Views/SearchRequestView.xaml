@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:Municipal_App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="ServiceRequestUserControl"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     d:DesignHeight="670"
     d:DesignWidth="980"
     mc:Ignorable="d">
@@ -55,14 +56,9 @@
 
                 <!--  Search Bar  -->
                 <Grid
-                    Width="487"
+                    Width="414"
                     Height="80"
                     Margin="0,5,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="414" />
-                        <ColumnDefinition Width="13" />
-                        <ColumnDefinition Width="60" />
-                    </Grid.ColumnDefinitions>
 
                     <!--  Search input  -->
                     <Grid Grid.Column="0" Height="50">
@@ -82,74 +78,9 @@
                             GotFocus="TextBox_GotFocus"
                             Style="{StaticResource SearchInput}"
                             Tag="Search"
-                            Text="{Binding SearchText, Mode=TwoWay}" />
+                            Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
-
-                    <!--  Search button  -->
-                    <Button
-                        Grid.Column="2"
-                        Height="50"
-                        Command="{Binding ApplySearchFilterCommand}">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Grid Grid.Column="2" Height="50">
-                                                <Border
-                                                    x:Name="ButtonBackground"
-                                                    Background="{StaticResource EerieBlackBrush}"
-                                                    CornerRadius="25"
-                                                    Effect="{StaticResource EventsDropShadow}" />
-
-                                                <Image
-                                                    Width="22"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Effect="{StaticResource NoDropShadow}"
-                                                    Source="/Images/search.png"
-                                                    UseLayoutRounding="True" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation
-                                                                    Storyboard.TargetName="ButtonBackground"
-                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                    To="{StaticResource Jet}"
-                                                                    Duration="0:0:0.15" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation
-                                                                    Storyboard.TargetName="ButtonBackground"
-                                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                    To="{StaticResource EerieBlack}"
-                                                                    Duration="0:0:0.15" />
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.ExitActions>
-                                                    <Setter Property="Cursor" Value="Hand" />
-                                                </Trigger>
-                                                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="False">
-                                                    <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource JetBrush}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="True">
-                                                    <Setter TargetName="ButtonBackground" Property="Background" Value="{StaticResource EerieBlackBrush}" />
-                                                </DataTrigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                    </Button>
                 </Grid>
 
                 <TextBlock

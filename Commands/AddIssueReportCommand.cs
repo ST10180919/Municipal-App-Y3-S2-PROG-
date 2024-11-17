@@ -64,7 +64,7 @@ namespace Municipal_App.Commands
         private void setReportIdentifierDetails()
         {
             // Identifier
-            var reportNumber = AppStore.Instance.IssueReportStore.IssueReportList.Count + 1;
+            var reportNumber = AppStore.Instance.IssueReportStore.GetNumberofReports() + 1;
             var categoryPart = this._reportToBeAdded.Category.Substring(0, 3);
 
             this._reportToBeAdded.Identifier = $"REQ-{categoryPart}-00{reportNumber}";
