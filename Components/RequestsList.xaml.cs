@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -50,6 +51,9 @@ namespace Municipal_App.Components
 
             // Subscribing to the SearchTermChangedEvent ensuring that the list is filtered when the user searches
             AppStore.Instance.IssueReportStore.SearchTermChanged += UpdateList;
+
+            // Enabling Lazy loading of Report Issues
+            AppStore.Instance.IssueReportStore.ReportsLoaded += UpdateList;
         }
 
         private void ListViewItem_MouseDown(object sender, MouseButtonEventArgs e)
@@ -87,6 +91,9 @@ namespace Municipal_App.Components
             {
                 this.RequestList.Add(new ReportViewModel(report));
             }
+
+            // Force a layout update to ensure UI refresh
+            MyList.UpdateLayout();
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)

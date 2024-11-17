@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,17 +19,16 @@ namespace Municipal_App.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Configure primary keys and relationships if necessary
+            // Map Attachment entity to ATTACHMENT table
+            modelBuilder.Entity<ATTACHMENT>().ToTable("ATTACHMENT");
 
-            modelBuilder.Entity<ISSUE_REPORT>()
-                .HasKey(e => e.IDENTIFIER);
+            // Map ISSUE_REPORT entity to ISSUE_REPORT table (if necessary)
+            modelBuilder.Entity<ISSUE_REPORT>().ToTable("ISSUE_REPORT");
 
-            modelBuilder.Entity<ATTACHMENT>()
-                .HasKey(e => e.ID);
-
+            // Configure relationships and other mappings
             modelBuilder.Entity<ATTACHMENT>()
                 .HasRequired(a => a.ISSUE_REPORT)
-                .WithMany(i => i.ATTACHMENTS)
+                .WithMany(r => r.ATTACHMENTS)
                 .HasForeignKey(a => a.ISSUE_REPORT_ID)
                 .WillCascadeOnDelete(true);
 

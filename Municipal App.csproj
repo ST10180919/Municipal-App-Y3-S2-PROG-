@@ -210,6 +210,10 @@
     <Compile Include="Migrations\202411171912311_ChangeAttachment.designer.cs">
       <DependentUpon>202411171912311_ChangeAttachment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202411171952426_UpdateAttachmentMapping.cs" />
+    <Compile Include="Migrations\202411171952426_UpdateAttachmentMapping.designer.cs">
+      <DependentUpon>202411171952426_UpdateAttachmentMapping.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ATTACHMENT.cs" />
     <Compile Include="Models\Graph.cs" />
@@ -287,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202411171912311_ChangeAttachment.resx">
       <DependentUpon>202411171912311_ChangeAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411171952426_UpdateAttachmentMapping.resx">
+      <DependentUpon>202411171952426_UpdateAttachmentMapping.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

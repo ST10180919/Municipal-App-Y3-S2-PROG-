@@ -1,4 +1,5 @@
 ﻿using Municipal_App.Models;
+using Municipal_App.Services.DatabaseServices;
 using Municipal_App.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,8 @@ namespace Municipal_App.Stores
         /// </summary>
         public Action SearchTermChanged { get; set; }
 
+        public Action ReportsLoaded { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="IssueReportStore"/> class.
         /// </summary>
@@ -48,6 +51,19 @@ namespace Municipal_App.Stores
         {
             issueReportTree = new SortedDictionary<string, ISSUE_REPORT>();
             graphNodes = new Dictionary<string, GraphNode>();
+
+            this.InitializeReports();
+        }
+
+        private async void InitializeReports()
+        {
+            var initialReports = await ReportIssuesDataService.GetIssueReports();
+
+            foreach (var report in initialReports)
+            {
+                this.AddIssueReport(report);
+            }
+            this.ReportsLoaded?.Invoke();
         }
 
         /// <summary>

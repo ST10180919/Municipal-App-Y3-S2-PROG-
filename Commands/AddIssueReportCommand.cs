@@ -1,4 +1,6 @@
-﻿using Municipal_App.Services;
+﻿using Municipal_App.Models;
+using Municipal_App.Services;
+using Municipal_App.Services.DatabaseServices;
 using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
@@ -52,8 +54,12 @@ namespace Municipal_App.Commands
                 // Adding Identifier
                 this.setReportIdentifierDetails();
 
+                // Add to data structure
+                var report = this._reportToBeAdded.convertToIssueReport();
+                AppStore.Instance.IssueReportStore.AddIssueReport(report);
+
                 // Add to database
-                AppStore.Instance.IssueReportStore.AddIssueReport(this._reportToBeAdded.convertToIssueReport());
+                ReportIssuesDataService.AddIssueReportAsync(report);
 
                 // Navigate back to landing
                 var navigationService = new NavigationService(AppStore.Instance.NavigationStore, () => { return new LandingViewModel(); });

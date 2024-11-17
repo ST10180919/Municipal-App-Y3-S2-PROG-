@@ -1,6 +1,8 @@
 ﻿using Municipal_App.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,40 +17,37 @@ namespace Municipal_App.Services.DatabaseServices
 
     internal class ReportIssuesDataService
     {
-        //private MunicipalDatabaseEntities Entity;
 
-        //public async Task AddIssueReportAsync(ISSUE_REPORT report)
-        //{
-        //    using (this.Entity = new MunicipalDatabaseEntities())
-        //    {
-        //        this.Entity.ISSUE_REPORT.Add(report);
-        //        await this.Entity.SaveChangesAsync();
-        //    }
-        //}
+        public static async Task AddIssueReportAsync(ISSUE_REPORT report)
+        {
+            using (var context = new MunicipalDbContext())
+            {
+                context.IssueReports.AddOrUpdate(report);
+                try
+                {
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred while saving changes:");
+                    Console.WriteLine(ex.Message);
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine("Inner Exception:");
+                        Console.WriteLine(ex.InnerException.ToString());
+                    }
+                    throw;
+                }
+            }
+        }
 
-        //public void AddIssueReport(ISSUE_REPORT report)
-        //{
-        //    using (this.Entity = new MunicipalDatabaseEntities())
-        //    {
-        //        Console.WriteLine(this.Entity.Database.Connection.ConnectionString);
-        //        this.Entity.Database.Log = Console.WriteLine;
-        //        this.Entity.ISSUE_REPORT.Add(report);
-        //        var entry = this.Entity.Entry(report);
-        //        Console.WriteLine(entry.State);
-
-        //        int affectedRows = this.Entity.SaveChanges();
-        //        Console.WriteLine($"Affected Rows: {affectedRows}");
-        //    }
-        //}
-
-        //public List<ISSUE_REPORT> GetIssueReports()
-        //{
-        //    using (this.Entity = new MunicipalDatabaseEntities())
-        //    {
-        //        Console.WriteLine(this.Entity.Database.Connection.ConnectionString);
-        //        return this.Entity.ISSUE_REPORT.ToList();
-        //    }
-        //}
+        public static async Task<List<ISSUE_REPORT>> GetIssueReports()
+        {
+            using (var context = new MunicipalDbContext())
+            {
+                return await context.IssueReports.Include(r => r.ATTACHMENTS).ToListAsync();
+            }
+        }
 
         public static void TestDatabase()
         {
@@ -72,13 +71,13 @@ namespace Municipal_App.Services.DatabaseServices
                 var report = context.IssueReports.FirstOrDefault(i => i.IDENTIFIER == issueReport.IDENTIFIER);
                 Console.WriteLine($"Issue Report: {report.DESCRIPTION} at {report.LOCATION}");
 
-                //// Update the issue report
-                //report.STATUS_STRING = "In Progress";
-                //context.SaveChanges();
+                // Update the issue report
+                report.STATUS_STRING = "In Progress";
+                context.SaveChanges();
 
-                //// Delete the issue report
-                //context.IssueReports.Remove(report);
-                //context.SaveChanges();
+                // Delete the issue report
+                context.IssueReports.Remove(report);
+                context.SaveChanges();
             }
         }
     }
