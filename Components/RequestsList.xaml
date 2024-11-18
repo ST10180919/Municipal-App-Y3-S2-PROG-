@@ -79,6 +79,7 @@
                 <DataTemplate>
                     <Border
                         x:Name="itemBorder"
+                        Margin="0,-2,0,0"
                         BorderBrush="{StaticResource RequestStatusGreyBrush}"
                         BorderThickness="0,2,0,2"
                         Cursor="Hand"

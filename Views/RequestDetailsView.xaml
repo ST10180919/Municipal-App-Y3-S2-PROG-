@@ -32,7 +32,7 @@
                         <TextBlock
                             FontSize="30"
                             FontWeight="Medium"
-                            Text="#REQ-995108" />
+                            Text="{Binding ServiceRequest.Identifier}" />
                         <!--  Status  -->
                         <StackPanel
                             Margin="0,12,0,0"
@@ -43,13 +43,13 @@
                                 Height="22"
                                 Margin="0,0,8,0"
                                 VerticalAlignment="Center"
-                                Fill="{StaticResource GreenBrush}" />
+                                Fill="{Binding ServiceRequest.StatusColorBrush}" />
 
                             <TextBlock
                                 VerticalAlignment="Center"
                                 FontSize="18"
                                 FontWeight="Light"
-                                Text="Pending" />
+                                Text="{Binding ServiceRequest.StatusString}" />
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -145,16 +145,6 @@
                             Foreground="{StaticResource JetBrush}"
                             Text="{Binding ServiceRequest.Solution}"
                             TextWrapping="WrapWithOverflow" />
-
-                        <!--  Files  -->
-                        <StackPanel
-                            Grid.Row="8"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2">
-                            <TextBlock FontSize="20" Text="Files" />
-
-
-                        </StackPanel>
                     </Grid>
                 </Border>
             </StackPanel>

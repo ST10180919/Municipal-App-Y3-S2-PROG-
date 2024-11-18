@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.Services.DatabaseServices
 {
-    /*
-     * NOTE: None of this code is implemented in the app as database functionality
-     * wasn't necessary for this part. The database and ADO.NET entity data model 
-     * included in this project are used for the classes they create and nothing
-     * more (yet).
-     */
-
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// Provides data operations for managing issue reports within the municipal application.
+    /// </summary>
     internal class ReportIssuesDataService
     {
-
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Asynchronously adds or updates an issue report in the database.
+        /// </summary>
+        /// <param name="report">The <see cref="ISSUE_REPORT"/> to add or update.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <exception cref="Exception">Thrown when an error occurs while saving changes.</exception>
         public static async Task AddIssueReportAsync(ISSUE_REPORT report)
         {
             using (var context = new MunicipalDbContext())
@@ -41,6 +44,13 @@ namespace Municipal_App.Services.DatabaseServices
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Asynchronously retrieves all issue reports from the database, including their attachments.
+        /// </summary>
+        /// <returns>
+        /// A task that represents the asynchronous operation. The task result contains a list of <see cref="ISSUE_REPORT"/> objects.
+        /// </returns>
         public static async Task<List<ISSUE_REPORT>> GetIssueReports()
         {
             using (var context = new MunicipalDbContext())
@@ -49,6 +59,10 @@ namespace Municipal_App.Services.DatabaseServices
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Tests the database operations by creating, retrieving, updating, and deleting an issue report.
+        /// </summary>
         public static void TestDatabase()
         {
             using (var context = new MunicipalDbContext())
@@ -82,3 +96,4 @@ namespace Municipal_App.Services.DatabaseServices
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

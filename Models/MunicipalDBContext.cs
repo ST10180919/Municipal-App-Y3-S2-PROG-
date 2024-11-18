@@ -8,15 +8,37 @@ using System.Threading.Tasks;
 
 namespace Municipal_App.Models
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// Represents the Entity Framework DbContext for managing the municipal application's database entities.
+    /// </summary>
     public class MunicipalDbContext : DbContext
     {
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MunicipalDbContext"/> class with the specified connection string.
+        /// </summary>
         public MunicipalDbContext() : base("name=MunicipalDbContext")
         {
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the DbSet of issue reports.
+        /// </summary>
         public virtual DbSet<ISSUE_REPORT> IssueReports { get; set; }
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the DbSet of attachments.
+        /// </summary>
         public virtual DbSet<ATTACHMENT> Attachments { get; set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Configures the model relationships and mappings for the database.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder used to configure the database schema.</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // Map Attachment entity to ATTACHMENT table
@@ -36,3 +58,4 @@ namespace Municipal_App.Models
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

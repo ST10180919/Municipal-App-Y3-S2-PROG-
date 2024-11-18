@@ -137,8 +137,17 @@ namespace Municipal_App.ViewModels
 			}
 		}
 
-		private string _identifier;
-		public string Identifier
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Backing field for Identifier
+        /// </summary>
+        private string _identifier;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Identifier of this report eg. REQ-UTI-001 used to uniquely identify this report
+        /// </summary>
+        public string Identifier
 		{
 			get
 			{
@@ -151,8 +160,17 @@ namespace Municipal_App.ViewModels
 			}
 		}
 
-		private string _statusString;
-		public string StatusString
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Backing field for StatusString
+        /// </summary>
+        private string _statusString;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// String indicating the status of the report ex. Pending, Accepted
+        /// </summary>
+        public string StatusString
 		{
 			get
 			{
@@ -165,8 +183,17 @@ namespace Municipal_App.ViewModels
 			}
 		}
 
-		private SolidColorBrush _statusColorBrush;
-		public SolidColorBrush StatusColorBrush
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Backing field for StatusColorBrush
+        /// </summary>
+        private SolidColorBrush _statusColorBrush;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Colour corresponding to the StatusString. Ex. yellow for pending
+        /// </summary>
+        public SolidColorBrush StatusColorBrush
 		{
 			get
 			{
@@ -243,7 +270,7 @@ namespace Municipal_App.ViewModels
 			this._location = report.LOCATION;
 			this._category = report.CATEGORY;
 			this._description = report.DESCRIPTION;
-			this._solution = report.DESCRIPTION;
+			this._solution = report.SOLUTION;
 			this._identifier = report.IDENTIFIER;
 			this._statusString = report.STATUS_STRING;
 			this.setStatusColorBrush(report.STATUS_STRING);
@@ -281,7 +308,12 @@ namespace Municipal_App.ViewModels
 			return convertedObj;
 		}
 
-		private void setStatusColorBrush(string status)
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Sets the StatusColorBrush for this report depending on the status
+        /// </summary>
+        /// <returns></returns>
+        private void setStatusColorBrush(string status)
 		{
 			switch (status)
 			{

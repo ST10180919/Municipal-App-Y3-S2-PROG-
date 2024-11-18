@@ -7,21 +7,32 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Municipal_App.Components
 {
+    //---------------------------------------------------------------------------------
     /// <summary>
-    /// Interaction logic for RequestsList.xaml
+    /// Represents the RequestsList component that displays and manages a list of issue reports.
     /// </summary>
     public partial class RequestsList : UserControl
     {
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Collection of reports to display in the list.
+        /// </summary>
         public ObservableCollection<ReportViewModel> RequestList;
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// The currently selected issue category for filtering.
+        /// </summary>
         private IssueCategory SelectedCategory = IssueCategory.None;
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Dependency property for binding a NavigationStore instance to the control.
+        /// </summary>
         public static readonly DependencyProperty NavigationStoreProperty =
         DependencyProperty.Register(
             nameof(NavigationStore), // Property name
@@ -30,12 +41,20 @@ namespace Municipal_App.Components
             new PropertyMetadata(null) // Default value
         );
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the navigation store used for managing navigation within the application.
+        /// </summary>
         public NavigationStore NavigationStore
         {
             get => (NavigationStore)GetValue(NavigationStoreProperty);
             set => SetValue(NavigationStoreProperty, value);
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequestsList"/> class and sets up the initial state.
+        /// </summary>
         public RequestsList()
         {
             InitializeComponent();
@@ -56,6 +75,10 @@ namespace Municipal_App.Components
             AppStore.Instance.IssueReportStore.ReportsLoaded += UpdateList;
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the mouse down event on a list view item to navigate to the RequestDetailsView.
+        /// </summary>
         private void ListViewItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // Navigating to the RequestDetailsView (passing the ServiceRequest's details)
@@ -68,6 +91,10 @@ namespace Municipal_App.Components
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Updates the list of displayed reports based on the current search term and selected category.
+        /// </summary>
         private void UpdateList()
         {
             // Clearing the list
@@ -96,6 +123,10 @@ namespace Municipal_App.Components
             MyList.UpdateLayout();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the Checked event for radio buttons, updating the selected category and refreshing the list.
+        /// </summary>
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             // Clear borders on all radio buttons
@@ -117,6 +148,10 @@ namespace Municipal_App.Components
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Handles the ClearFilter button click event, resetting the selected category and refreshing the list.
+        /// </summary>
         private void ClearFilter_Click(object sender, RoutedEventArgs e)
         {
             // Clear borders on all radio buttons
@@ -129,3 +164,4 @@ namespace Municipal_App.Components
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

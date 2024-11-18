@@ -14,20 +14,33 @@ namespace Municipal_App.Stores
     /// </summary>
     internal class IssueReportStore
     {
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// A sorted dictionary that uses a Binary Search Tree to store issue reports.
         /// Proof that the SortedDictionary in C# uses a binary search tree: 
         /// https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.sorteddictionary-2?view=netframework-4.8
         /// </summary>
         private SortedDictionary<string, ISSUE_REPORT> issueReportTree;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Dictionary of graph nodes representing relationships between issue reports and categories.
+        /// </summary>
         private Dictionary<string, GraphNode> graphNodes;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// A max heap to track and prioritize issue reports based on timestamps.
+        /// </summary>
         private MaxHeap<HeapItem> RequestsHeap;
 
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// The current search term used to filter issue reports.
         /// </summary>
         private string _searchTerm;
 
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the search term used to filter issue reports.
         /// When set, triggers the <see cref="SearchTermChanged"/> action.
@@ -38,13 +51,19 @@ namespace Municipal_App.Stores
             set { _searchTerm = value; OnSearchTermChanged(); }
         }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// Action invoked when the <see cref="SearchTerm"/> changes.
         /// </summary>
         public Action SearchTermChanged { get; set; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Action invoked when the reports are loaded into the store.
+        /// </summary>
         public Action ReportsLoaded { get; set; }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="IssueReportStore"/> class.
         /// </summary>
@@ -57,6 +76,10 @@ namespace Municipal_App.Stores
             this.InitializeReports();
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Asynchronously initializes the store by loading issue reports from the database.
+        /// </summary>
         private async void InitializeReports()
         {
             var initialReports = await ReportIssuesDataService.GetIssueReports();
@@ -68,11 +91,9 @@ namespace Municipal_App.Stores
             this.ReportsLoaded?.Invoke();
         }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// Adds a new issue report to the store.
-        /// The issue reports are stored in a SortedDictionary, which uses a Binary Search Tree Tree.
-        /// This tree structure ensures that the issue reports are kept in sorted order based on their identifiers,
-        /// allowing for efficient search and retrieval operations, which is beneficial for managing a large number of reports.
         /// </summary>
         /// <param name="issueReport">The issue report to add.</param>
         public void AddIssueReport(ISSUE_REPORT issueReport)
@@ -87,6 +108,11 @@ namespace Municipal_App.Stores
             RequestsHeap.Insert(new HeapItem {Timestamp = DateTime.Now, Data = issueReport });
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds the given issue report to the graph structure, establishing category relationships.
+        /// </summary>
+        /// <param name="issueReport">The issue report to add to the graph.</param>
         private void AddToGraph(ISSUE_REPORT issueReport)
         {
             // Ensure Category Node Exists
@@ -106,6 +132,12 @@ namespace Municipal_App.Stores
             graphNodes[issueReport.CATEGORY].Edges[issueReport.IDENTIFIER] = new GraphEdge(requestNode, "HasRequest");
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Searches for issue reports within a specific category that match the current search term.
+        /// </summary>
+        /// <param name="categoryIdentifier">The identifier of the category to filter by.</param>
+        /// <returns>A list of issue reports that match the search term and category.</returns>
         public List<ISSUE_REPORT> FilterAndSearch(string categoryIdentifier)
         {
             var results = new List<ISSUE_REPORT>();
@@ -155,9 +187,9 @@ namespace Municipal_App.Stores
             return results;
         }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// Searches for issue reports that match the current <see cref="SearchTerm"/>.
-        /// If the search term is null or empty, all issue reports are returned.
         /// </summary>
         /// <returns>A list of issue reports that match the search term.</returns>
         public List<ISSUE_REPORT> Search()
@@ -181,12 +213,10 @@ namespace Municipal_App.Stores
             return results;
         }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
-        /// Determines whether the specified issue report matches the given search term.
+        /// Determines whether an issue report matches the specified search term.
         /// </summary>
-        /// <param name="report">The issue report to check.</param>
-        /// <param name="searchTerm">The search term to match against.</param>
-        /// <returns><c>true</c> if the report matches the search term; otherwise, <c>false</c>.</returns>
         private bool IsMatch(ISSUE_REPORT report, string searchTerm)
         {
             if (report == null || string.IsNullOrEmpty(searchTerm))
@@ -198,33 +228,37 @@ namespace Municipal_App.Stores
             return (report.IDENTIFIER != null && report.IDENTIFIER.ToLower().Contains(searchTerm));
         }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
         /// Retrieves all issue reports stored in the store.
-        /// This efficient retrieval is helpful for displaying reports to the user in an organized manner.
         /// </summary>
-        /// <returns>A list of all issue reports.</returns>
         public List<ISSUE_REPORT> GetAllIssueReports()
         {
             return new List<ISSUE_REPORT>(issueReportTree.Values);
         }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the total number of issue reports stored.
+        /// Gets the total number of issue reports in the store.
         /// </summary>
-        /// <returns>The number of issue reports.</returns>
         public int GetNumberofReports()
         {
             return issueReportTree.Count;
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the total number of issue reports in the store.
+        /// </summary>
         public HeapItem GetMostRecentReport()
         {
             var heapItem =  RequestsHeap.Count > 0 ? RequestsHeap.Peek() : null;
             return heapItem;
         }
 
+        //-----------------------------------------------------------------------------
         /// <summary>
-        /// Invokes the <see cref="SearchTermChanged"/> action when the <see cref="SearchTerm"/> changes.
+        /// Invokes the <see cref="SearchTermChanged"/> action when the search term changes.
         /// </summary>
         private void OnSearchTermChanged()
         {

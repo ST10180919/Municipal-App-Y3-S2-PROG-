@@ -10,15 +10,29 @@ using System.Windows.Navigation;
 
 namespace Municipal_App.ViewModels
 {
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// ViewModel for managing the search functionality and navigation for service requests.
+    /// </summary>
     internal class SearchRequestViewModel : ViewModelBase
     {
         //-----------------------------------------------------------------------------
         /// <summary>
-        /// Command used to navigate back to the LandingView
+        /// Command used to navigate back to the LandingView.
         /// </summary>
         public ICommand LandingNavCommand { get; }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// The text entered by the user for searching service requests.
+        /// Updates the search term in the IssueReportStore when changed.
+        /// </summary>
         private string _searchText;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the search text for filtering service requests.
+        /// </summary>
         public string SearchText
         {
             get => _searchText;
@@ -33,6 +47,11 @@ namespace Municipal_App.ViewModels
             }
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SearchRequestViewModel"/> class.
+        /// Sets up navigation to the LandingView.
+        /// </summary>
         public SearchRequestViewModel()
         {
             // Setup navigation
@@ -40,9 +59,15 @@ namespace Municipal_App.ViewModels
             this.LandingNavCommand = new NavCommand(new Services.NavigationService(appNavStore, CreateLandingViewModel));
         }
 
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Creates and returns a new instance of the LandingViewModel.
+        /// </summary>
+        /// <returns>A new <see cref="LandingViewModel"/> instance.</returns>
         public LandingViewModel CreateLandingViewModel()
         {
             return new LandingViewModel();
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------

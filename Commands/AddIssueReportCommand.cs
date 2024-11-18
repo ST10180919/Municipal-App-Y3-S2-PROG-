@@ -48,11 +48,11 @@ namespace Municipal_App.Commands
 
             if (!this._reportToBeAdded.HasErrors)
             {
-                // Success
-                this._bannerMessageStore.SetBanner("Report Successfully Submited!", BannerType.Confirmation);
-
                 // Adding Identifier
                 this.setReportIdentifierDetails();
+
+                // Success
+                this._bannerMessageStore.SetBanner($"Report Successfully Submited! Your Identifier is {this._reportToBeAdded.Identifier}", BannerType.Confirmation);
 
                 // Add to data structure
                 var report = this._reportToBeAdded.convertToIssueReport();
