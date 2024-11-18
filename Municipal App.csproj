@@ -218,6 +218,7 @@
     <Compile Include="Models\ATTACHMENT.cs" />
     <Compile Include="Models\Graph.cs" />
     <Compile Include="Models\ISSUE_REPORT.cs" />
+    <Compile Include="Models\MaxHeap.cs" />
     <Compile Include="Models\MunicipalDBContext.cs" />
     <Compile Include="Models\ObservableQueue.cs" />
     <Compile Include="Services\RecommendationService.cs" />

@@ -21,6 +21,7 @@ namespace Municipal_App.Stores
         /// </summary>
         private SortedDictionary<string, ISSUE_REPORT> issueReportTree;
         private Dictionary<string, GraphNode> graphNodes;
+        private MaxHeap<HeapItem> RequestsHeap;
 
         /// <summary>
         /// The current search term used to filter issue reports.
@@ -51,6 +52,7 @@ namespace Municipal_App.Stores
         {
             issueReportTree = new SortedDictionary<string, ISSUE_REPORT>();
             graphNodes = new Dictionary<string, GraphNode>();
+            RequestsHeap = new MaxHeap<HeapItem>();
 
             this.InitializeReports();
         }
@@ -80,6 +82,9 @@ namespace Municipal_App.Stores
 
             // Add to Graph
             AddToGraph(issueReport);
+
+            // Add to Heap using now as the timestamp
+            RequestsHeap.Insert(new HeapItem {Timestamp = DateTime.Now, Data = issueReport });
         }
 
         private void AddToGraph(ISSUE_REPORT issueReport)
@@ -210,6 +215,12 @@ namespace Municipal_App.Stores
         public int GetNumberofReports()
         {
             return issueReportTree.Count;
+        }
+
+        public HeapItem GetMostRecentReport()
+        {
+            var heapItem =  RequestsHeap.Count > 0 ? RequestsHeap.Peek() : null;
+            return heapItem;
         }
 
         /// <summary>

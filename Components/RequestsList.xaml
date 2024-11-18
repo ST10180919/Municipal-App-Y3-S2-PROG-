@@ -81,6 +81,7 @@
                         x:Name="itemBorder"
                         BorderBrush="{StaticResource RequestStatusGreyBrush}"
                         BorderThickness="0,2,0,2"
+                        Cursor="Hand"
                         MouseDown="ListViewItem_MouseDown">
 
                         <Border.Background>
