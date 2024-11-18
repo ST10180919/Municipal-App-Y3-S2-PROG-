@@ -1,12 +1,15 @@
-# How to run the application
+# Startup Guide
+## How to run the application
 Navigate to bin -> Release -> run Municipal App.exe
 #### or 
 Open Municipal App.exe in Visual Studio and click the run button
 
 # Features
 ## Landing page
-1. Navigation to the Report Issues page by clicking the button
-2. Feedback section: For this page, users can suggest new services to add to the app. (Engagement Feature)
+1. Navigation to the Report Issues page
+2. Navigation to the Events and Announcements page
+3. Navigation to the Service Request Status page
+4. Feedback section: For this page, users can suggest new services to add to the app. (Engagement Feature)
 
 ## Report Issue page
 #### 1. Creating an Issue report:
@@ -41,7 +44,17 @@ with at least three previously searched/filtered terms.
 
 Code for recommendations can be found in RecommendationService.GetRecommendation()
 
+## Service Request Status Page
+The purpose of this page is to allow the user to view the status of service requests they've made previously.
+**For example, an issue report is considered a service request.**
+You can create new service requests by adding them through the report issues page from part 1.
 
+**On this page you can:**
+- View previously created service requests on the list seen on the right of the page.
+- Search for specific requests using the search bar, which will update the list with matching results.
+- Filter requests by a specific category, which will also be combined with any current search terms.
+- View the Most recent request made at the top right of the page (if there are any)
+- Click on a service request to view the details of that request.
 
 Link to GitHub Repo: https://github.com/ST10180919/Municipal-App-Y3-S2-PROG- (There are releases for each POE part)
 

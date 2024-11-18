@@ -1,4 +1,5 @@
-﻿using Municipal_App.ViewModels;
+﻿using Municipal_App.Services.DatabaseServices;
+using Municipal_App.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,9 @@ namespace Municipal_App
             this.MainWindow = new MainWindow();
             this.MainWindow.DataContext = new MainViewModel();
             this.MainWindow.Show();
+
+            // Test Database
+            //ReportIssuesDataService.TestDatabase();
 
             base.OnStartup(e);
         }

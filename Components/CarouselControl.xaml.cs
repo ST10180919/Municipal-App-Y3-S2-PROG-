@@ -149,17 +149,24 @@ namespace Municipal_App.Components
         /// </summary>
         public void ApplySearchFilter()
         {
-            var collectionViewSource = (CollectionViewSource)this.FindResource("SortedItems");
-            if (collectionViewSource != null)
+            try
             {
-                // Refresh the view to reapply the filter
-                collectionViewSource.View.Refresh();
+                var collectionViewSource = (CollectionViewSource)this.FindResource("SortedItems");
+                if (collectionViewSource != null)
+                {
+                    // Refresh the view to reapply the filter
+                    collectionViewSource.View.Refresh();
 
-                // Set the filtered view as the ItemsSource for the ItemsControl
-                carouselItems.ItemsSource = collectionViewSource.View;
+                    // Set the filtered view as the ItemsSource for the ItemsControl
+                    carouselItems.ItemsSource = collectionViewSource.View;
 
-                // Force a layout update to ensure UI refresh
-                carouselItems.UpdateLayout();
+                    // Force a layout update to ensure UI refresh
+                    carouselItems.UpdateLayout();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to apply search filter", ex);
             }
         }
 

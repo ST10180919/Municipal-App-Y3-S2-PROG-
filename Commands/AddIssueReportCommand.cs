@@ -1,4 +1,6 @@
-﻿using Municipal_App.Services;
+﻿using Municipal_App.Models;
+using Municipal_App.Services;
+using Municipal_App.Services.DatabaseServices;
 using Municipal_App.Stores;
 using Municipal_App.ViewModels;
 using System;
@@ -46,16 +48,35 @@ namespace Municipal_App.Commands
 
             if (!this._reportToBeAdded.HasErrors)
             {
+                // Adding Identifier
+                this.setReportIdentifierDetails();
+
                 // Success
-                this._bannerMessageStore.SetBanner("Report Successfully Submited!", BannerType.Confirmation);
+                this._bannerMessageStore.SetBanner($"Report Successfully Submited! Your Identifier is {this._reportToBeAdded.Identifier}", BannerType.Confirmation);
+
+                // Add to data structure
+                var report = this._reportToBeAdded.convertToIssueReport();
+                AppStore.Instance.IssueReportStore.AddIssueReport(report);
 
                 // Add to database
-                AppStore.Instance.IssueReportStore.AddIssueReport(this._reportToBeAdded.convertToIssueReport());
+                ReportIssuesDataService.AddIssueReportAsync(report);
 
                 // Navigate back to landing
                 var navigationService = new NavigationService(AppStore.Instance.NavigationStore, () => { return new LandingViewModel(); });
                 navigationService.Navigate();
             }
+        }
+
+        private void setReportIdentifierDetails()
+        {
+            // Identifier
+            var reportNumber = AppStore.Instance.IssueReportStore.GetNumberofReports() + 1;
+            var categoryPart = this._reportToBeAdded.Category.Substring(0, 3);
+
+            this._reportToBeAdded.Identifier = $"REQ-{categoryPart}-00{reportNumber}";
+
+            // StatusString
+            this._reportToBeAdded.StatusString = "Pending";
         }
 
         //-----------------------------------------------------------------------------

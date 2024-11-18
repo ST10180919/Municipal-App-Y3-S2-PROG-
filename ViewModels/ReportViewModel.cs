@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Municipal_App.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Media;
 
 namespace Municipal_App.ViewModels
 {
@@ -15,7 +17,8 @@ namespace Municipal_App.ViewModels
 	{
 		Sanitation,
 		Roads,
-		Utilities
+		Utilities,
+		None
 	}
 
     /* CREDITS
@@ -29,7 +32,7 @@ namespace Municipal_App.ViewModels
     /// Any UI elements to bind to. Also implements INotifyDataErrorInfo to allow any
     /// validation errors to propogate to the UI.
     /// </summary>
-    internal class ReportViewModel : ViewModelBase, INotifyDataErrorInfo
+    public class ReportViewModel : ViewModelBase, INotifyDataErrorInfo
     {
         //-----------------------------------------------------------------------------
 		/// <summary>
@@ -135,10 +138,79 @@ namespace Municipal_App.ViewModels
 		}
 
         //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Backing field for Identifier
+        /// </summary>
+        private string _identifier;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Identifier of this report eg. REQ-UTI-001 used to uniquely identify this report
+        /// </summary>
+        public string Identifier
+		{
+			get
+			{
+				return _identifier;
+			}
+			set
+			{
+				_identifier = value;
+				OnPropertyChanged(nameof(Identifier));
+			}
+		}
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Backing field for StatusString
+        /// </summary>
+        private string _statusString;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// String indicating the status of the report ex. Pending, Accepted
+        /// </summary>
+        public string StatusString
+		{
+			get
+			{
+				return _statusString;
+			}
+			set
+			{
+				_statusString = value;
+				OnPropertyChanged(nameof(StatusString));
+			}
+		}
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Backing field for StatusColorBrush
+        /// </summary>
+        private SolidColorBrush _statusColorBrush;
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Colour corresponding to the StatusString. Ex. yellow for pending
+        /// </summary>
+        public SolidColorBrush StatusColorBrush
+		{
+			get
+			{
+				return _statusColorBrush;
+			}
+			set
+			{
+				_statusColorBrush = value;
+				OnPropertyChanged(nameof(StatusColorBrush));
+			}
+		}
+
+		//-----------------------------------------------------------------------------
 		/// <summary>
 		/// Backing field for Attachments
 		/// </summary>
-        private ObservableCollection<AttachmentViewModel> _attachments;
+		private ObservableCollection<AttachmentViewModel> _attachments;
 
         //-----------------------------------------------------------------------------
 		/// <summary>
@@ -181,6 +253,9 @@ namespace Municipal_App.ViewModels
 			this._description = string.Empty;
 			this._solution = string.Empty;
 			this._attachments = new ObservableCollection<AttachmentViewModel>();
+			this._statusString = string.Empty;
+			this._identifier = string.Empty;
+			this._statusColorBrush = new SolidColorBrush();
         }
 
         //-----------------------------------------------------------------------------
@@ -195,10 +270,13 @@ namespace Municipal_App.ViewModels
 			this._location = report.LOCATION;
 			this._category = report.CATEGORY;
 			this._description = report.DESCRIPTION;
-			this._solution = report.DESCRIPTION;
+			this._solution = report.SOLUTION;
+			this._identifier = report.IDENTIFIER;
+			this._statusString = report.STATUS_STRING;
+			this.setStatusColorBrush(report.STATUS_STRING);
 
 			this._attachments = new ObservableCollection<AttachmentViewModel>();
-			foreach (var attachment in report.ATTACHMENTs)
+			foreach (var attachment in report.ATTACHMENTS)
 			{
 				this._attachments.Add(new AttachmentViewModel(attachment));
 			}
@@ -223,9 +301,35 @@ namespace Municipal_App.ViewModels
 				CATEGORY = this._category,
 				DESCRIPTION = this._description,
 				SOLUTION = this._solution,
-				ATTACHMENTs = attachments
+				ATTACHMENTS = attachments,
+				IDENTIFIER = this._identifier,
+				STATUS_STRING = this._statusString,
 			};
 			return convertedObj;
+		}
+
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Sets the StatusColorBrush for this report depending on the status
+        /// </summary>
+        /// <returns></returns>
+        private void setStatusColorBrush(string status)
+		{
+			switch (status)
+			{
+				case "Pending": 
+					this._statusColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDD00"));
+					break;
+				case "Accepted":
+                    this._statusColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E03C31"));
+                    break;
+                case "Denied":
+                    this._statusColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#30D394"));
+                    break;
+				default:
+                    this._statusColorBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
+                    break;
+            }
 		}
 
         //-----------------------------------------------------------------------------

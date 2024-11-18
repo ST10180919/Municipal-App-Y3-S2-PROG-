@@ -1,4 +1,6 @@
 ﻿
+using Municipal_App.Models;
+
 namespace Municipal_App.ViewModels
 {
     //---------------------------------------------------------------------------------
@@ -7,7 +9,7 @@ namespace Municipal_App.ViewModels
     /// allow for more effective UI binding. Also stores all of the Info for 
     /// Any UI elements to bind to.
     /// </summary>
-    internal class AttachmentViewModel : ViewModelBase
+    public class AttachmentViewModel : ViewModelBase
     {
 
 		//-----------------------------------------------------------------------------

@@ -62,6 +62,9 @@
     <Reference Include="HtmlAgilityPack, Version=1.11.67.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>packages\HtmlAgilityPack.1.11.67\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.135\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll</HintPath>
     </Reference>
@@ -107,6 +110,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\RequestsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Buttons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,6 +121,10 @@
     <Page Include="Themes\DefaultThemes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Inputs.xaml">
       <SubType>Designer</SubType>
@@ -143,7 +154,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RequestDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RequestStatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchRequestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,9 +173,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ATTACHMENT.cs">
-      <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Commands\AddIssueReportCommand.cs" />
     <Compile Include="Commands\ChooseFileCommand.cs" />
@@ -180,12 +196,30 @@
     <Compile Include="Components\FilterComponent.xaml.cs">
       <DependentUpon>FilterComponent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Components\RequestsList.xaml.cs">
+      <DependentUpon>RequestsList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\EventControlsMarginConverter.cs" />
     <Compile Include="Converters\HeightToFractionConverter.cs" />
-    <Compile Include="ISSUE_REPORT.cs">
-      <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
+    <Compile Include="Migrations\202411171903138_InitialCreate.cs" />
+    <Compile Include="Migrations\202411171903138_InitialCreate.designer.cs">
+      <DependentUpon>202411171903138_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202411171912311_ChangeAttachment.cs" />
+    <Compile Include="Migrations\202411171912311_ChangeAttachment.designer.cs">
+      <DependentUpon>202411171912311_ChangeAttachment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411171952426_UpdateAttachmentMapping.cs" />
+    <Compile Include="Migrations\202411171952426_UpdateAttachmentMapping.designer.cs">
+      <DependentUpon>202411171952426_UpdateAttachmentMapping.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ATTACHMENT.cs" />
+    <Compile Include="Models\Graph.cs" />
+    <Compile Include="Models\ISSUE_REPORT.cs" />
+    <Compile Include="Models\MaxHeap.cs" />
+    <Compile Include="Models\MunicipalDBContext.cs" />
     <Compile Include="Models\ObservableQueue.cs" />
     <Compile Include="Services\RecommendationService.cs" />
     <Compile Include="Stores\AnnouncementsFilter.cs" />
@@ -194,21 +228,6 @@
     <Compile Include="Stores\EventsStore.cs" />
     <Compile Include="ViewModels\AnnouncementViewModel.cs" />
     <Compile Include="ViewModels\EventViewModel.cs" />
-    <Compile Include="MunicipalDatabaseModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MunicipalDatabaseModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MunicipalDatabaseModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MunicipalDatabaseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MunicipalDatabaseModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Services\AnnouncementsWebService.cs" />
     <Compile Include="Services\DatabaseServices\ReportIssuesDataService.cs" />
     <Compile Include="Services\EventsWebService.cs" />
@@ -224,7 +243,9 @@
     <Compile Include="ViewModels\LandingViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
+    <Compile Include="ViewModels\RequestDetailsViewModel.cs" />
     <Compile Include="ViewModels\RequestStatusViewModel.cs" />
+    <Compile Include="ViewModels\SearchRequestViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\BannerMessageView.xaml.cs">
       <DependentUpon>BannerMessageView.xaml</DependentUpon>
@@ -238,8 +259,14 @@
     <Compile Include="Views\LandingView.xaml.cs">
       <DependentUpon>LandingView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RequestDetailsView.xaml.cs">
+      <DependentUpon>RequestDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RequestStatusView.xaml.cs">
       <DependentUpon>RequestStatusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchRequestView.xaml.cs">
+      <DependentUpon>SearchRequestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -260,6 +287,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\202411171903138_InitialCreate.resx">
+      <DependentUpon>202411171903138_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411171912311_ChangeAttachment.resx">
+      <DependentUpon>202411171912311_ChangeAttachment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411171952426_UpdateAttachmentMapping.resx">
+      <DependentUpon>202411171952426_UpdateAttachmentMapping.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -276,10 +312,6 @@
     <Resource Include="Fonts\Roboto-Regular.ttf" />
     <Resource Include="Fonts\Roboto-Thin.ttf" />
     <Resource Include="Fonts\Roboto-ThinItalic.ttf" />
-    <EntityDeploy Include="MunicipalDatabaseModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MunicipalDatabaseModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <Resource Include="Fonts\Lato-Black.ttf" />
     <Resource Include="Fonts\Lato-BlackItalic.ttf" />
     <Resource Include="Fonts\Lato-Bold.ttf" />
@@ -290,9 +322,6 @@
     <Resource Include="Fonts\Lato-Regular.ttf" />
     <Resource Include="Fonts\Lato-Thin.ttf" />
     <Resource Include="Fonts\Lato-ThinItalic.ttf" />
-    <None Include="MunicipalDatabaseModel.edmx.diagram">
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -302,7 +331,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\calendar.png" />
     <Resource Include="Images\exit-white.png" />
@@ -346,21 +374,13 @@
     <Resource Include="Images\filter2.png" />
     <Resource Include="Images\play.png" />
     <Resource Include="Images\star.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="MunicipalDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="MunicipalDatabaseModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>MunicipalDatabaseModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="MunicipalDatabaseModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MunicipalDatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>MunicipalDatabaseModel.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="MunicipalDatabase_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>MunicipalDatabase.mdf</DependentUpon>
     </Content>
   </ItemGroup>

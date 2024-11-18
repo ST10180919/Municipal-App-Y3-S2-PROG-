@@ -1,52 +1,99 @@
-﻿using System;
+﻿using Municipal_App.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Municipal_App.Services.DatabaseServices
 {
-    /*
-     * NOTE: None of this code is implemented in the app as database functionality
-     * wasn't necessary for this part. The database and ADO.NET entity data model 
-     * included in this project are used for the classes they create and nothing
-     * more (yet).
-     */
-
+    //---------------------------------------------------------------------------------
+    /// <summary>
+    /// Provides data operations for managing issue reports within the municipal application.
+    /// </summary>
     internal class ReportIssuesDataService
     {
-        private MunicipalDatabaseEntities Entity;
-
-        public async Task AddIssueReportAsync(ISSUE_REPORT report)
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Asynchronously adds or updates an issue report in the database.
+        /// </summary>
+        /// <param name="report">The <see cref="ISSUE_REPORT"/> to add or update.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <exception cref="Exception">Thrown when an error occurs while saving changes.</exception>
+        public static async Task AddIssueReportAsync(ISSUE_REPORT report)
         {
-            using (this.Entity = new MunicipalDatabaseEntities())
+            using (var context = new MunicipalDbContext())
             {
-                this.Entity.ISSUE_REPORT.Add(report);
-                await this.Entity.SaveChangesAsync();
+                context.IssueReports.AddOrUpdate(report);
+                try
+                {
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred while saving changes:");
+                    Console.WriteLine(ex.Message);
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine("Inner Exception:");
+                        Console.WriteLine(ex.InnerException.ToString());
+                    }
+                    throw;
+                }
             }
         }
 
-        public void AddIssueReport(ISSUE_REPORT report)
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Asynchronously retrieves all issue reports from the database, including their attachments.
+        /// </summary>
+        /// <returns>
+        /// A task that represents the asynchronous operation. The task result contains a list of <see cref="ISSUE_REPORT"/> objects.
+        /// </returns>
+        public static async Task<List<ISSUE_REPORT>> GetIssueReports()
         {
-            using (this.Entity = new MunicipalDatabaseEntities())
+            using (var context = new MunicipalDbContext())
             {
-                Console.WriteLine(this.Entity.Database.Connection.ConnectionString);
-                this.Entity.Database.Log = Console.WriteLine;
-                this.Entity.ISSUE_REPORT.Add(report);
-                var entry = this.Entity.Entry(report);
-                Console.WriteLine(entry.State);
-
-                int affectedRows = this.Entity.SaveChanges();
-                Console.WriteLine($"Affected Rows: {affectedRows}");
+                return await context.IssueReports.Include(r => r.ATTACHMENTS).ToListAsync();
             }
         }
 
-        public List<ISSUE_REPORT> GetIssueReports()
+        //-----------------------------------------------------------------------------
+        /// <summary>
+        /// Tests the database operations by creating, retrieving, updating, and deleting an issue report.
+        /// </summary>
+        public static void TestDatabase()
         {
-            using (this.Entity = new MunicipalDatabaseEntities())
+            using (var context = new MunicipalDbContext())
             {
-                Console.WriteLine(this.Entity.Database.Connection.ConnectionString);
-                return this.Entity.ISSUE_REPORT.ToList();
+                // Create a new issue report
+                var issueReport = new ISSUE_REPORT
+                {
+                    IDENTIFIER = Guid.NewGuid().ToString(),
+                    LOCATION = "123 Main St",
+                    DESCRIPTION = "Pothole in the road",
+                    CATEGORY = "Roads",
+                    SOLUTION = null,
+                    STATUS_STRING = "Open"
+                };
+
+                context.IssueReports.Add(issueReport);
+                context.SaveChanges();
+
+                // Retrieve the issue report
+                var report = context.IssueReports.FirstOrDefault(i => i.IDENTIFIER == issueReport.IDENTIFIER);
+                Console.WriteLine($"Issue Report: {report.DESCRIPTION} at {report.LOCATION}");
+
+                // Update the issue report
+                report.STATUS_STRING = "In Progress";
+                context.SaveChanges();
+
+                // Delete the issue report
+                context.IssueReports.Remove(report);
+                context.SaveChanges();
             }
         }
     }
 }
+//---------------------------------------EOF-------------------------------------------
