@@ -46,6 +46,7 @@ namespace Municipal_App.ViewModels
             this.ServiceRequestNavigationStore.CurrentViewModelChanged += this.OnCurrentViewModelChanged;
 
             // Recent Request Setup
+            this.SetupRecentRequest();
             AppStore.Instance.IssueReportStore.ReportsLoaded += this.SetupRecentRequest;
         }
 
